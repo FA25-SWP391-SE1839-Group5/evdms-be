@@ -1,0 +1,19 @@
+using EVDMS.DataAccessLayer.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace EVDMS.DataAccessLayer.Data.Configurations
+{
+    public class FeatureConfiguration : IEntityTypeConfiguration<Feature>
+    {
+        public void Configure(EntityTypeBuilder<Feature> builder)
+        {
+            builder.HasKey(f => f.Id);
+            builder.Property(f => f.FeatureName).IsRequired();
+            builder.HasOne(f => f.FeatureCategory)
+                .WithMany(fc => fc.Features)
+                .HasForeignKey(f => f.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+    }
+}
