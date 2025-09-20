@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,6 +14,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.Property(vm => vm.Description).IsRequired();
             builder.Property(vm => vm.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             builder.Property(vm => vm.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.HasData(VehicleModelSeed.VehicleModels);
         }
     }
 }

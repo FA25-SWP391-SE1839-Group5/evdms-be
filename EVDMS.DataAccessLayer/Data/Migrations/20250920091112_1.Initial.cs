@@ -22,8 +22,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Phone = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -38,8 +38,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     DealerName = table.Column<string>(type: "text", nullable: false),
                     Region = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -52,8 +52,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryName = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -66,8 +66,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     RoleName = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -81,8 +81,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SpecName = table.Column<string>(type: "text", nullable: false),
                     Unit = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -111,8 +111,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ModelName = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -126,8 +127,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -156,8 +157,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     SalesTarget = table.Column<decimal>(type: "numeric", nullable: false),
                     OutstandingDebt = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -177,8 +178,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DealerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -200,8 +201,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     DealerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -230,8 +231,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     DiscountPercent = table.Column<decimal>(type: "numeric", nullable: false),
                     StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     EndDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -251,8 +252,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
                     FeatureName = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -276,8 +277,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     Phone = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -304,8 +305,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     ModelId = table.Column<Guid>(type: "uuid", nullable: false),
                     VariantName = table.Column<string>(type: "text", nullable: false),
                     BasePrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -328,8 +329,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -363,8 +364,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VariantId = table.Column<Guid>(type: "uuid", nullable: false),
                     ColorId = table.Column<Guid>(type: "uuid", nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -397,8 +398,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VariantId = table.Column<Guid>(type: "uuid", nullable: false),
                     FeatureId = table.Column<Guid>(type: "uuid", nullable: false),
                     IsAvailable = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -425,8 +426,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VariantId = table.Column<Guid>(type: "uuid", nullable: false),
                     SpecId = table.Column<Guid>(type: "uuid", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -454,8 +455,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     ColorId = table.Column<Guid>(type: "uuid", nullable: false),
                     Vin = table.Column<string>(type: "text", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -483,8 +484,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
                     AllocationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -511,8 +512,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
                     Location = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -536,8 +537,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -584,8 +585,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
                     ScheduledAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -618,8 +619,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     SalesOrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     ContractDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -641,8 +642,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
                     PaymentDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Method = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -656,13 +657,56 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Specs",
+                columns: new[] { "Id", "SpecName", "Unit" },
+                values: new object[,]
+                {
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "Engine Displacement", "cc" },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "Horsepower", "hp" },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "Torque", "Nm" },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), "Fuel Tank Capacity", "L" },
+                    { new Guid("55555555-5555-5555-5555-555555555555"), "Length", "mm" },
+                    { new Guid("66666666-6666-6666-6666-666666666666"), "Width", "mm" },
+                    { new Guid("77777777-7777-7777-7777-777777777777"), "Height", "mm" },
+                    { new Guid("88888888-8888-8888-8888-888888888888"), "Wheelbase", "mm" },
+                    { new Guid("99999999-9999-9999-9999-999999999999"), "Curb Weight", "kg" },
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Ground Clearance", "mm" },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Seating Capacity", "persons" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "VehicleColors",
                 columns: new[] { "Id", "ColorName", "HexCode" },
                 values: new object[,]
                 {
                     { new Guid("11111111-1111-1111-1111-111111111111"), "Red", "#FF0000" },
                     { new Guid("22222222-2222-2222-2222-222222222222"), "Blue", "#0000FF" },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), "Green", "#00FF00" }
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "Green", "#00FF00" },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), "Black", "#000000" },
+                    { new Guid("55555555-5555-5555-5555-555555555555"), "White", "#FFFFFF" },
+                    { new Guid("66666666-6666-6666-6666-666666666666"), "Silver", "#C0C0C0" },
+                    { new Guid("77777777-7777-7777-7777-777777777777"), "Gray", "#808080" },
+                    { new Guid("88888888-8888-8888-8888-888888888888"), "Yellow", "#FFFF00" },
+                    { new Guid("99999999-9999-9999-9999-999999999999"), "Brown", "#8B4513" },
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "Orange", "#FFA500" },
+                    { new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"), "Beige", "#F5F5DC" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "VehicleModels",
+                columns: new[] { "Id", "Description", "ImageUrl", "ModelName" },
+                values: new object[,]
+                {
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.", null, "Honda Civic" },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.", null, "Honda Accord" },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.", null, "Toyota Corolla" },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.", null, "Toyota Camry" },
+                    { new Guid("55555555-5555-5555-5555-555555555555"), "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.", null, "Tesla Model 3" },
+                    { new Guid("66666666-6666-6666-6666-666666666666"), "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.", null, "Tesla Model S" },
+                    { new Guid("77777777-7777-7777-7777-777777777777"), "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.", null, "Toyota RAV4" },
+                    { new Guid("88888888-8888-8888-8888-888888888888"), "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.", null, "Honda CR-V" },
+                    { new Guid("99999999-9999-9999-9999-999999999999"), "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.", null, "Ford F-150" },
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "An iconic sports car offering powerful engine options and classic American muscle styling.", null, "Ford Mustang" }
                 });
 
             migrationBuilder.CreateIndex(

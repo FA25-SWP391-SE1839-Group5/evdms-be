@@ -27,7 +27,7 @@ if %errorlevel% neq 0 (
     echo Error adding migration. Exiting.
     goto :eof
 )
-echo Migration "Initial" added successfully.
+echo Migration "1.Initial" added successfully.
 echo.
 
 REM --- 2. Drop Database ---

@@ -4,6 +4,7 @@ namespace EVDMS.DataAccessLayer.Entities
     {
         public required string ModelName { get; set; }
         public required string Description { get; set; }
+        public string? ImageUrl { get; set; }
 
         public ICollection<VehicleVariant> VehicleVariants { get; set; } = [];
     }
