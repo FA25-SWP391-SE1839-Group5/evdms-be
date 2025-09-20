@@ -5,7 +5,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid CustomerId { get; set; }
         public Guid DealerId { get; set; }
 
-        public required Customer Customer { get; set; }
-        public required Dealer Dealer { get; set; }
+        public Customer Customer { get; set; } = null!;
+        public Dealer Dealer { get; set; } = null!;
     }
 }

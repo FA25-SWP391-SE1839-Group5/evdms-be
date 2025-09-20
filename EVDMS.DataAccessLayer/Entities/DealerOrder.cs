@@ -7,7 +7,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid DealerId { get; set; }
         public DealerOrderStatus Status { get; set; }
 
-        public required Dealer Dealer { get; set; }
+        public Dealer Dealer { get; set; } = null!;
         public ICollection<DealerOrderItem> DealerOrderItems { get; set; } = [];
     }
 }

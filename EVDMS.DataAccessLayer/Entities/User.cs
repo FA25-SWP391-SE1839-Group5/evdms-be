@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace EVDMS.DataAccessLayer.Entities
 {
     public class User : BaseEntity
@@ -11,7 +9,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public required string Phone { get; set; }
         public required string PasswordHash { get; set; }
 
-        public required Role Role { get; set; }
+        public Role Role { get; set; } = null!;
         public Dealer? Dealer { get; set; }
         public ICollection<Quotation> Quotations { get; set; } = [];
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];

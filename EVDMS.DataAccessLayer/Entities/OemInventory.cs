@@ -8,6 +8,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public OemInventoryLocation Location { get; set; }
         public OemInventoryStatus Status { get; set; }
 
-        public required Vehicle Vehicle { get; set; }
+        public Vehicle Vehicle { get; set; } = null!;
     }
 }

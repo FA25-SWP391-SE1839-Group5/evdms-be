@@ -6,7 +6,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime ContractDate { get; set; }
         public decimal TotalAmount { get; set; }
 
-        public required SalesOrder SalesOrder { get; set; }
+        public SalesOrder SalesOrder { get; set; } = null!;
         public ICollection<Payment> Payments { get; set; } = [];
     }
 }

@@ -8,6 +8,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        public required Dealer Dealer { get; set; }
+        public Dealer Dealer { get; set; } = null!;
     }
 }

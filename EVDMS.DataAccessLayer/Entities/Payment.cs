@@ -9,6 +9,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime PaymentDate { get; set; }
         public PaymentMethod Method { get; set; }
 
-        public required SalesContract SalesContract { get; set; }
+        public SalesContract SalesContract { get; set; } = null!;
     }
 }

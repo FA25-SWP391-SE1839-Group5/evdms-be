@@ -6,7 +6,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid FeatureId { get; set; }
         public bool IsAvailable { get; set; }
 
-        public required VehicleVariant VehicleVariant { get; set; }
-        public required Feature Feature { get; set; }
+        public VehicleVariant VehicleVariant { get; set; } = null!;
+        public Feature Feature { get; set; } = null!;
     }
 }

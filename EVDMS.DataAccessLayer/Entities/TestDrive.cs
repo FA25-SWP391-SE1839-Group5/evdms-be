@@ -10,8 +10,8 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime ScheduledAt { get; set; }
         public TestDriveStatus Status { get; set; }
 
-        public required Customer Customer { get; set; }
-        public required Dealer Dealer { get; set; }
-        public required Vehicle Vehicle { get; set; }
+        public Customer Customer { get; set; } = null!;
+        public Dealer Dealer { get; set; } = null!;
+        public Vehicle Vehicle { get; set; } = null!;
     }
 }

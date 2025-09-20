@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace EVDMS.DataAccessLayer.Entities
 {
     public class Role : BaseEntity

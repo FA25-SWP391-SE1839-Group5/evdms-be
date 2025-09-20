@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using EVDMS.Common.Enums;
 
 namespace EVDMS.DataAccessLayer.Entities
@@ -11,8 +9,8 @@ namespace EVDMS.DataAccessLayer.Entities
         public required string Vin { get; set; }
         public VehicleStatus Status { get; set; }
 
-        public required VehicleVariant VehicleVariant { get; set; }
-        public required VehicleColor VehicleColor { get; set; }
+        public VehicleVariant VehicleVariant { get; set; } = null!;
+        public VehicleColor VehicleColor { get; set; } = null!;
         public ICollection<OemInventory> OemInventories { get; set; } = [];
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];
         public ICollection<TestDrive> TestDrives { get; set; } = [];

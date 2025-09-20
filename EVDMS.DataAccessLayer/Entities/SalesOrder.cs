@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using EVDMS.Common.Enums;
 
 namespace EVDMS.DataAccessLayer.Entities
@@ -12,11 +11,11 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid VehicleId { get; set; }
         public SalesOrderStatus Status { get; set; }
 
-        public required Quotation Quotation { get; set; }
-        public required Dealer Dealer { get; set; }
-        public required User User { get; set; }
-        public required Customer Customer { get; set; }
-        public required Vehicle Vehicle { get; set; }
+        public Quotation Quotation { get; set; } = null!;
+        public Dealer Dealer { get; set; } = null!;
+        public User User { get; set; } = null!;
+        public Customer Customer { get; set; } = null!;
+        public Vehicle Vehicle { get; set; } = null!;
         public ICollection<SalesContract> SalesContracts { get; set; } = [];
     }
 }

@@ -8,6 +8,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public decimal SalesTarget { get; set; }
         public decimal OutstandingDebt { get; set; }
 
-        public required Dealer Dealer { get; set; }
+        public Dealer Dealer { get; set; } = null!;
     }
 }

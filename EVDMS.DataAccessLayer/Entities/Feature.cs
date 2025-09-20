@@ -4,7 +4,7 @@ namespace EVDMS.DataAccessLayer.Entities
     {
         public Guid CategoryId { get; set; }
         public required string FeatureName { get; set; }
-        public required FeatureCategory FeatureCategory { get; set; }
+        public FeatureCategory FeatureCategory { get; set; } = null!;
         public ICollection<VariantFeature> VariantFeatures { get; set; } = [];
     }
 }

@@ -9,7 +9,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public required string Content { get; set; }
         public FeedbackStatus Status { get; set; }
 
-        public required Customer Customer { get; set; }
-        public required Dealer Dealer { get; set; }
+        public Customer Customer { get; set; } = null!;
+        public Dealer Dealer { get; set; } = null!;
     }
 }

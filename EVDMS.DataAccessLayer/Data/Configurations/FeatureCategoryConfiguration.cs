@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,6 +13,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.Property(fc => fc.CategoryName).IsRequired();
             builder.Property(fc => fc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             builder.Property(fc => fc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.HasData(FeatureCategorySeed.FeatureCategories);
         }
     }
 }

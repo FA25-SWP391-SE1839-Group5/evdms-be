@@ -9,7 +9,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime AllocationDate { get; set; }
         public DealerAllocationStatus Status { get; set; }
 
-        public required Dealer Dealer { get; set; }
-        public required Vehicle Vehicle { get; set; }
+        public Dealer Dealer { get; set; } = null!;
+        public Vehicle Vehicle { get; set; } = null!;
     }
 }
