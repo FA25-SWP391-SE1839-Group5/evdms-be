@@ -11,11 +11,15 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.HasKey(f => f.Id);
             builder.Property(f => f.Content).IsRequired();
             builder.Property(f => f.Status).IsRequired();
-            builder.HasOne(f => f.Customer)
+            builder.Property(f => f.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(f => f.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(f => f.Customer)
                 .WithMany(c => c.Feedbacks)
                 .HasForeignKey(f => f.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(f => f.Dealer)
+            builder
+                .HasOne(f => f.Dealer)
                 .WithMany(d => d.Feedbacks)
                 .HasForeignKey(f => f.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);

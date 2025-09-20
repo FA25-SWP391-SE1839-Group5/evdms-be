@@ -4,6 +4,6 @@ namespace EVDMS.Common.Enums
     {
         Active,
         Expired,
-        Upcoming
+        Upcoming,
     }
 }

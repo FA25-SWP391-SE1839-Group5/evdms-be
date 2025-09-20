@@ -4,6 +4,6 @@
     {
         Factory,
         Warehouse,
-        InTransit
+        InTransit,
     }
 }

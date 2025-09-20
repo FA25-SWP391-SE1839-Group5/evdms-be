@@ -10,6 +10,8 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.HasKey(fc => fc.Id);
             builder.Property(fc => fc.CategoryName).IsRequired();
+            builder.Property(fc => fc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(fc => fc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

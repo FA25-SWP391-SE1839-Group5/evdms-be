@@ -4,6 +4,6 @@ namespace EVDMS.Common.Enums
     {
         Allocated,
         Delivered,
-        Returned
+        Returned,
     }
 }

@@ -5,6 +5,6 @@ namespace EVDMS.Common.Enums
         Pending,
         Confirmed,
         Delivered,
-        Canceled
+        Canceled,
     }
 }

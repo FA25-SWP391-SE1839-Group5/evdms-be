@@ -6,6 +6,6 @@ namespace EVDMS.Common.Enums
         Sent,
         Approved,
         Expired,
-        Rejected
+        Rejected,
     }
 }

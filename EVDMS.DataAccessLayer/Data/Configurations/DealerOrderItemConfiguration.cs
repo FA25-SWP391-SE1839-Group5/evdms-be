@@ -10,15 +10,20 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.HasKey(item => item.Id);
             builder.Property(item => item.Quantity).IsRequired();
-            builder.HasOne(item => item.DealerOrder)
+            builder.Property(item => item.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(item => item.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(item => item.DealerOrder)
                 .WithMany(order => order.DealerOrderItems)
                 .HasForeignKey(item => item.OrderId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(item => item.VehicleVariant)
+            builder
+                .HasOne(item => item.VehicleVariant)
                 .WithMany(variant => variant.DealerOrderItems)
                 .HasForeignKey(item => item.VariantId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(item => item.VehicleColor)
+            builder
+                .HasOne(item => item.VehicleColor)
                 .WithMany(color => color.DealerOrderItems)
                 .HasForeignKey(item => item.ColorId)
                 .OnDelete(DeleteBehavior.Restrict);

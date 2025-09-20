@@ -5,6 +5,6 @@ namespace EVDMS.Common.Enums
         Available,
         Reserved,
         Sold,
-        InTransit
+        InTransit,
     }
 }

@@ -8,11 +8,14 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<DealerOrder> builder)
         {
-            builder.HasKey(order => order.Id);
-            builder.Property(order => order.Status).IsRequired();
-            builder.HasOne(order => order.Dealer)
-                .WithMany(dealer => dealer.DealerOrders)
-                .HasForeignKey(order => order.DealerId)
+            builder.HasKey(dealerOrder => dealerOrder.Id);
+            builder.Property(dealerOrder => dealerOrder.Status).IsRequired();
+            builder.Property(dealerOrder => dealerOrder.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(dealerOrder => dealerOrder.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(dealerOrder => dealerOrder.Dealer)
+                .WithMany(dealerOrder => dealerOrder.DealerOrders)
+                .HasForeignKey(dealerOrder => dealerOrder.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

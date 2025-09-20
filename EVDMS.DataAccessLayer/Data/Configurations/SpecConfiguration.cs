@@ -11,6 +11,8 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.HasKey(s => s.Id);
             builder.Property(s => s.SpecName).IsRequired();
             builder.Property(s => s.Unit).IsRequired();
+            builder.Property(s => s.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(s => s.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

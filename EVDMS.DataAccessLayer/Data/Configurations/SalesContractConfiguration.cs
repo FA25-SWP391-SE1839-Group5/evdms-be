@@ -11,7 +11,10 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.HasKey(sc => sc.Id);
             builder.Property(sc => sc.ContractDate).IsRequired();
             builder.Property(sc => sc.TotalAmount).IsRequired();
-            builder.HasOne(sc => sc.SalesOrder)
+            builder.Property(sc => sc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(sc => sc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(sc => sc.SalesOrder)
                 .WithMany(so => so.SalesContracts)
                 .HasForeignKey(sc => sc.SalesOrderId)
                 .OnDelete(DeleteBehavior.Restrict);

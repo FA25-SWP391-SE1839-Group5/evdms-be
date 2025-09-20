@@ -5,6 +5,6 @@ namespace EVDMS.Common.Enums
         Cash,
         CreditCard,
         BankTransfer,
-        Financing
+        Financing,
     }
 }

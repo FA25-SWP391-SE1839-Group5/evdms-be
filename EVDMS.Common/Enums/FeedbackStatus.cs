@@ -5,6 +5,6 @@ namespace EVDMS.Common.Enums
         New,
         Reviewed,
         Resolved,
-        Dismissed
+        Dismissed,
     }
 }

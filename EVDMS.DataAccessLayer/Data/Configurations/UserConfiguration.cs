@@ -13,13 +13,17 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.Property(u => u.Email).IsRequired();
             builder.Property(u => u.Phone).IsRequired();
             builder.Property(u => u.PasswordHash).IsRequired();
+            builder.Property(u => u.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(u => u.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            builder.HasOne(u => u.Role)
+            builder
+                .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(u => u.Dealer)
+            builder
+                .HasOne(u => u.Dealer)
                 .WithMany(d => d.Users)
                 .HasForeignKey(u => u.DealerId)
                 .IsRequired(false)

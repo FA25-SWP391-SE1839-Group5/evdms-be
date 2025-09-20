@@ -13,7 +13,10 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.Property(dc => dc.EndDate).IsRequired();
             builder.Property(dc => dc.SalesTarget).IsRequired();
             builder.Property(dc => dc.OutstandingDebt).IsRequired();
-            builder.HasOne(dc => dc.Dealer)
+            builder.Property(dc => dc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(dc => dc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(dc => dc.Dealer)
                 .WithMany(d => d.DealerContracts)
                 .HasForeignKey(dc => dc.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);

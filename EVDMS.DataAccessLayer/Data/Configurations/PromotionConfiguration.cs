@@ -13,7 +13,10 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.Property(p => p.DiscountPercent).IsRequired();
             builder.Property(p => p.StartDate).IsRequired();
             builder.Property(p => p.EndDate).IsRequired();
-            builder.HasOne(p => p.Dealer)
+            builder.Property(p => p.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(p => p.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(p => p.Dealer)
                 .WithMany(d => d.Promotions)
                 .HasForeignKey(p => p.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);

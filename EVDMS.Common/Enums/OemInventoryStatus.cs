@@ -5,6 +5,6 @@
         Available,
         Reserved,
         Allocated,
-        Sold
+        Sold,
     }
 }

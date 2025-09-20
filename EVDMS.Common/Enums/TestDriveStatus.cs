@@ -5,6 +5,6 @@ namespace EVDMS.Common.Enums
         Scheduled,
         Completed,
         Canceled,
-        NoShow
+        NoShow,
     }
 }

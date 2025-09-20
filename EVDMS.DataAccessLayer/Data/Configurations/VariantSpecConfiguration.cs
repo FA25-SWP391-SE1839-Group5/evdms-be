@@ -10,11 +10,15 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.HasKey(vs => vs.Id);
             builder.Property(vs => vs.Value).IsRequired();
-            builder.HasOne(vs => vs.VehicleVariant)
+            builder.Property(vs => vs.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.Property(vs => vs.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder
+                .HasOne(vs => vs.VehicleVariant)
                 .WithMany(vv => vv.VariantSpecs)
                 .HasForeignKey(vs => vs.VariantId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(vs => vs.Spec)
+            builder
+                .HasOne(vs => vs.Spec)
                 .WithMany(s => s.VariantSpecs)
                 .HasForeignKey(vs => vs.SpecId)
                 .OnDelete(DeleteBehavior.Restrict);
