@@ -697,16 +697,16 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 columns: new[] { "Id", "Description", "ImageUrl", "ModelName" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.", null, "Honda Civic" },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.", null, "Honda Accord" },
-                    { new Guid("33333333-3333-3333-3333-333333333333"), "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.", null, "Toyota Corolla" },
-                    { new Guid("44444444-4444-4444-4444-444444444444"), "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.", null, "Toyota Camry" },
-                    { new Guid("55555555-5555-5555-5555-555555555555"), "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.", null, "Tesla Model 3" },
-                    { new Guid("66666666-6666-6666-6666-666666666666"), "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.", null, "Tesla Model S" },
-                    { new Guid("77777777-7777-7777-7777-777777777777"), "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.", null, "Toyota RAV4" },
-                    { new Guid("88888888-8888-8888-8888-888888888888"), "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.", null, "Honda CR-V" },
-                    { new Guid("99999999-9999-9999-9999-999999999999"), "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.", null, "Ford F-150" },
-                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "An iconic sports car offering powerful engine options and classic American muscle styling.", null, "Ford Mustang" }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360467/Honda_Civic_is4uhx.jpg", "Honda Civic" },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360932/Honda_Accord_d2i6gg.jpg", "Honda Accord" },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361023/Toyota_Corolla_da6ch5.jpg", "Toyota Corolla" },
+                    { new Guid("44444444-4444-4444-4444-444444444444"), "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361130/Toyota_Camry_p4xybr.jpg", "Toyota Camry" },
+                    { new Guid("55555555-5555-5555-5555-555555555555"), "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361184/Tesla_Model_3_iycyuv.jpg", "Tesla Model 3" },
+                    { new Guid("66666666-6666-6666-6666-666666666666"), "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361233/Tesla_Model_S_mh7dby.jpg", "Tesla Model S" },
+                    { new Guid("77777777-7777-7777-7777-777777777777"), "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361305/Toyota_RAV4_mmohlp.jpg", "Toyota RAV4" },
+                    { new Guid("88888888-8888-8888-8888-888888888888"), "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361383/Honda_CR-V_lmyrrp.jpg", "Honda CR-V" },
+                    { new Guid("99999999-9999-9999-9999-999999999999"), "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361429/Ford_F-150_u5rfl2.jpg", "Ford F-150" },
+                    { new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"), "An iconic sports car offering powerful engine options and classic American muscle styling.", "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361569/Ford_Mustang_txbqgu.jpg", "Ford Mustang" }
                 });
 
             migrationBuilder.CreateIndex(

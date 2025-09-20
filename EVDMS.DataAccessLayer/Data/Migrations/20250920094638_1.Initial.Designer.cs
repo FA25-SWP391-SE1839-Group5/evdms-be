@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250920091112_1.Initial")]
+    [Migration("20250920094638_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -1090,6 +1090,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360467/Honda_Civic_is4uhx.jpg",
                             ModelName = "Honda Civic",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1098,6 +1099,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360932/Honda_Accord_d2i6gg.jpg",
                             ModelName = "Honda Accord",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1106,6 +1108,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361023/Toyota_Corolla_da6ch5.jpg",
                             ModelName = "Toyota Corolla",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1114,6 +1117,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361130/Toyota_Camry_p4xybr.jpg",
                             ModelName = "Toyota Camry",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1122,6 +1126,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("55555555-5555-5555-5555-555555555555"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361184/Tesla_Model_3_iycyuv.jpg",
                             ModelName = "Tesla Model 3",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1130,6 +1135,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("66666666-6666-6666-6666-666666666666"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361233/Tesla_Model_S_mh7dby.jpg",
                             ModelName = "Tesla Model S",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1138,6 +1144,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("77777777-7777-7777-7777-777777777777"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361305/Toyota_RAV4_mmohlp.jpg",
                             ModelName = "Toyota RAV4",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1146,6 +1153,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("88888888-8888-8888-8888-888888888888"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361383/Honda_CR-V_lmyrrp.jpg",
                             ModelName = "Honda CR-V",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1154,6 +1162,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("99999999-9999-9999-9999-999999999999"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361429/Ford_F-150_u5rfl2.jpg",
                             ModelName = "Ford F-150",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -1162,6 +1171,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Description = "An iconic sports car offering powerful engine options and classic American muscle styling.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361569/Ford_Mustang_txbqgu.jpg",
                             ModelName = "Ford Mustang",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });

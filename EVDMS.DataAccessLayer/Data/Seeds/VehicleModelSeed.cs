@@ -12,6 +12,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Honda Civic",
                     Description =
                         "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360467/Honda_Civic_is4uhx.jpg",
                 },
                 new VehicleModel
                 {
@@ -19,6 +21,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Honda Accord",
                     Description =
                         "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360932/Honda_Accord_d2i6gg.jpg",
                 },
                 new VehicleModel
                 {
@@ -26,6 +30,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Toyota Corolla",
                     Description =
                         "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361023/Toyota_Corolla_da6ch5.jpg",
                 },
                 new VehicleModel
                 {
@@ -33,6 +39,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Toyota Camry",
                     Description =
                         "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361130/Toyota_Camry_p4xybr.jpg",
                 },
                 new VehicleModel
                 {
@@ -40,6 +48,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Tesla Model 3",
                     Description =
                         "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361184/Tesla_Model_3_iycyuv.jpg",
                 },
                 new VehicleModel
                 {
@@ -47,6 +57,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Tesla Model S",
                     Description =
                         "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361233/Tesla_Model_S_mh7dby.jpg",
                 },
                 new VehicleModel
                 {
@@ -54,6 +66,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Toyota RAV4",
                     Description =
                         "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361305/Toyota_RAV4_mmohlp.jpg",
                 },
                 new VehicleModel
                 {
@@ -61,6 +75,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Honda CR-V",
                     Description =
                         "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361383/Honda_CR-V_lmyrrp.jpg",
                 },
                 new VehicleModel
                 {
@@ -68,6 +84,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Ford F-150",
                     Description =
                         "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361429/Ford_F-150_u5rfl2.jpg",
                 },
                 new VehicleModel
                 {
@@ -75,6 +93,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     ModelName = "Ford Mustang",
                     Description =
                         "An iconic sports car offering powerful engine options and classic American muscle styling.",
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361569/Ford_Mustang_txbqgu.jpg",
                 },
             ];
     }
