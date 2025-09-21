@@ -8,11 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<DealerAllocation> builder)
         {
-            builder.HasKey(da => da.Id);
-            builder.Property(da => da.AllocationDate).IsRequired();
-            builder.Property(da => da.Status).IsRequired();
-            builder.Property(da => da.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(da => da.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(da => da.Dealer)
                 .WithMany(d => d.DealerAllocations)

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250920100400_1.Initial")]
+    [Migration("20250921042214_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -1647,6 +1647,278 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("ModelId");
 
                     b.ToTable("VehicleVariants");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111101"),
+                            BasePrice = 22000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Civic LX"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111102"),
+                            BasePrice = 24000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Civic Sport"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111103"),
+                            BasePrice = 26000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Civic EX"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222201"),
+                            BasePrice = 27000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Accord LX"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222202"),
+                            BasePrice = 29000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Accord Sport"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222203"),
+                            BasePrice = 32000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda Accord EX-L"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333301"),
+                            BasePrice = 21000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Corolla L"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333302"),
+                            BasePrice = 23000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Corolla LE"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333303"),
+                            BasePrice = 25000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Corolla XSE"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444401"),
+                            BasePrice = 25000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Camry LE"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444402"),
+                            BasePrice = 27000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Camry SE"
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444403"),
+                            BasePrice = 31000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota Camry XLE"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555501"),
+                            BasePrice = 40000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model 3 RWD"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555502"),
+                            BasePrice = 47000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model 3 Long Range"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555503"),
+                            BasePrice = 54000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model 3 Performance"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666601"),
+                            BasePrice = 90000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model S Dual Motor"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666602"),
+                            BasePrice = 110000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model S Plaid"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666603"),
+                            BasePrice = 100000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Tesla Model S Long Range"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777701"),
+                            BasePrice = 27000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota RAV4 LE"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777702"),
+                            BasePrice = 30000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota RAV4 XLE"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777703"),
+                            BasePrice = 35000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Toyota RAV4 Limited"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-8888-8888-8888-888888888801"),
+                            BasePrice = 28000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda CR-V LX"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-8888-8888-8888-888888888802"),
+                            BasePrice = 32000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda CR-V EX"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-8888-8888-8888-888888888803"),
+                            BasePrice = 37000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Honda CR-V Touring"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-9999-9999-9999-999999999901"),
+                            BasePrice = 32000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford F-150 XL"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-9999-9999-9999-999999999902"),
+                            BasePrice = 37000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford F-150 XLT"
+                        },
+                        new
+                        {
+                            Id = new Guid("99999999-9999-9999-9999-999999999903"),
+                            BasePrice = 45000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford F-150 Lariat"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01"),
+                            BasePrice = 28000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford Mustang EcoBoost"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa02"),
+                            BasePrice = 40000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford Mustang GT"
+                        },
+                        new
+                        {
+                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa03"),
+                            BasePrice = 53000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford Mustang Mach 1"
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.CustomerDealer", b =>

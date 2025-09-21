@@ -8,10 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<VariantSpec> builder)
         {
-            builder.HasKey(vs => vs.Id);
-            builder.Property(vs => vs.Value).IsRequired();
-            builder.Property(vs => vs.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(vs => vs.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(vs => vs.VehicleVariant)
                 .WithMany(vv => vv.VariantSpecs)

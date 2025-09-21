@@ -1334,6 +1334,194 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 }
             );
 
+            migrationBuilder.InsertData(
+                table: "VehicleVariants",
+                columns: new[] { "Id", "BasePrice", "ModelId", "VariantName" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("11111111-1111-1111-1111-111111111101"),
+                        22000m,
+                        new Guid("11111111-1111-1111-1111-111111111111"),
+                        "Honda Civic LX",
+                    },
+                    {
+                        new Guid("11111111-1111-1111-1111-111111111102"),
+                        24000m,
+                        new Guid("11111111-1111-1111-1111-111111111111"),
+                        "Honda Civic Sport",
+                    },
+                    {
+                        new Guid("11111111-1111-1111-1111-111111111103"),
+                        26000m,
+                        new Guid("11111111-1111-1111-1111-111111111111"),
+                        "Honda Civic EX",
+                    },
+                    {
+                        new Guid("22222222-2222-2222-2222-222222222201"),
+                        27000m,
+                        new Guid("22222222-2222-2222-2222-222222222222"),
+                        "Honda Accord LX",
+                    },
+                    {
+                        new Guid("22222222-2222-2222-2222-222222222202"),
+                        29000m,
+                        new Guid("22222222-2222-2222-2222-222222222222"),
+                        "Honda Accord Sport",
+                    },
+                    {
+                        new Guid("22222222-2222-2222-2222-222222222203"),
+                        32000m,
+                        new Guid("22222222-2222-2222-2222-222222222222"),
+                        "Honda Accord EX-L",
+                    },
+                    {
+                        new Guid("33333333-3333-3333-3333-333333333301"),
+                        21000m,
+                        new Guid("33333333-3333-3333-3333-333333333333"),
+                        "Toyota Corolla L",
+                    },
+                    {
+                        new Guid("33333333-3333-3333-3333-333333333302"),
+                        23000m,
+                        new Guid("33333333-3333-3333-3333-333333333333"),
+                        "Toyota Corolla LE",
+                    },
+                    {
+                        new Guid("33333333-3333-3333-3333-333333333303"),
+                        25000m,
+                        new Guid("33333333-3333-3333-3333-333333333333"),
+                        "Toyota Corolla XSE",
+                    },
+                    {
+                        new Guid("44444444-4444-4444-4444-444444444401"),
+                        25000m,
+                        new Guid("44444444-4444-4444-4444-444444444444"),
+                        "Toyota Camry LE",
+                    },
+                    {
+                        new Guid("44444444-4444-4444-4444-444444444402"),
+                        27000m,
+                        new Guid("44444444-4444-4444-4444-444444444444"),
+                        "Toyota Camry SE",
+                    },
+                    {
+                        new Guid("44444444-4444-4444-4444-444444444403"),
+                        31000m,
+                        new Guid("44444444-4444-4444-4444-444444444444"),
+                        "Toyota Camry XLE",
+                    },
+                    {
+                        new Guid("55555555-5555-5555-5555-555555555501"),
+                        40000m,
+                        new Guid("55555555-5555-5555-5555-555555555555"),
+                        "Tesla Model 3 RWD",
+                    },
+                    {
+                        new Guid("55555555-5555-5555-5555-555555555502"),
+                        47000m,
+                        new Guid("55555555-5555-5555-5555-555555555555"),
+                        "Tesla Model 3 Long Range",
+                    },
+                    {
+                        new Guid("55555555-5555-5555-5555-555555555503"),
+                        54000m,
+                        new Guid("55555555-5555-5555-5555-555555555555"),
+                        "Tesla Model 3 Performance",
+                    },
+                    {
+                        new Guid("66666666-6666-6666-6666-666666666601"),
+                        90000m,
+                        new Guid("66666666-6666-6666-6666-666666666666"),
+                        "Tesla Model S Dual Motor",
+                    },
+                    {
+                        new Guid("66666666-6666-6666-6666-666666666602"),
+                        110000m,
+                        new Guid("66666666-6666-6666-6666-666666666666"),
+                        "Tesla Model S Plaid",
+                    },
+                    {
+                        new Guid("66666666-6666-6666-6666-666666666603"),
+                        100000m,
+                        new Guid("66666666-6666-6666-6666-666666666666"),
+                        "Tesla Model S Long Range",
+                    },
+                    {
+                        new Guid("77777777-7777-7777-7777-777777777701"),
+                        27000m,
+                        new Guid("77777777-7777-7777-7777-777777777777"),
+                        "Toyota RAV4 LE",
+                    },
+                    {
+                        new Guid("77777777-7777-7777-7777-777777777702"),
+                        30000m,
+                        new Guid("77777777-7777-7777-7777-777777777777"),
+                        "Toyota RAV4 XLE",
+                    },
+                    {
+                        new Guid("77777777-7777-7777-7777-777777777703"),
+                        35000m,
+                        new Guid("77777777-7777-7777-7777-777777777777"),
+                        "Toyota RAV4 Limited",
+                    },
+                    {
+                        new Guid("88888888-8888-8888-8888-888888888801"),
+                        28000m,
+                        new Guid("88888888-8888-8888-8888-888888888888"),
+                        "Honda CR-V LX",
+                    },
+                    {
+                        new Guid("88888888-8888-8888-8888-888888888802"),
+                        32000m,
+                        new Guid("88888888-8888-8888-8888-888888888888"),
+                        "Honda CR-V EX",
+                    },
+                    {
+                        new Guid("88888888-8888-8888-8888-888888888803"),
+                        37000m,
+                        new Guid("88888888-8888-8888-8888-888888888888"),
+                        "Honda CR-V Touring",
+                    },
+                    {
+                        new Guid("99999999-9999-9999-9999-999999999901"),
+                        32000m,
+                        new Guid("99999999-9999-9999-9999-999999999999"),
+                        "Ford F-150 XL",
+                    },
+                    {
+                        new Guid("99999999-9999-9999-9999-999999999902"),
+                        37000m,
+                        new Guid("99999999-9999-9999-9999-999999999999"),
+                        "Ford F-150 XLT",
+                    },
+                    {
+                        new Guid("99999999-9999-9999-9999-999999999903"),
+                        45000m,
+                        new Guid("99999999-9999-9999-9999-999999999999"),
+                        "Ford F-150 Lariat",
+                    },
+                    {
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01"),
+                        28000m,
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                        "Ford Mustang EcoBoost",
+                    },
+                    {
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa02"),
+                        40000m,
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                        "Ford Mustang GT",
+                    },
+                    {
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa03"),
+                        53000m,
+                        new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                        "Ford Mustang Mach 1",
+                    },
+                }
+            );
+
             migrationBuilder.CreateIndex(
                 name: "IX_CustomerDealers_CustomerId",
                 table: "CustomerDealers",

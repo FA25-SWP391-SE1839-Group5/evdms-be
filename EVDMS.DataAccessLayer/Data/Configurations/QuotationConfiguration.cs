@@ -8,11 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Quotation> builder)
         {
-            builder.HasKey(q => q.Id);
-            builder.Property(q => q.TotalAmount).IsRequired();
-            builder.Property(q => q.Status).IsRequired();
-            builder.Property(q => q.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(q => q.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(q => q.Dealer)
                 .WithMany(d => d.Quotations)

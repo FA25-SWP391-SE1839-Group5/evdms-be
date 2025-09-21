@@ -9,11 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<VehicleColor> builder)
         {
-            builder.HasKey(vc => vc.Id);
-            builder.Property(vc => vc.ColorName).IsRequired();
-            builder.Property(vc => vc.HexCode).IsRequired();
-            builder.Property(vc => vc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(vc => vc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder.HasData(VehicleColorSeed.VehicleColors);
         }
     }

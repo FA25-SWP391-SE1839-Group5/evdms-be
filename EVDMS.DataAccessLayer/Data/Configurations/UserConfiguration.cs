@@ -8,20 +8,12 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(u => u.Id);
-            builder.Property(u => u.FullName).IsRequired();
-            builder.Property(u => u.Email).IsRequired();
-            builder.Property(u => u.Phone).IsRequired();
-            builder.Property(u => u.PasswordHash).IsRequired();
-            builder.Property(u => u.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(u => u.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId)
                 .OnDelete(DeleteBehavior.Restrict);
-
             builder
                 .HasOne(u => u.Dealer)
                 .WithMany(d => d.Users)

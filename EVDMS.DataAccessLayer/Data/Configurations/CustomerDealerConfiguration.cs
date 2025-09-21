@@ -8,7 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<CustomerDealer> builder)
         {
-            builder.HasKey(cd => cd.Id);
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(cd => cd.Customer)
                 .WithMany(c => c.CustomerDealers)
@@ -19,9 +19,6 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(d => d.CustomerDealers)
                 .HasForeignKey(cd => cd.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Property(cd => cd.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(cd => cd.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

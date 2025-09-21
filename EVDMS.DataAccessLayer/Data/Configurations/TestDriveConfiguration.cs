@@ -8,11 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<TestDrive> builder)
         {
-            builder.HasKey(td => td.Id);
-            builder.Property(td => td.ScheduledAt).IsRequired();
-            builder.Property(td => td.Status).IsRequired();
-            builder.Property(td => td.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(td => td.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(td => td.Customer)
                 .WithMany(c => c.TestDrives)
@@ -28,8 +24,6 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(v => v.TestDrives)
                 .HasForeignKey(td => td.VehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
-            builder.Property(td => td.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(td => td.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }

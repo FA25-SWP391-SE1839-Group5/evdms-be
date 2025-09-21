@@ -8,12 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Amount).IsRequired();
-            builder.Property(p => p.PaymentDate).IsRequired();
-            builder.Property(p => p.Method).IsRequired();
-            builder.Property(p => p.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(p => p.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder
                 .HasOne(p => p.SalesContract)
                 .WithMany(sc => sc.Payments)

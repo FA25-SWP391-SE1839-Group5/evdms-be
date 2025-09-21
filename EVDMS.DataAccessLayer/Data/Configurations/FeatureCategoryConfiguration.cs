@@ -9,10 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<FeatureCategory> builder)
         {
-            builder.HasKey(fc => fc.Id);
-            builder.Property(fc => fc.CategoryName).IsRequired();
-            builder.Property(fc => fc.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            builder.Property(fc => fc.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            builder.ConfigureTimestamps();
             builder.HasData(FeatureCategorySeed.FeatureCategories);
         }
     }
