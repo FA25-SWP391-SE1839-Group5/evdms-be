@@ -1063,11 +1063,243 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<Guid>("SpecCategoryId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SpecName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Unit")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SpecCategoryId");
+
+                    b.ToTable("Specs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111110"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Horsepower",
+                            Unit = "hp",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Torque",
+                            Unit = "Nm",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111112"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "0-100 km/h Acceleration",
+                            Unit = "s",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111113"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Drive Type",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111114"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Motor Type",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111115"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Top Speed",
+                            Unit = "km/h",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111116"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
+                            SpecName = "Curb Weight",
+                            Unit = "kg",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222220"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Battery Capacity",
+                            Unit = "kWh",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222221"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Range",
+                            Unit = "km",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Efficiency",
+                            Unit = "Wh/km",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222223"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Battery Chemistry",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222224"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Battery Voltage Architecture",
+                            Unit = "V",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222225"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            SpecName = "Regenerative Braking Capacity",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333330"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            SpecName = "Max AC Charging Rate",
+                            Unit = "kW",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333331"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            SpecName = "Max DC Fast Charging Rate",
+                            Unit = "kW",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333332"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            SpecName = "DC Fast Charging Time (10-80%)",
+                            Unit = "min",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            SpecName = "AC Charging Time (0-100%)",
+                            Unit = "h",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333334"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
+                            SpecName = "Charging Port Type(s)",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444440"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            SpecName = "Towing Capacity",
+                            Unit = "kg",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444441"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            SpecName = "Frunk Volume",
+                            Unit = "L",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444442"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            SpecName = "Cargo Volume",
+                            Unit = "L",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444443"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            SpecName = "Heat Pump",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
+                            SpecName = "V2L (Vehicle-to-Load) Capability",
+                            Unit = "kW",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SpecCategory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -1078,95 +1310,35 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specs");
+                    b.ToTable("SpecCategories");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Engine Displacement",
-                            Unit = "cc",
+                            Name = "Performance",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Horsepower",
-                            Unit = "hp",
+                            Name = "Energy",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Torque",
-                            Unit = "Nm",
+                            Name = "Charging",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Fuel Tank Capacity",
-                            Unit = "L",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Length",
-                            Unit = "mm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Width",
-                            Unit = "mm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777777"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Height",
-                            Unit = "mm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888888"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Wheelbase",
-                            Unit = "mm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Curb Weight",
-                            Unit = "kg",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Ground Clearance",
-                            Unit = "mm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecName = "Seating Capacity",
-                            Unit = "persons",
+                            Name = "Practicality",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -1516,6 +1688,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<short>("Year")
+                        .HasColumnType("smallint");
+
                     b.HasKey("Id");
 
                     b.ToTable("VehicleModels");
@@ -1525,91 +1700,101 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360467/Honda_Civic_is4uhx.jpg",
-                            ModelName = "Honda Civic",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A distinctive battery-electric compact crossover SUV, notable for its retro-futuristic design and being built on Hyundai's Electric Global Modular Platform (E-GMP) with 800V charging capability.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450493/Hyundai_Ioniq_5_f5npjl.jpg",
+                            ModelName = "Hyundai Ioniq 5",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2021
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360932/Honda_Accord_d2i6gg.jpg",
-                            ModelName = "Honda Accord",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric compact crossover SUV that draws design and naming inspiration from the Mustang line, offering a mix of sporty performance and SUV practicality.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Ford_Mustang_Mach-E_cdvi8o.jpg",
+                            ModelName = "Ford Mustang Mach-E",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2020
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333333"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361023/Toyota_Corolla_da6ch5.jpg",
-                            ModelName = "Toyota Corolla",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric compact crossover SUV, closely related to the Hyundai Ioniq 5 as it also uses the E-GMP platform, known for its sleek, crossover-coupe styling and fast charging.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/Kia_EV6_boehy3.jpg",
+                            ModelName = "Kia EV6",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2021
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444444"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361130/Toyota_Camry_p4xybr.jpg",
-                            ModelName = "Toyota Camry",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric mid-size crossover SUV built on the GM Ultium platform, offering a sporty design and multiple drivetrain configurations (FWD, RWD, AWD).",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450486/Chevrolet_Blazer_EV_v6t9tq.jpg",
+                            ModelName = "Chevrolet Blazer EV",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2023
                         },
                         new
                         {
                             Id = new Guid("55555555-5555-5555-5555-555555555555"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361184/Tesla_Model_3_iycyuv.jpg",
-                            ModelName = "Tesla Model 3",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric four-door luxury sedan known for its focus on maximum driving range, spacious interior packaging, and high-performance capabilities, produced by a Silicon Valley startup.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Lucid_Air_nur4uz.jpg",
+                            ModelName = "Lucid Air",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2021
                         },
                         new
                         {
                             Id = new Guid("66666666-6666-6666-6666-666666666666"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361233/Tesla_Model_S_mh7dby.jpg",
-                            ModelName = "Tesla Model S",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric compact crossover SUV that serves as Nissan's first dedicated zero-emissions SUV, featuring a modern, sleek design and available dual-motor e-4ORCE all-wheel drive.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Nissan_Ariya_ds6ta3.jpg",
+                            ModelName = "Nissan Ariya",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2022
                         },
                         new
                         {
                             Id = new Guid("77777777-7777-7777-7777-777777777777"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361305/Toyota_RAV4_mmohlp.jpg",
-                            ModelName = "Toyota RAV4",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "Porsche's first all-electric production vehicle, a high-performance luxury sports sedan (and shooting brake) known for its rapid acceleration, precise handling, and 800-volt electrical architecture.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450489/Porsche_Taycan_q2esmf.jpg",
+                            ModelName = "Porsche Taycan",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2019
                         },
                         new
                         {
                             Id = new Guid("88888888-8888-8888-8888-888888888888"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361383/Honda_CR-V_lmyrrp.jpg",
-                            ModelName = "Honda CR-V",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric compact executive car with a five-door liftback body style, closely related to the gasoline-powered BMW 4 Series Gran Coupé and offering a balance of luxury and performance.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/BMW_i4_fackc5.jpg",
+                            ModelName = "BMW i4",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2021
                         },
                         new
                         {
                             Id = new Guid("99999999-9999-9999-9999-999999999999"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361429/Ford_F-150_u5rfl2.jpg",
-                            ModelName = "Ford F-150",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                            ModelName = "Tesla Model Y",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2020
                         },
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "An iconic sports car offering powerful engine options and classic American muscle styling.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361569/Ford_Mustang_txbqgu.jpg",
-                            ModelName = "Ford Mustang",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Description = "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
+                            ModelName = "Tesla Model 3",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Year = (short)2017
                         });
                 });
 
@@ -1649,272 +1834,308 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111101"),
-                            BasePrice = 22000m,
+                            BasePrice = 42600m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Civic LX"
+                            VariantName = "Hyundai Ioniq 5 SE (Standard Range RWD)"
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111102"),
-                            BasePrice = 24000m,
+                            BasePrice = 49600m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Civic Sport"
+                            VariantName = "Hyundai Ioniq 5 SEL (RWD)"
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111103"),
-                            BasePrice = 26000m,
+                            BasePrice = 54300m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Civic EX"
+                            VariantName = "Hyundai Ioniq 5 Limited (RWD)"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222201"),
-                            BasePrice = 27000m,
+                            BasePrice = 37995m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Accord LX"
+                            VariantName = "Ford Mustang Mach-E Select (RWD)"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222202"),
-                            BasePrice = 29000m,
+                            BasePrice = 41995m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Accord Sport"
+                            VariantName = "Ford Mustang Mach-E Premium (RWD, Standard Range)"
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222203"),
-                            BasePrice = 32000m,
+                            BasePrice = 54000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda Accord EX-L"
+                            VariantName = "Ford Mustang Mach-E California Route 1"
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222204"),
+                            BasePrice = 54495m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Ford Mustang Mach-E GT (AWD)"
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333301"),
-                            BasePrice = 21000m,
+                            BasePrice = 42900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Corolla L"
+                            VariantName = "Kia EV6 Light (RWD)"
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333302"),
-                            BasePrice = 23000m,
+                            BasePrice = 50300m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Corolla LE"
+                            VariantName = "Kia EV6 Wind (RWD)"
                         },
                         new
                         {
                             Id = new Guid("33333333-3333-3333-3333-333333333303"),
-                            BasePrice = 25000m,
+                            BasePrice = 63800m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Corolla XSE"
+                            VariantName = "Kia EV6 GT (AWD)"
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444401"),
-                            BasePrice = 25000m,
+                            BasePrice = 44600m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Camry LE"
+                            VariantName = "Chevrolet Blazer EV LT (FWD)"
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444402"),
-                            BasePrice = 27000m,
+                            BasePrice = 49900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Camry SE"
+                            VariantName = "Chevrolet Blazer EV RS (RWD)"
                         },
                         new
                         {
                             Id = new Guid("44444444-4444-4444-4444-444444444403"),
-                            BasePrice = 31000m,
+                            BasePrice = 60600m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota Camry XLE"
+                            VariantName = "Chevrolet Blazer EV SS (AWD)"
                         },
                         new
                         {
                             Id = new Guid("55555555-5555-5555-5555-555555555501"),
-                            BasePrice = 40000m,
+                            BasePrice = 69900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model 3 RWD"
+                            VariantName = "Lucid Air Pure (RWD)"
                         },
                         new
                         {
                             Id = new Guid("55555555-5555-5555-5555-555555555502"),
-                            BasePrice = 47000m,
+                            BasePrice = 78900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model 3 Long Range"
+                            VariantName = "Lucid Air Touring (AWD)"
                         },
                         new
                         {
                             Id = new Guid("55555555-5555-5555-5555-555555555503"),
-                            BasePrice = 54000m,
+                            BasePrice = 110900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model 3 Performance"
+                            VariantName = "Lucid Air Grand Touring (AWD)"
+                        },
+                        new
+                        {
+                            Id = new Guid("55555555-5555-5555-5555-555555555504"),
+                            BasePrice = 249000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Lucid Air Sapphire (AWD)"
                         },
                         new
                         {
                             Id = new Guid("66666666-6666-6666-6666-666666666601"),
-                            BasePrice = 90000m,
+                            BasePrice = 39770m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model S Dual Motor"
+                            VariantName = "Nissan Ariya Engage (Standard Range FWD)"
                         },
                         new
                         {
                             Id = new Guid("66666666-6666-6666-6666-666666666602"),
-                            BasePrice = 110000m,
+                            BasePrice = 44370m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model S Plaid"
+                            VariantName = "Nissan Ariya Evolve+ (Extended Range FWD)"
                         },
                         new
                         {
                             Id = new Guid("66666666-6666-6666-6666-666666666603"),
-                            BasePrice = 100000m,
+                            BasePrice = 49260m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model S Long Range"
+                            VariantName = "Nissan Ariya Empower+"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666604"),
+                            BasePrice = 52380m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Nissan Ariya Premiere"
+                        },
+                        new
+                        {
+                            Id = new Guid("66666666-6666-6666-6666-666666666605"),
+                            BasePrice = 54370m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Nissan Ariya Platinum+ (Extended Range AWD)"
                         },
                         new
                         {
                             Id = new Guid("77777777-7777-7777-7777-777777777701"),
-                            BasePrice = 27000m,
+                            BasePrice = 99400m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota RAV4 LE"
+                            VariantName = "Porsche Taycan Base (RWD Sedan)"
                         },
                         new
                         {
                             Id = new Guid("77777777-7777-7777-7777-777777777702"),
-                            BasePrice = 30000m,
+                            BasePrice = 118500m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota RAV4 XLE"
+                            VariantName = "Porsche Taycan 4S (AWD Sedan)"
                         },
                         new
                         {
                             Id = new Guid("77777777-7777-7777-7777-777777777703"),
-                            BasePrice = 35000m,
+                            BasePrice = 147900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Toyota RAV4 Limited"
+                            VariantName = "Porsche Taycan GTS (AWD Sedan)"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777704"),
+                            BasePrice = 173600m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Porsche Taycan Turbo (AWD Sedan)"
+                        },
+                        new
+                        {
+                            Id = new Guid("77777777-7777-7777-7777-777777777705"),
+                            BasePrice = 209000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "Porsche Taycan Turbo S (AWD Sedan)"
                         },
                         new
                         {
                             Id = new Guid("88888888-8888-8888-8888-888888888801"),
-                            BasePrice = 28000m,
+                            BasePrice = 52200m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda CR-V LX"
+                            VariantName = "BMW i4 eDrive35 (RWD)"
                         },
                         new
                         {
                             Id = new Guid("88888888-8888-8888-8888-888888888802"),
-                            BasePrice = 32000m,
+                            BasePrice = 57900m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda CR-V EX"
+                            VariantName = "BMW i4 eDrive40 (RWD)"
                         },
                         new
                         {
                             Id = new Guid("88888888-8888-8888-8888-888888888803"),
-                            BasePrice = 37000m,
+                            BasePrice = 62300m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Honda CR-V Touring"
+                            VariantName = "BMW i4 xDrive40 (AWD)"
+                        },
+                        new
+                        {
+                            Id = new Guid("88888888-8888-8888-8888-888888888804"),
+                            BasePrice = 70700m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantName = "BMW i4 M50 (AWD)"
                         },
                         new
                         {
                             Id = new Guid("99999999-9999-9999-9999-999999999901"),
-                            BasePrice = 32000m,
+                            BasePrice = 46630m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford F-150 XL"
+                            VariantName = "Tesla Model Y Long Range All-Wheel Drive"
                         },
                         new
                         {
                             Id = new Guid("99999999-9999-9999-9999-999999999902"),
-                            BasePrice = 37000m,
+                            BasePrice = 57000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford F-150 XLT"
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999903"),
-                            BasePrice = 45000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford F-150 Lariat"
+                            VariantName = "Tesla Model Y Performance"
                         },
                         new
                         {
                             Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01"),
-                            BasePrice = 28000m,
+                            BasePrice = 54990m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang EcoBoost"
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa02"),
-                            BasePrice = 40000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang GT"
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa03"),
-                            BasePrice = 53000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang Mach 1"
+                            VariantName = "Tesla Model 3 Performance"
                         });
                 });
 
@@ -2149,6 +2370,17 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Vehicle");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Spec", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.SpecCategory", "SpecCategory")
+                        .WithMany("Specs")
+                        .HasForeignKey("SpecCategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("SpecCategory");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.TestDrive", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
@@ -2336,6 +2568,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Spec", b =>
                 {
                     b.Navigation("VariantSpecs");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SpecCategory", b =>
+                {
+                    b.Navigation("Specs");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.User", b =>

@@ -1,4 +1,5 @@
-﻿using EVDMS.DataAccessLayer.Entities;
+﻿using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
+using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
 {
@@ -8,67 +9,67 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
             [
                 new VehicleColor
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    Id = VehicleColorIds.Red,
                     ColorName = "Red",
                     HexCode = "#FF0000",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    Id = VehicleColorIds.Blue,
                     ColorName = "Blue",
                     HexCode = "#0000FF",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    Id = VehicleColorIds.Green,
                     ColorName = "Green",
                     HexCode = "#00FF00",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
+                    Id = VehicleColorIds.Black,
                     ColorName = "Black",
                     HexCode = "#000000",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
+                    Id = VehicleColorIds.White,
                     ColorName = "White",
                     HexCode = "#FFFFFF",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666666"),
+                    Id = VehicleColorIds.Silver,
                     ColorName = "Silver",
                     HexCode = "#C0C0C0",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777777"),
+                    Id = VehicleColorIds.Gray,
                     ColorName = "Gray",
                     HexCode = "#808080",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888888"),
+                    Id = VehicleColorIds.Yellow,
                     ColorName = "Yellow",
                     HexCode = "#FFFF00",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
+                    Id = VehicleColorIds.Brown,
                     ColorName = "Brown",
                     HexCode = "#8B4513",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
+                    Id = VehicleColorIds.Orange,
                     ColorName = "Orange",
                     HexCode = "#FFA500",
                 },
                 new VehicleColor
                 {
-                    Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
+                    Id = VehicleColorIds.Beige,
                     ColorName = "Beige",
                     HexCode = "#F5F5DC",
                 },

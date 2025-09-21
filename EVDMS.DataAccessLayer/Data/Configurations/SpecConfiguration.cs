@@ -10,6 +10,11 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Spec> builder)
         {
             builder.ConfigureTimestamps();
+            builder
+                .HasOne(s => s.SpecCategory)
+                .WithMany(sc => sc.Specs)
+                .HasForeignKey(s => s.SpecCategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
             builder.HasData(SpecSeed.Specs);
         }
     }

@@ -5,13 +5,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EVDMS.DataAccessLayer.Data.Configurations
 {
-    public class VehicleModelConfiguration : IEntityTypeConfiguration<VehicleModel>
+    public class SpecCategoryConfiguration : IEntityTypeConfiguration<SpecCategory>
     {
-        public void Configure(EntityTypeBuilder<VehicleModel> builder)
+        public void Configure(EntityTypeBuilder<SpecCategory> builder)
         {
             builder.ConfigureTimestamps();
-            builder.Property(vm => vm.Year).IsRequired();
-            builder.HasData(VehicleModelSeed.VehicleModels);
+            builder.HasData(SpecCategorySeed.SpecCategories);
         }
     }
 }

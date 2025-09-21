@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
@@ -6,225 +7,253 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
     {
         public static List<VehicleVariant> VehicleVariants =>
             [
-                // Honda Civic
+                // Hyundai Ioniq 5
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111101"),
-                    ModelId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    VariantName = "Honda Civic LX",
-                    BasePrice = 22000,
+                    Id = VehicleVariantIds.HyundaiIoniq5Se,
+                    ModelId = VehicleModelIds.HyundaiIoniq5,
+                    VariantName = "Hyundai Ioniq 5 SE (Standard Range RWD)",
+                    BasePrice = 42600,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111102"),
-                    ModelId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    VariantName = "Honda Civic Sport",
-                    BasePrice = 24000,
+                    Id = VehicleVariantIds.HyundaiIoniq5Sel,
+                    ModelId = VehicleModelIds.HyundaiIoniq5,
+                    VariantName = "Hyundai Ioniq 5 SEL (RWD)",
+                    BasePrice = 49600,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111103"),
-                    ModelId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    VariantName = "Honda Civic EX",
-                    BasePrice = 26000,
+                    Id = VehicleVariantIds.HyundaiIoniq5Limited,
+                    ModelId = VehicleModelIds.HyundaiIoniq5,
+                    VariantName = "Hyundai Ioniq 5 Limited (RWD)",
+                    BasePrice = 54300,
                 },
-                // Honda Accord
+                // Ford Mustang Mach-E
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222201"),
-                    ModelId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                    VariantName = "Honda Accord LX",
-                    BasePrice = 27000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222202"),
-                    ModelId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                    VariantName = "Honda Accord Sport",
-                    BasePrice = 29000,
+                    Id = VehicleVariantIds.FordMachESelect,
+                    ModelId = VehicleModelIds.FordMustangMachE,
+                    VariantName = "Ford Mustang Mach-E Select (RWD)",
+                    BasePrice = 37995,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222203"),
-                    ModelId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                    VariantName = "Honda Accord EX-L",
-                    BasePrice = 32000,
-                },
-                // Toyota Corolla
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333301"),
-                    ModelId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                    VariantName = "Toyota Corolla L",
-                    BasePrice = 21000,
+                    Id = VehicleVariantIds.FordMachEPremium,
+                    ModelId = VehicleModelIds.FordMustangMachE,
+                    VariantName = "Ford Mustang Mach-E Premium (RWD, Standard Range)",
+                    BasePrice = 41995,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333302"),
-                    ModelId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                    VariantName = "Toyota Corolla LE",
-                    BasePrice = 23000,
+                    Id = VehicleVariantIds.FordMachECaliforniaRt1,
+                    ModelId = VehicleModelIds.FordMustangMachE,
+                    VariantName = "Ford Mustang Mach-E California Route 1",
+                    BasePrice = 54000,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333303"),
-                    ModelId = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                    VariantName = "Toyota Corolla XSE",
-                    BasePrice = 25000,
+                    Id = VehicleVariantIds.FordMachEGt,
+                    ModelId = VehicleModelIds.FordMustangMachE,
+                    VariantName = "Ford Mustang Mach-E GT (AWD)",
+                    BasePrice = 54495,
                 },
-                // Toyota Camry
+                // Kia EV6
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444401"),
-                    ModelId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                    VariantName = "Toyota Camry LE",
-                    BasePrice = 25000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444402"),
-                    ModelId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                    VariantName = "Toyota Camry SE",
-                    BasePrice = 27000,
+                    Id = VehicleVariantIds.KiaEv6Light,
+                    ModelId = VehicleModelIds.KiaEv6,
+                    VariantName = "Kia EV6 Light (RWD)",
+                    BasePrice = 42900,
                 },
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444403"),
-                    ModelId = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                    VariantName = "Toyota Camry XLE",
-                    BasePrice = 31000,
+                    Id = VehicleVariantIds.KiaEv6Wind,
+                    ModelId = VehicleModelIds.KiaEv6,
+                    VariantName = "Kia EV6 Wind (RWD)",
+                    BasePrice = 50300,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.KiaEv6Gt,
+                    ModelId = VehicleModelIds.KiaEv6,
+                    VariantName = "Kia EV6 GT (AWD)",
+                    BasePrice = 63800,
+                },
+                // Chevrolet Blazer EV
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.ChevroletBlazerEvLt,
+                    ModelId = VehicleModelIds.ChevroletBlazerEv,
+                    VariantName = "Chevrolet Blazer EV LT (FWD)",
+                    BasePrice = 44600,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.ChevroletBlazerEvRs,
+                    ModelId = VehicleModelIds.ChevroletBlazerEv,
+                    VariantName = "Chevrolet Blazer EV RS (RWD)",
+                    BasePrice = 49900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.ChevroletBlazerEvSs,
+                    ModelId = VehicleModelIds.ChevroletBlazerEv,
+                    VariantName = "Chevrolet Blazer EV SS (AWD)",
+                    BasePrice = 60600,
+                },
+                // Lucid Air
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.LucidAirPure,
+                    ModelId = VehicleModelIds.LucidAir,
+                    VariantName = "Lucid Air Pure (RWD)",
+                    BasePrice = 69900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.LucidAirTouring,
+                    ModelId = VehicleModelIds.LucidAir,
+                    VariantName = "Lucid Air Touring (AWD)",
+                    BasePrice = 78900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.LucidAirGrandTouring,
+                    ModelId = VehicleModelIds.LucidAir,
+                    VariantName = "Lucid Air Grand Touring (AWD)",
+                    BasePrice = 110900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.LucidAirSapphire,
+                    ModelId = VehicleModelIds.LucidAir,
+                    VariantName = "Lucid Air Sapphire (AWD)",
+                    BasePrice = 249000,
+                },
+                // Nissan Ariya
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.NissanAriyaEngage,
+                    ModelId = VehicleModelIds.NissanAriya,
+                    VariantName = "Nissan Ariya Engage (Standard Range FWD)",
+                    BasePrice = 39770,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.NissanAriyaEvolvePlus,
+                    ModelId = VehicleModelIds.NissanAriya,
+                    VariantName = "Nissan Ariya Evolve+ (Extended Range FWD)",
+                    BasePrice = 44370,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.NissanAriyaEmpowerPlus,
+                    ModelId = VehicleModelIds.NissanAriya,
+                    VariantName = "Nissan Ariya Empower+",
+                    BasePrice = 49260,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.NissanAriyaPremiere,
+                    ModelId = VehicleModelIds.NissanAriya,
+                    VariantName = "Nissan Ariya Premiere",
+                    BasePrice = 52380,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.NissanAriyaPlatinumPlus,
+                    ModelId = VehicleModelIds.NissanAriya,
+                    VariantName = "Nissan Ariya Platinum+ (Extended Range AWD)",
+                    BasePrice = 54370,
+                },
+                // Porsche Taycan
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.PorscheTaycanBase,
+                    ModelId = VehicleModelIds.PorscheTaycan,
+                    VariantName = "Porsche Taycan Base (RWD Sedan)",
+                    BasePrice = 99400,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.PorscheTaycan4s,
+                    ModelId = VehicleModelIds.PorscheTaycan,
+                    VariantName = "Porsche Taycan 4S (AWD Sedan)",
+                    BasePrice = 118500,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.PorscheTaycanGts,
+                    ModelId = VehicleModelIds.PorscheTaycan,
+                    VariantName = "Porsche Taycan GTS (AWD Sedan)",
+                    BasePrice = 147900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.PorscheTaycanTurbo,
+                    ModelId = VehicleModelIds.PorscheTaycan,
+                    VariantName = "Porsche Taycan Turbo (AWD Sedan)",
+                    BasePrice = 173600,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.PorscheTaycanTurboS,
+                    ModelId = VehicleModelIds.PorscheTaycan,
+                    VariantName = "Porsche Taycan Turbo S (AWD Sedan)",
+                    BasePrice = 209000,
+                },
+                // BMW i4
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.BmwI4Edrive35,
+                    ModelId = VehicleModelIds.BmwI4,
+                    VariantName = "BMW i4 eDrive35 (RWD)",
+                    BasePrice = 52200,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.BmwI4Edrive40,
+                    ModelId = VehicleModelIds.BmwI4,
+                    VariantName = "BMW i4 eDrive40 (RWD)",
+                    BasePrice = 57900,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.BmwI4Xdrive40,
+                    ModelId = VehicleModelIds.BmwI4,
+                    VariantName = "BMW i4 xDrive40 (AWD)",
+                    BasePrice = 62300,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.BmwI4M50,
+                    ModelId = VehicleModelIds.BmwI4,
+                    VariantName = "BMW i4 M50 (AWD)",
+                    BasePrice = 70700,
+                },
+                // Tesla Model Y
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.TeslaModelYLongRange,
+                    ModelId = VehicleModelIds.TeslaModelY,
+                    VariantName = "Tesla Model Y Long Range All-Wheel Drive",
+                    BasePrice = 46630,
+                },
+                new VehicleVariant
+                {
+                    Id = VehicleVariantIds.TeslaModelYPerformance,
+                    ModelId = VehicleModelIds.TeslaModelY,
+                    VariantName = "Tesla Model Y Performance",
+                    BasePrice = 57000,
                 },
                 // Tesla Model 3
                 new VehicleVariant
                 {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555501"),
-                    ModelId = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-                    VariantName = "Tesla Model 3 RWD",
-                    BasePrice = 40000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555502"),
-                    ModelId = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-                    VariantName = "Tesla Model 3 Long Range",
-                    BasePrice = 47000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555503"),
-                    ModelId = Guid.Parse("55555555-5555-5555-5555-555555555555"),
+                    Id = VehicleVariantIds.TeslaModel3Performance,
+                    ModelId = VehicleModelIds.TeslaModel3,
                     VariantName = "Tesla Model 3 Performance",
-                    BasePrice = 54000,
-                },
-                // Tesla Model S
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666601"),
-                    ModelId = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                    VariantName = "Tesla Model S Dual Motor",
-                    BasePrice = 90000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666602"),
-                    ModelId = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                    VariantName = "Tesla Model S Plaid",
-                    BasePrice = 110000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666603"),
-                    ModelId = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                    VariantName = "Tesla Model S Long Range",
-                    BasePrice = 100000,
-                },
-                // Toyota RAV4
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777701"),
-                    ModelId = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-                    VariantName = "Toyota RAV4 LE",
-                    BasePrice = 27000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777702"),
-                    ModelId = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-                    VariantName = "Toyota RAV4 XLE",
-                    BasePrice = 30000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777703"),
-                    ModelId = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-                    VariantName = "Toyota RAV4 Limited",
-                    BasePrice = 35000,
-                },
-                // Honda CR-V
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888801"),
-                    ModelId = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-                    VariantName = "Honda CR-V LX",
-                    BasePrice = 28000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888802"),
-                    ModelId = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-                    VariantName = "Honda CR-V EX",
-                    BasePrice = 32000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888803"),
-                    ModelId = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-                    VariantName = "Honda CR-V Touring",
-                    BasePrice = 37000,
-                },
-                // Ford F-150
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999901"),
-                    ModelId = Guid.Parse("99999999-9999-9999-9999-999999999999"),
-                    VariantName = "Ford F-150 XL",
-                    BasePrice = 32000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999902"),
-                    ModelId = Guid.Parse("99999999-9999-9999-9999-999999999999"),
-                    VariantName = "Ford F-150 XLT",
-                    BasePrice = 37000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999903"),
-                    ModelId = Guid.Parse("99999999-9999-9999-9999-999999999999"),
-                    VariantName = "Ford F-150 Lariat",
-                    BasePrice = 45000,
-                },
-                // Ford Mustang
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01"),
-                    ModelId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    VariantName = "Ford Mustang EcoBoost",
-                    BasePrice = 28000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa02"),
-                    ModelId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    VariantName = "Ford Mustang GT",
-                    BasePrice = 40000,
-                },
-                new VehicleVariant
-                {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa03"),
-                    ModelId = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    VariantName = "Ford Mustang Mach 1",
-                    BasePrice = 53000,
+                    BasePrice = 54990,
                 },
             ];
     }

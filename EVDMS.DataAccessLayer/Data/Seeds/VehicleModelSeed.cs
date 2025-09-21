@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
@@ -8,93 +9,103 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
             [
                 new VehicleModel
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    ModelName = "Honda Civic",
+                    Id = VehicleModelIds.HyundaiIoniq5,
+                    ModelName = "Hyundai Ioniq 5",
                     Description =
-                        "A reliable and fuel-efficient compact sedan, popular for daily commuting and sporty handling.",
+                        "A distinctive battery-electric compact crossover SUV, notable for its retro-futuristic design and being built on Hyundai's Electric Global Modular Platform (E-GMP) with 800V charging capability.",
+                    Year = 2021,
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360467/Honda_Civic_is4uhx.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450493/Hyundai_Ioniq_5_f5npjl.jpg",
                 },
                 new VehicleModel
                 {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
-                    ModelName = "Honda Accord",
+                    Id = VehicleModelIds.FordMustangMachE,
+                    ModelName = "Ford Mustang Mach-E",
                     Description =
-                        "A spacious midsize sedan known for its comfort, advanced safety features, and smooth ride.",
+                        "A battery-electric compact crossover SUV that draws design and naming inspiration from the Mustang line, offering a mix of sporty performance and SUV practicality.",
+                    Year = 2020,
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758360932/Honda_Accord_d2i6gg.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Ford_Mustang_Mach-E_cdvi8o.jpg",
                 },
                 new VehicleModel
                 {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-                    ModelName = "Toyota Corolla",
+                    Id = VehicleModelIds.KiaEv6,
+                    ModelName = "Kia EV6",
                     Description =
-                        "A globally best-selling compact sedan, recognized for its durability and low maintenance costs.",
+                        "A battery-electric compact crossover SUV, closely related to the Hyundai Ioniq 5 as it also uses the E-GMP platform, known for its sleek, crossover-coupe styling and fast charging.",
+                    Year = 2021,
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361023/Toyota_Corolla_da6ch5.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/Kia_EV6_boehy3.jpg",
                 },
                 new VehicleModel
                 {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                    ModelName = "Toyota Camry",
+                    Id = VehicleModelIds.ChevroletBlazerEv,
+                    ModelName = "Chevrolet Blazer EV",
                     Description =
-                        "A refined midsize sedan offering a quiet cabin, strong resale value, and hybrid options.",
+                        "A battery-electric mid-size crossover SUV built on the GM Ultium platform, offering a sporty design and multiple drivetrain configurations (FWD, RWD, AWD).",
+                    Year = 2023,
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361130/Toyota_Camry_p4xybr.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450486/Chevrolet_Blazer_EV_v6t9tq.jpg",
                 },
                 new VehicleModel
                 {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
+                    Id = VehicleModelIds.LucidAir,
+                    ModelName = "Lucid Air",
+                    Description =
+                        "A battery-electric four-door luxury sedan known for its focus on maximum driving range, spacious interior packaging, and high-performance capabilities, produced by a Silicon Valley startup.",
+                    Year = 2021,
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Lucid_Air_nur4uz.jpg",
+                },
+                new VehicleModel
+                {
+                    Id = VehicleModelIds.NissanAriya,
+                    ModelName = "Nissan Ariya",
+                    Description =
+                        "A battery-electric compact crossover SUV that serves as Nissan's first dedicated zero-emissions SUV, featuring a modern, sleek design and available dual-motor e-4ORCE all-wheel drive.",
+                    Year = 2022,
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Nissan_Ariya_ds6ta3.jpg",
+                },
+                new VehicleModel
+                {
+                    Id = VehicleModelIds.PorscheTaycan,
+                    ModelName = "Porsche Taycan",
+                    Description =
+                        "Porsche's first all-electric production vehicle, a high-performance luxury sports sedan (and shooting brake) known for its rapid acceleration, precise handling, and 800-volt electrical architecture.",
+                    Year = 2019,
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450489/Porsche_Taycan_q2esmf.jpg",
+                },
+                new VehicleModel
+                {
+                    Id = VehicleModelIds.BmwI4,
+                    ModelName = "BMW i4",
+                    Description =
+                        "A battery-electric compact executive car with a five-door liftback body style, closely related to the gasoline-powered BMW 4 Series Gran Coupé and offering a balance of luxury and performance.",
+                    Year = 2021,
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/BMW_i4_fackc5.jpg",
+                },
+                new VehicleModel
+                {
+                    Id = VehicleModelIds.TeslaModelY,
+                    ModelName = "Tesla Model Y",
+                    Description =
+                        "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
+                    Year = 2020,
+                    ImageUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                },
+                new VehicleModel
+                {
+                    Id = VehicleModelIds.TeslaModel3,
                     ModelName = "Tesla Model 3",
                     Description =
-                        "A cutting-edge electric sedan with impressive acceleration, range, and advanced technology.",
+                        "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
+                    Year = 2017,
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361184/Tesla_Model_3_iycyuv.jpg",
-                },
-                new VehicleModel
-                {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                    ModelName = "Tesla Model S",
-                    Description =
-                        "A luxury electric sedan featuring long range, high performance, and innovative autopilot features.",
-                    ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361233/Tesla_Model_S_mh7dby.jpg",
-                },
-                new VehicleModel
-                {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-                    ModelName = "Toyota RAV4",
-                    Description =
-                        "A versatile compact SUV with available all-wheel drive, ample cargo space, and hybrid variants.",
-                    ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361305/Toyota_RAV4_mmohlp.jpg",
-                },
-                new VehicleModel
-                {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-                    ModelName = "Honda CR-V",
-                    Description =
-                        "A family-friendly compact SUV known for its roomy interior, reliability, and efficient engines.",
-                    ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361383/Honda_CR-V_lmyrrp.jpg",
-                },
-                new VehicleModel
-                {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
-                    ModelName = "Ford F-150",
-                    Description =
-                        "America's best-selling full-size pickup truck, renowned for its towing capacity and ruggedness.",
-                    ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361429/Ford_F-150_u5rfl2.jpg",
-                },
-                new VehicleModel
-                {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    ModelName = "Ford Mustang",
-                    Description =
-                        "An iconic sports car offering powerful engine options and classic American muscle styling.",
-                    ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758361569/Ford_Mustang_txbqgu.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
                 },
             ];
     }

@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
@@ -6,71 +7,170 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
     {
         public static List<Spec> Specs =>
             [
+                // Performance
                 new Spec
                 {
-                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
-                    SpecName = "Engine Displacement",
-                    Unit = "cc",
-                },
-                new Spec
-                {
-                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
+                    Id = SpecIds.Horsepower,
                     SpecName = "Horsepower",
                     Unit = "hp",
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
+                    Id = SpecIds.Torque,
                     SpecName = "Torque",
                     Unit = "Nm",
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("44444444-4444-4444-4444-444444444444"),
-                    SpecName = "Fuel Tank Capacity",
-                    Unit = "L",
+                    Id = SpecIds.Acceleration,
+                    SpecName = "0-100 km/h Acceleration",
+                    Unit = "s",
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("55555555-5555-5555-5555-555555555555"),
-                    SpecName = "Length",
-                    Unit = "mm",
+                    Id = SpecIds.DriveType,
+                    SpecName = "Drive Type",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("66666666-6666-6666-6666-666666666666"),
-                    SpecName = "Width",
-                    Unit = "mm",
+                    Id = SpecIds.MotorType,
+                    SpecName = "Motor Type",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("77777777-7777-7777-7777-777777777777"),
-                    SpecName = "Height",
-                    Unit = "mm",
+                    Id = SpecIds.TopSpeed,
+                    SpecName = "Top Speed",
+                    Unit = "km/h",
+                    SpecCategoryId = SpecCategoryIds.Performance,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("88888888-8888-8888-8888-888888888888"),
-                    SpecName = "Wheelbase",
-                    Unit = "mm",
-                },
-                new Spec
-                {
-                    Id = Guid.Parse("99999999-9999-9999-9999-999999999999"),
+                    Id = SpecIds.CurbWeight,
                     SpecName = "Curb Weight",
                     Unit = "kg",
+                    SpecCategoryId = SpecCategoryIds.Performance,
+                },
+                // Energy
+                new Spec
+                {
+                    Id = SpecIds.BatteryCapacity,
+                    SpecName = "Battery Capacity",
+                    Unit = "kWh",
+                    SpecCategoryId = SpecCategoryIds.Energy,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                    SpecName = "Ground Clearance",
-                    Unit = "mm",
+                    Id = SpecIds.Range,
+                    SpecName = "Range",
+                    Unit = "km",
+                    SpecCategoryId = SpecCategoryIds.Energy,
                 },
                 new Spec
                 {
-                    Id = Guid.Parse("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                    SpecName = "Seating Capacity",
-                    Unit = "persons",
+                    Id = SpecIds.Efficiency,
+                    SpecName = "Efficiency",
+                    Unit = "Wh/km",
+                    SpecCategoryId = SpecCategoryIds.Energy,
+                },
+                new Spec
+                {
+                    Id = SpecIds.BatteryChemistry,
+                    SpecName = "Battery Chemistry",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Energy,
+                },
+                new Spec
+                {
+                    Id = SpecIds.BatteryVoltage,
+                    SpecName = "Battery Voltage Architecture",
+                    Unit = "V",
+                    SpecCategoryId = SpecCategoryIds.Energy,
+                },
+                new Spec
+                {
+                    Id = SpecIds.RegenerativeBraking,
+                    SpecName = "Regenerative Braking Capacity",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Energy,
+                },
+                // III. Charging
+                new Spec
+                {
+                    Id = SpecIds.MaxAcChargingRate,
+                    SpecName = "Max AC Charging Rate",
+                    Unit = "kW",
+                    SpecCategoryId = SpecCategoryIds.Charging,
+                },
+                new Spec
+                {
+                    Id = SpecIds.MaxDcChargingRate,
+                    SpecName = "Max DC Fast Charging Rate",
+                    Unit = "kW",
+                    SpecCategoryId = SpecCategoryIds.Charging,
+                },
+                new Spec
+                {
+                    Id = SpecIds.DcFastChargingTime,
+                    SpecName = "DC Fast Charging Time (10-80%)",
+                    Unit = "min",
+                    SpecCategoryId = SpecCategoryIds.Charging,
+                },
+                new Spec
+                {
+                    Id = SpecIds.AcChargingTime,
+                    SpecName = "AC Charging Time (0-100%)",
+                    Unit = "h",
+                    SpecCategoryId = SpecCategoryIds.Charging,
+                },
+                new Spec
+                {
+                    Id = SpecIds.ChargingPortType,
+                    SpecName = "Charging Port Type(s)",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Charging,
+                },
+                // Practicality
+                new Spec
+                {
+                    Id = SpecIds.TowingCapacity,
+                    SpecName = "Towing Capacity",
+                    Unit = "kg",
+                    SpecCategoryId = SpecCategoryIds.Practicality,
+                },
+                new Spec
+                {
+                    Id = SpecIds.FrunkVolume,
+                    SpecName = "Frunk Volume",
+                    Unit = "L",
+                    SpecCategoryId = SpecCategoryIds.Practicality,
+                },
+                new Spec
+                {
+                    Id = SpecIds.CargoVolume,
+                    SpecName = "Cargo Volume",
+                    Unit = "L",
+                    SpecCategoryId = SpecCategoryIds.Practicality,
+                },
+                new Spec
+                {
+                    Id = SpecIds.HeatPump,
+                    SpecName = "Heat Pump",
+                    Unit = null,
+                    SpecCategoryId = SpecCategoryIds.Practicality,
+                },
+                new Spec
+                {
+                    Id = SpecIds.V2L,
+                    SpecName = "V2L (Vehicle-to-Load) Capability",
+                    Unit = "kW",
+                    SpecCategoryId = SpecCategoryIds.Practicality,
                 },
             ];
     }
