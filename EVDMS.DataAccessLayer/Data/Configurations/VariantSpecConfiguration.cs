@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,6 +20,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(s => s.VariantSpecs)
                 .HasForeignKey(vs => vs.SpecId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(VariantSpecSeed.VariantSpecs);
         }
     }
 }

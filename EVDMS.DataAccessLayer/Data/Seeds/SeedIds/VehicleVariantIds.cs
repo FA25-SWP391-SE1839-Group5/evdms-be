@@ -92,12 +92,6 @@ namespace EVDMS.DataAccessLayer.Data.Seeds.SeedIds
         public static readonly Guid PorscheTaycanTurboS = Guid.Parse(
             "77777777-7777-7777-7777-777777777705"
         );
-        public static readonly Guid PorscheTaycanCrossTurismo = Guid.Parse(
-            "77777777-7777-7777-7777-777777777706"
-        );
-        public static readonly Guid PorscheTaycanSportTurismo = Guid.Parse(
-            "77777777-7777-7777-7777-777777777707"
-        );
 
         // BMW i4
         public static readonly Guid BmwI4Edrive35 = Guid.Parse(

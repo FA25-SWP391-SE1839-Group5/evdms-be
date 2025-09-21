@@ -52,12 +52,6 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Feature
                 {
-                    Id = FeatureIds.RemoteStart,
-                    CategoryId = FeatureCategoryIds.Convenience,
-                    FeatureName = "Remote Start",
-                },
-                new Feature
-                {
                     Id = FeatureIds.PowerLiftgate,
                     CategoryId = FeatureCategoryIds.Convenience,
                     FeatureName = "Power Liftgate",
@@ -119,12 +113,6 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Feature
                 {
-                    Id = FeatureIds.CDPlayer,
-                    CategoryId = FeatureCategoryIds.Entertainment,
-                    FeatureName = "CD Player",
-                },
-                new Feature
-                {
                     Id = FeatureIds.AUXInput,
                     CategoryId = FeatureCategoryIds.Entertainment,
                     FeatureName = "AUX Input",
@@ -141,12 +129,6 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Id = FeatureIds.TowHitch,
                     CategoryId = FeatureCategoryIds.Exterior,
                     FeatureName = "Tow Hitch",
-                },
-                new Feature
-                {
-                    Id = FeatureIds.TowHooks,
-                    CategoryId = FeatureCategoryIds.Exterior,
-                    FeatureName = "Tow Hooks",
                 },
                 new Feature
                 {

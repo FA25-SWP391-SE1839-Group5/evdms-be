@@ -24,14 +24,11 @@ namespace EVDMS.DataAccessLayer.Data.Seeds.SeedIds
         public static readonly Guid NavigationSystem = Guid.Parse(
             "10000000-0000-0000-0000-000000000007"
         );
-        public static readonly Guid RemoteStart = Guid.Parse(
+        public static readonly Guid PowerLiftgate = Guid.Parse(
             "10000000-0000-0000-0000-000000000008"
         );
-        public static readonly Guid PowerLiftgate = Guid.Parse(
-            "10000000-0000-0000-0000-000000000009"
-        );
         public static readonly Guid RainSensingWipers = Guid.Parse(
-            "10000000-0000-0000-0000-000000000010"
+            "10000000-0000-0000-0000-000000000009"
         );
 
         // Entertainment
@@ -53,29 +50,27 @@ namespace EVDMS.DataAccessLayer.Data.Seeds.SeedIds
         public static readonly Guid SatelliteRadio = Guid.Parse(
             "20000000-0000-0000-0000-000000000008"
         );
-        public static readonly Guid CDPlayer = Guid.Parse("20000000-0000-0000-0000-000000000009");
-        public static readonly Guid AUXInput = Guid.Parse("20000000-0000-0000-0000-000000000010");
+        public static readonly Guid AUXInput = Guid.Parse("20000000-0000-0000-0000-000000000009");
 
         // Exterior
         public static readonly Guid AlloyWheels = Guid.Parse(
             "30000000-0000-0000-0000-000000000001"
         );
         public static readonly Guid TowHitch = Guid.Parse("30000000-0000-0000-0000-000000000002");
-        public static readonly Guid TowHooks = Guid.Parse("30000000-0000-0000-0000-000000000003");
-        public static readonly Guid FogLights = Guid.Parse("30000000-0000-0000-0000-000000000004");
-        public static readonly Guid RoofRails = Guid.Parse("30000000-0000-0000-0000-000000000005");
-        public static readonly Guid Sunroof = Guid.Parse("30000000-0000-0000-0000-000000000006");
+        public static readonly Guid FogLights = Guid.Parse("30000000-0000-0000-0000-000000000003");
+        public static readonly Guid RoofRails = Guid.Parse("30000000-0000-0000-0000-000000000004");
+        public static readonly Guid Sunroof = Guid.Parse("30000000-0000-0000-0000-000000000005");
         public static readonly Guid PowerMirrors = Guid.Parse(
-            "30000000-0000-0000-0000-000000000007"
+            "30000000-0000-0000-0000-000000000006"
         );
         public static readonly Guid RearSpoiler = Guid.Parse(
-            "30000000-0000-0000-0000-000000000008"
+            "30000000-0000-0000-0000-000000000007"
         );
         public static readonly Guid AutomaticHeadlights = Guid.Parse(
-            "30000000-0000-0000-0000-000000000009"
+            "30000000-0000-0000-0000-000000000008"
         );
         public static readonly Guid DaytimeRunningLights = Guid.Parse(
-            "30000000-0000-0000-0000-000000000010"
+            "30000000-0000-0000-0000-000000000009"
         );
 
         // Safety
