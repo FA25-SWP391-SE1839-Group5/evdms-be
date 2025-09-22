@@ -20,3 +20,4 @@
 #echo 'Husky.Net is awesome!'
 
 dotnet csharpier format .
+git add .
