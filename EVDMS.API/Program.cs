@@ -1,7 +1,7 @@
+using System.Text.Json.Serialization;
 using EVDMS.DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
 
 namespace EVDMS.API
 {

@@ -1,0 +1,28 @@
+name: CSharpier Check
+
+on:
+  push:
+    branches: [ "**" ]
+  pull_request:
+    branches: [ "**" ]
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install CSharpier
+        run: dotnet tool install --global csharpier
+
+      - name: Add dotnet tools to path
+        run: echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+
+      - name: Check formatting
+        run: dotnet csharpier check .
