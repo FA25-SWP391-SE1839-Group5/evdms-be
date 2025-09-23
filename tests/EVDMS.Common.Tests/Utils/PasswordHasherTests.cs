@@ -1,5 +1,4 @@
 using EVDMS.Common.Utils;
-using Xunit;
 
 namespace EVDMS.Common.Tests.Utils
 {
@@ -14,7 +13,7 @@ namespace EVDMS.Common.Tests.Utils
             var hash1 = PasswordHasher.HashPassword(password);
             var hash2 = PasswordHasher.HashPassword(password);
 
-            Assert.NotEqual(hash1, hash2); // BCrypt should generate different hashes due to salt
+            Assert.NotEqual(hash1, hash2);
         }
 
         [Trait("Category", "Unit")]
@@ -46,7 +45,7 @@ namespace EVDMS.Common.Tests.Utils
         [Fact]
         public void HashPassword_ShouldThrowArgumentNullException_ForNullPassword()
         {
-            Assert.Throws<ArgumentNullException>(() => PasswordHasher.HashPassword(null));
+            Assert.Throws<ArgumentNullException>(() => PasswordHasher.HashPassword(null!));
         }
 
         [Trait("Category", "Unit")]
@@ -55,9 +54,9 @@ namespace EVDMS.Common.Tests.Utils
         {
             var hash = PasswordHasher.HashPassword("password");
 
-            Assert.Throws<ArgumentNullException>(() => PasswordHasher.VerifyPassword(null, hash));
+            Assert.Throws<ArgumentNullException>(() => PasswordHasher.VerifyPassword(null!, hash));
             Assert.Throws<ArgumentNullException>(() =>
-                PasswordHasher.VerifyPassword("password", null)
+                PasswordHasher.VerifyPassword("password", null!)
             );
         }
     }

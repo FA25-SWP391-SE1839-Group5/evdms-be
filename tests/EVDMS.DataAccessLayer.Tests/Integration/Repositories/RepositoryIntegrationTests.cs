@@ -1,10 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace EVDMS.DataAccessLayer.Tests.Integration.Repositories
 {
@@ -33,7 +30,7 @@ namespace EVDMS.DataAccessLayer.Tests.Integration.Repositories
                 Address = "123 Integration St",
             };
             await repo.AddAsync(customer);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             var result = await repo.GetByIdAsync(customer.Id);
             Assert.NotNull(result);
@@ -55,14 +52,14 @@ namespace EVDMS.DataAccessLayer.Tests.Integration.Repositories
                 Address = "123 Integration St",
             };
             await repo.AddAsync(customer);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             customer.FullName = "After Update";
             repo.Update(customer);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             var result = await repo.GetByIdAsync(customer.Id);
-            Assert.Equal("After Update", result.FullName);
+            Assert.Equal("After Update", result!.FullName);
         }
 
         [Trait("Category", "Integration")]
@@ -80,10 +77,10 @@ namespace EVDMS.DataAccessLayer.Tests.Integration.Repositories
                 Address = "123 Integration St",
             };
             await repo.AddAsync(customer);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             repo.Remove(customer);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(TestContext.Current.CancellationToken);
 
             var result = await repo.GetByIdAsync(customer.Id);
             Assert.Null(result);

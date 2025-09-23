@@ -1,6 +1,3 @@
-using System.Reflection;
-using AutoMapper;
-using AutoMapper.Configuration;
 using EVDMS.BusinessLogicLayer.Mapping;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;

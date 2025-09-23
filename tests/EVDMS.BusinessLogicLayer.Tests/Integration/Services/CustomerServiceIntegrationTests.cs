@@ -1,14 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.Common.DTOs;
 using EVDMS.DataAccessLayer.Data;
-using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Xunit;
 
 namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
 {
