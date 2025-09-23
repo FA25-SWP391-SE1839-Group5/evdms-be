@@ -6,7 +6,6 @@ using EVDMS.Common.DTOs;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
-using EVDMS.DataAccessLayer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Xunit;
@@ -42,9 +41,9 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
         public async Task CreateAndGetById_WorksCorrectly()
         {
             using var context = GetInMemoryDbContext();
-            var unitOfWork = new UnitOfWork(context);
+            var customerRepo = new CustomerRepository(context);
             var mapper = GetMapper();
-            var service = new CustomerService(unitOfWork, mapper);
+            var service = new CustomerService(customerRepo, mapper);
             var createDto = new CreateCustomerDto
             {
                 FullName = "Integration Test",
@@ -63,9 +62,9 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
         public async Task Update_WorksCorrectly()
         {
             using var context = GetInMemoryDbContext();
-            var unitOfWork = new UnitOfWork(context);
+            var customerRepo = new CustomerRepository(context);
             var mapper = GetMapper();
-            var service = new CustomerService(unitOfWork, mapper);
+            var service = new CustomerService(customerRepo, mapper);
             var createDto = new CreateCustomerDto
             {
                 FullName = "Before Update",
@@ -92,9 +91,9 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
         public async Task Delete_WorksCorrectly()
         {
             using var context = GetInMemoryDbContext();
-            var unitOfWork = new UnitOfWork(context);
+            var customerRepo = new CustomerRepository(context);
             var mapper = GetMapper();
-            var service = new CustomerService(unitOfWork, mapper);
+            var service = new CustomerService(customerRepo, mapper);
             var createDto = new CreateCustomerDto
             {
                 FullName = "To Delete",

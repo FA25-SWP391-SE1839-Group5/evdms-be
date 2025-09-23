@@ -5,6 +5,7 @@ namespace EVDMS.Common.Tests.Utils
 {
     public class PasswordHasherTests
     {
+        [Trait("Category", "Unit")]
         [Fact]
         public void HashPassword_ShouldReturnDifferentHash_ForSamePassword()
         {
@@ -16,6 +17,7 @@ namespace EVDMS.Common.Tests.Utils
             Assert.NotEqual(hash1, hash2); // BCrypt should generate different hashes due to salt
         }
 
+        [Trait("Category", "Unit")]
         [Fact]
         public void VerifyPassword_ShouldReturnTrue_ForCorrectPassword()
         {
@@ -27,6 +29,7 @@ namespace EVDMS.Common.Tests.Utils
             Assert.True(result);
         }
 
+        [Trait("Category", "Unit")]
         [Fact]
         public void VerifyPassword_ShouldReturnFalse_ForIncorrectPassword()
         {
@@ -39,12 +42,14 @@ namespace EVDMS.Common.Tests.Utils
             Assert.False(result);
         }
 
+        [Trait("Category", "Unit")]
         [Fact]
         public void HashPassword_ShouldThrowArgumentNullException_ForNullPassword()
         {
             Assert.Throws<ArgumentNullException>(() => PasswordHasher.HashPassword(null));
         }
 
+        [Trait("Category", "Unit")]
         [Fact]
         public void VerifyPassword_ShouldThrowArgumentNullException_ForNullArguments()
         {

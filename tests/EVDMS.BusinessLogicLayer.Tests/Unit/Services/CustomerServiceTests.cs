@@ -6,7 +6,6 @@ using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.Common.DTOs;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
-using EVDMS.DataAccessLayer.UnitOfWork;
 using Moq;
 using Xunit;
 
@@ -14,18 +13,15 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
 {
     public class CustomerServiceTests
     {
-        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
         private readonly Mock<IMapper> _mapperMock;
         private readonly CustomerService _service;
         private readonly Mock<ICustomerRepository> _customerRepoMock;
 
         public CustomerServiceTests()
         {
-            _unitOfWorkMock = new Mock<IUnitOfWork>();
             _mapperMock = new Mock<IMapper>();
             _customerRepoMock = new Mock<ICustomerRepository>();
-            _unitOfWorkMock.Setup(u => u.Customers).Returns(_customerRepoMock.Object);
-            _service = new CustomerService(_unitOfWorkMock.Object, _mapperMock.Object);
+            _service = new CustomerService(_customerRepoMock.Object, _mapperMock.Object);
         }
 
         [Trait("Category", "Unit")]
@@ -103,7 +99,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
             var result = await _service.CreateAsync(dto);
 
             _customerRepoMock.Verify(r => r.AddAsync(customer), Times.Once);
-            _unitOfWorkMock.Verify(u => u.CompleteAsync(), Times.Once);
+            _customerRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
             Assert.Equal(mappedDto.Id, result.Id);
         }
 
@@ -133,7 +129,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
 
             _mapperMock.Verify(m => m.Map(dto, customer), Times.Once);
             _customerRepoMock.Verify(r => r.Update(customer), Times.Once);
-            _unitOfWorkMock.Verify(u => u.CompleteAsync(), Times.Once);
+            _customerRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
             Assert.True(result);
         }
 
@@ -168,7 +164,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
             var result = await _service.DeleteAsync(id);
 
             _customerRepoMock.Verify(r => r.Remove(customer), Times.Once);
-            _unitOfWorkMock.Verify(u => u.CompleteAsync(), Times.Once);
+            _customerRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
             Assert.True(result);
         }
 
