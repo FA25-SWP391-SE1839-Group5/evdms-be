@@ -12,9 +12,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\EVDMS.BusinessLogicLayer\EVDMS.BusinessLogicLayer.csproj" />
   </ItemGroup>
 </Project>

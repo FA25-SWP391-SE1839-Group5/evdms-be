@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using EVDMS.BusinessLogicLayer;
 using EVDMS.DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -57,6 +58,8 @@ namespace EVDMS.API
             {
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddServices();
 
             var app = builder.Build();
 

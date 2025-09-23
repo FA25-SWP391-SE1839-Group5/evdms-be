@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250921121600_1.Initial")]
+    [Migration("20250923072725_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -60,6 +60,58 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000001"),
+                            Address = "123 Lê Lợi, Quận 1, TP. Hồ Chí Minh",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "an.nguyen@email.com",
+                            FullName = "Nguyễn Văn An",
+                            Phone = "0901234567",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000002"),
+                            Address = "456 Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "ngoc.tran@email.com",
+                            FullName = "Trần Thị Bích Ngọc",
+                            Phone = "0912345678",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
+                            Address = "789 Cách Mạng Tháng 8, Quận 10, TP. Hồ Chí Minh",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "tuan.le@email.com",
+                            FullName = "Lê Minh Tuấn",
+                            Phone = "0923456789",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
+                            Address = "321 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "huy.pham@email.com",
+                            FullName = "Phạm Quang Huy",
+                            Phone = "0934567890",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
+                            Address = "654 Võ Văn Tần, Quận 3, TP. Hồ Chí Minh",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "lan.vo@email.com",
+                            FullName = "Võ Thị Mai Lan",
+                            Phone = "0945678901",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.CustomerDealer", b =>

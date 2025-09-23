@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -978,6 +979,49 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict
                     );
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Customers",
+                columns: new[] { "Id", "Address", "Email", "FullName", "Phone" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        "123 Lê Lợi, Quận 1, TP. Hồ Chí Minh",
+                        "an.nguyen@email.com",
+                        "Nguyễn Văn An",
+                        "0901234567",
+                    },
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        "456 Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh",
+                        "ngoc.tran@email.com",
+                        "Trần Thị Bích Ngọc",
+                        "0912345678",
+                    },
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000003"),
+                        "789 Cách Mạng Tháng 8, Quận 10, TP. Hồ Chí Minh",
+                        "tuan.le@email.com",
+                        "Lê Minh Tuấn",
+                        "0923456789",
+                    },
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000004"),
+                        "321 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
+                        "huy.pham@email.com",
+                        "Phạm Quang Huy",
+                        "0934567890",
+                    },
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000005"),
+                        "654 Võ Văn Tần, Quận 3, TP. Hồ Chí Minh",
+                        "lan.vo@email.com",
+                        "Võ Thị Mai Lan",
+                        "0945678901",
+                    },
                 }
             );
 
