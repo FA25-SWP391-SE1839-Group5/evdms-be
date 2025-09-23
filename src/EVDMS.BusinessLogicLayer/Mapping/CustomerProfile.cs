@@ -9,9 +9,10 @@ namespace EVDMS.BusinessLogicLayer.Mapping
         public CustomerProfile()
         {
             CreateMap<Customer, CustomerDto>();
-            CreateMap<CreateCustomerDto, Customer>();
-            CreateMap<UpdateCustomerDto, Customer>();
-            CreateMap<PatchCustomerDto, Customer>()
+
+            CreateMap<CreateCustomerDto, Customer>(MemberList.Source);
+            CreateMap<UpdateCustomerDto, Customer>(MemberList.Source);
+            CreateMap<PatchCustomerDto, Customer>(MemberList.Source)
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
     }
