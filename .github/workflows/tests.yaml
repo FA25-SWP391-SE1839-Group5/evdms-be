@@ -32,6 +32,5 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release --no-build --verbosity normal
         env:
-          TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
           TESTCONTAINERS_RYUK_DISABLED: true
 
