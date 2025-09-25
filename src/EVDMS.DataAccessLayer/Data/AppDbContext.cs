@@ -36,6 +36,8 @@ namespace EVDMS.DataAccessLayer.Data
         public DbSet<VehicleColor> VehicleColors { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
         public DbSet<VehicleVariant> VehicleVariants { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<UserToken> UserTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +55,7 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
             modelBuilder.ApplyConfiguration(new PromotionConfiguration());
             modelBuilder.ApplyConfiguration(new QuotationConfiguration());
+            modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
             modelBuilder.ApplyConfiguration(new RoleConfiguration());
             modelBuilder.ApplyConfiguration(new SalesContractConfiguration());
             modelBuilder.ApplyConfiguration(new SalesOrderConfiguration());
@@ -60,6 +63,7 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new SpecConfiguration());
             modelBuilder.ApplyConfiguration(new TestDriveConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserTokenConfiguration());
             modelBuilder.ApplyConfiguration(new VariantFeatureConfiguration());
             modelBuilder.ApplyConfiguration(new VariantSpecConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleColorConfiguration());
