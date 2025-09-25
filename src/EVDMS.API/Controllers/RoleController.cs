@@ -52,7 +52,7 @@ namespace EVDMS.API.Controllers
             var success = await _roleService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Role not found"));
-            return Ok(new ApiResponse<string>("Role updated successfully"));
+            return Ok(new ApiResponse<string>(null, "Role updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -61,7 +61,7 @@ namespace EVDMS.API.Controllers
             var success = await _roleService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Role not found"));
-            return Ok(new ApiResponse<string>("Role patched successfully"));
+            return Ok(new ApiResponse<string>(null, "Role patched successfully"));
         }
 
         [HttpDelete("{id}")]
@@ -70,7 +70,7 @@ namespace EVDMS.API.Controllers
             var success = await _roleService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("Role not found"));
-            return Ok(new ApiResponse<string>("Role deleted successfully"));
+            return Ok(new ApiResponse<string>(null, "Role deleted successfully"));
         }
     }
 }

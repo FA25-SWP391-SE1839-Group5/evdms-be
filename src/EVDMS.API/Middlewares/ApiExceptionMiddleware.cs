@@ -37,6 +37,8 @@ namespace EVDMS.API.Middleware
         public string? Message { get; set; }
         public T? Data { get; set; }
 
+        public ApiResponse() { }
+
         public ApiResponse(T? data, string? message = null)
         {
             Success = true;

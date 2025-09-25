@@ -16,4 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EVDMS.BusinessLogicLayer\EVDMS.BusinessLogicLayer.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Middleware\" />
+  </ItemGroup>
 </Project>
