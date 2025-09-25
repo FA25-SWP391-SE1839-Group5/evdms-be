@@ -16,16 +16,15 @@ namespace EVDMS.BusinessLogicLayer.Dtos.Auth
         public string Phone { get; set; } = string.Empty;
 
         [Required]
+        public string Role { get; set; } = string.Empty;
+        public string? DealerName { get; set; } = null;
+
+        [Required]
         public string Password { get; set; } = string.Empty;
 
         [Required]
         [Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; } = string.Empty;
-
-        [Required]
-        public string RoleName { get; set; } = string.Empty;
-
-        public string? DealerName { get; set; } = null;
     }
 
     public class LoginRequestDto

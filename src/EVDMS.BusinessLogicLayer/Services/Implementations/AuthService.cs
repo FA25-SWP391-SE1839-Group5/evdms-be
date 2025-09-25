@@ -45,10 +45,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             // Find role by name
             var role = (
-                await _roleRepository.FindAsync(r => r.RoleName == dto.RoleName)
+                await _roleRepository.FindAsync(r => r.RoleName == dto.Role)
             ).FirstOrDefault();
             if (role == null)
-                throw new Exception($"Role '{dto.RoleName}' does not exist");
+                throw new Exception($"Role '{dto.Role}' does not exist");
 
             Guid? dealerId = null;
             if (!string.IsNullOrWhiteSpace(dto.DealerName))
@@ -111,6 +111,11 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             if (!PasswordHasher.VerifyPassword(dto.Password, user.PasswordHash))
                 throw new Exception("Invalid credentials");
+
+            if (!user.IsEmailVerified)
+                throw new Exception(
+                    "Email is not verified. Please verify your email before logging in."
+                );
 
             var accessToken = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();

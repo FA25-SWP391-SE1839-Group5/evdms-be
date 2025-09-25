@@ -1,3 +1,4 @@
+using EVDMS.API.Middleware;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;
@@ -16,29 +17,33 @@ namespace EVDMS.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<RoleDto>>> GetAll(
+        public async Task<IActionResult> GetAll(
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10
         )
         {
             var result = await _roleService.GetAllAsync(page, pageSize);
-            return Ok(result);
+            return Ok(new ApiResponse<PaginatedResult<RoleDto>>(result));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<RoleDto>> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var role = await _roleService.GetByIdAsync(id);
             if (role == null)
-                return NotFound();
-            return Ok(role);
+                return NotFound(new ApiResponse<string>("Role not found"));
+            return Ok(new ApiResponse<RoleDto>(role));
         }
 
         [HttpPost]
-        public async Task<ActionResult<RoleDto>> Create([FromBody] CreateRoleDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateRoleDto dto)
         {
             var created = await _roleService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = created.Id },
+                new ApiResponse<RoleDto>(created)
+            );
         }
 
         [HttpPut("{id}")]
@@ -46,8 +51,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _roleService.UpdateAsync(id, dto);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Role not found"));
+            return Ok(new ApiResponse<string>("Role updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -55,8 +60,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _roleService.PatchAsync(id, dto);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Role not found"));
+            return Ok(new ApiResponse<string>("Role patched successfully"));
         }
 
         [HttpDelete("{id}")]
@@ -64,8 +69,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _roleService.DeleteAsync(id);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Role not found"));
+            return Ok(new ApiResponse<string>("Role deleted successfully"));
         }
     }
 }

@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+using EVDMS.API.Middleware;
 using EVDMS.BusinessLogicLayer.Dtos.Auth;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -19,24 +19,38 @@ namespace EVDMS.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto dto)
         {
-            var result = await _authService.RegisterAsync(dto);
-            return Ok(result);
+            try
+            {
+                var result = await _authService.RegisterAsync(dto);
+                return Ok(new ApiResponse<AuthResponseDto>(result));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var result = await _authService.LoginAsync(dto);
-            return Ok(result);
+            try
+            {
+                var result = await _authService.LoginAsync(dto);
+                return Ok(new ApiResponse<AuthResponseDto>(result));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new ApiResponse<string>(ex.Message));
+            }
         }
 
-        [HttpGet("verify-email")]
+        [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string token)
         {
             var result = await _authService.VerifyEmailAsync(token);
             if (!result.Success)
-                return BadRequest(result.Message);
-            return Ok(result.Message);
+                return BadRequest(new ApiResponse<string>(result.Message));
+            return Ok(new ApiResponse<string>(result.Message));
         }
     }
 }

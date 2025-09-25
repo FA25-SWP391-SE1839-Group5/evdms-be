@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Repositories.Interfaces

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using EVDMS.BusinessLogicLayer.Dtos.Auth;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces

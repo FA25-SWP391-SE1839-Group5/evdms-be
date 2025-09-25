@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using EVDMS.Common.Enums;
 
 namespace EVDMS.DataAccessLayer.Entities

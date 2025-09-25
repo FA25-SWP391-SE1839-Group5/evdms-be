@@ -1,11 +1,13 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using EVDMS.API.Middleware;
 using EVDMS.BusinessLogicLayer;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -109,7 +111,24 @@ namespace EVDMS.API
                 );
             });
 
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = context =>
+                {
+                    var errors = context
+                        .ModelState.Values.SelectMany(v => v.Errors)
+                        .Select(e => e.ErrorMessage)
+                        .ToArray();
+                    var response = new EVDMS.API.Middleware.ApiResponse<string>(
+                        string.Join("; ", errors)
+                    );
+                    return new BadRequestObjectResult(response);
+                };
+            });
+
             var app = builder.Build();
+
+            app.UseMiddleware<ApiExceptionMiddleware>();
 
             app.UseSwagger();
             app.UseSwaggerUI();

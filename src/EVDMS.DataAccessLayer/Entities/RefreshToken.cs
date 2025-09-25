@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
 namespace EVDMS.DataAccessLayer.Entities
 {
     public class RefreshToken : BaseEntity
