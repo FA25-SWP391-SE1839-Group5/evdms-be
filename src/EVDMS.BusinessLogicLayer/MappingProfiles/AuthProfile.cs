@@ -9,7 +9,8 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
         public AuthProfile()
         {
             CreateMap<RegisterRequestDto, User>()
-                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
+                .ForMember(dest => dest.Role, opt => opt.Ignore());
             CreateMap<User, AuthResponseDto>();
         }
     }

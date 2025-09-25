@@ -21,6 +21,7 @@ namespace EVDMS.BusinessLogicLayer
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IDealerRepository, DealerRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<AuthProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<RoleProfile>());

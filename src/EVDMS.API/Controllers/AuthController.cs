@@ -44,6 +44,20 @@ namespace EVDMS.API.Controllers
             }
         }
 
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequestDto dto)
+        {
+            try
+            {
+                var result = await _authService.RefreshTokenAsync(dto);
+                return Ok(new ApiResponse<AuthResponseDto>(result));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new ApiResponse<string>(ex.Message));
+            }
+        }
+
         [HttpPost("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string token)
         {

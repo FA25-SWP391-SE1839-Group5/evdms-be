@@ -41,4 +41,9 @@ namespace EVDMS.BusinessLogicLayer.Dtos.Auth
         public string Email { get; set; } = string.Empty;
         public bool IsEmailVerified { get; set; }
     }
+
+    public class RefreshTokenRequestDto
+    {
+        public string RefreshToken { get; set; } = string.Empty;
+    }
 }

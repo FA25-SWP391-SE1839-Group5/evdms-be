@@ -6,6 +6,7 @@ using EVDMS.Common.Enums;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
+using Microsoft.Extensions.Configuration;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
@@ -15,27 +16,33 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IUserTokenRepository _userTokenRepository;
         private readonly IRoleRepository _roleRepository;
         private readonly IDealerRepository _dealerRepository;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public AuthService(
             IUserRepository userRepository,
             IUserTokenRepository userTokenRepository,
             IRoleRepository roleRepository,
             IDealerRepository dealerRepository,
+            IRefreshTokenRepository refreshTokenRepository,
             IMapper mapper,
             IJwtService jwtService,
-            IEmailService emailService
+            IEmailService emailService,
+            IConfiguration configuration
         )
         {
             _userRepository = userRepository;
             _userTokenRepository = userTokenRepository;
             _roleRepository = roleRepository;
             _dealerRepository = dealerRepository;
+            _refreshTokenRepository = refreshTokenRepository;
             _mapper = mapper;
             _jwtService = jwtService;
             _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task<AuthResponseDto> RegisterAsync(RegisterRequestDto dto)
@@ -84,14 +91,31 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userTokenRepository.AddAsync(userToken);
             await _userTokenRepository.SaveChangesAsync();
 
-            // Send verification email
-            var verificationUrl = $"https://your-frontend-url/verify-email?token={token}";
-            var emailBody =
-                $"<p>Welcome to EVDMS!</p><p>Please <a href='{verificationUrl}'>click here to verify your email</a>.</p>";
-            await _emailService.SendEmailAsync(user.Email, "Verify your email", emailBody);
+            // Send verification email using EmailService helper
+            var emailSubject = "Verify your email";
+            var emailTemplate =
+                "<p>Welcome to EVDMS!</p><p>Please <a href='{0}'>click here to verify your email</a>.</p>";
+            await _emailService.SendActionEmailAsync(
+                user.Email,
+                emailSubject,
+                "verify-email",
+                token,
+                emailTemplate
+            );
 
             var accessToken = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();
+
+            // Store refresh token
+            var refreshTokenEntity = new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = refreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false,
+            };
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
 
             return new AuthResponseDto
             {
@@ -120,10 +144,62 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var accessToken = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();
 
+            // Store refresh token
+            var refreshTokenEntity = new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = refreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(7), // Example: 7 days
+                IsRevoked = false,
+            };
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
+
             return new AuthResponseDto
             {
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
+                FullName = user.FullName,
+                Email = user.Email,
+                IsEmailVerified = user.IsEmailVerified,
+            };
+        }
+
+        public async Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto dto)
+        {
+            var existingToken = await _refreshTokenRepository.GetByTokenHashAsync(dto.RefreshToken);
+            if (
+                existingToken == null
+                || existingToken.IsRevoked
+                || existingToken.ExpiresAt < DateTime.UtcNow
+            )
+                throw new Exception("Invalid or expired refresh token");
+
+            var user = await _userRepository.GetByIdAsync(existingToken.UserId);
+            if (user == null)
+                throw new Exception("User not found");
+
+            // Revoke old token
+            existingToken.IsRevoked = true;
+            _refreshTokenRepository.Update(existingToken);
+
+            // Issue new tokens
+            var newAccessToken = _jwtService.GenerateAccessToken(user);
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
+            var newRefreshTokenEntity = new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = newRefreshToken,
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
+                IsRevoked = false,
+            };
+            await _refreshTokenRepository.AddAsync(newRefreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
+
+            return new AuthResponseDto
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken,
                 FullName = user.FullName,
                 Email = user.Email,
                 IsEmailVerified = user.IsEmailVerified,
