@@ -974,6 +974,42 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.ToTable("Quotations");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1431,9 +1467,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("EmailVerifiedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -1458,6 +1503,45 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.UserToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Purpose")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantFeature", b =>
@@ -8907,6 +8991,17 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesContract", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.SalesOrder", "SalesOrder")
@@ -9015,6 +9110,17 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Dealer");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.UserToken", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
+                        .WithMany("UserTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantFeature", b =>
@@ -9170,7 +9276,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Navigation("Quotations");
 
+                    b.Navigation("RefreshTokens");
+
                     b.Navigation("SalesOrders");
+
+                    b.Navigation("UserTokens");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Vehicle", b =>
