@@ -284,7 +284,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             };
         }
 
-        public async Task<(bool Success, string Message)> VerifyEmailAsync(string token)
+        public async Task<bool> VerifyEmailAsync(string token)
         {
             var userToken = await _userTokenRepository.GetByTokenHashAsync(token);
             if (
@@ -294,13 +294,13 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 || userToken.ExpiresAt < DateTime.UtcNow
             )
             {
-                return (false, "Invalid or expired token.");
+                return false;
             }
 
             var user = await _userRepository.GetByIdAsync(userToken.UserId);
             if (user == null)
             {
-                return (false, "User not found.");
+                return false;
             }
 
             user.IsEmailVerified = true;
@@ -311,10 +311,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userRepository.SaveChangesAsync();
             await _userTokenRepository.SaveChangesAsync();
 
-            return (true, "Email verified successfully.");
+            return true;
         }
 
-        public async Task LogoutAsync(RefreshTokenRequestDto dto)
+        public async Task<bool> LogoutAsync(RefreshTokenRequestDto dto)
         {
             var token = await _refreshTokenRepository.GetByTokenHashAsync(dto.RefreshToken);
             if (token != null && !token.IsRevoked)
@@ -322,7 +322,9 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 token.IsRevoked = true;
                 _refreshTokenRepository.Update(token);
                 await _refreshTokenRepository.SaveChangesAsync();
+                return true;
             }
+            return false;
         }
     }
 }

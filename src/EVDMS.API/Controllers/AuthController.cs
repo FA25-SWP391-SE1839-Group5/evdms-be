@@ -58,20 +58,30 @@ namespace EVDMS.API.Controllers
             }
         }
 
-        [HttpPost("verify-email")]
+        [HttpGet("verify-email")]
         public async Task<IActionResult> VerifyEmail([FromQuery] string token)
         {
-            var result = await _authService.VerifyEmailAsync(token);
-            if (!result.Success)
-                return BadRequest(new ApiResponse<string>(result.Message));
-            return Ok(new ApiResponse<string>(result.Message));
+            var success = await _authService.VerifyEmailAsync(token);
+            if (!success)
+            {
+                return BadRequest(new ApiResponse<string>("Invalid or expired token."));
+            }
+            return Ok(new ApiResponse<string>(null, "Email verified successfully."));
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] RefreshTokenRequestDto dto)
         {
-            await _authService.LogoutAsync(dto);
-            return Ok(new ApiResponse<string>("Logged out successfully."));
+            var success = await _authService.LogoutAsync(dto);
+            if (!success)
+            {
+                return BadRequest(
+                    new ApiResponse<string>(
+                        "Logout failed. Token may be invalid or already revoked."
+                    )
+                );
+            }
+            return Ok(new ApiResponse<string>(null, "Logged out successfully."));
         }
     }
 }

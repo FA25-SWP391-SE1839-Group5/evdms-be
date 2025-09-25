@@ -49,10 +49,11 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         {
             var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
             var environment = _configuration["ASPNETCORE_ENVIRONMENT"] ?? "Production";
+            var encodedToken = Uri.EscapeDataString(token);
             string link =
                 environment == "Development"
-                    ? $"{baseUrl}/api/auth/{action}?token={token}"
-                    : $"{baseUrl}/{action}?token={token}";
+                    ? $"{baseUrl}/api/auth/{action}?token={encodedToken}"
+                    : $"{baseUrl}/{action}?token={encodedToken}";
             var body = string.Format(htmlTemplate, link, DateTime.UtcNow.Year);
             await SendEmailAsync(to, subject, body);
         }

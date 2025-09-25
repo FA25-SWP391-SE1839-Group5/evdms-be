@@ -7,7 +7,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
         Task<AuthResponseDto> RegisterAsync(RegisterRequestDto dto);
         Task<AuthResponseDto> LoginAsync(LoginRequestDto dto);
         Task<AuthResponseDto> RefreshTokenAsync(RefreshTokenRequestDto dto);
-        Task<(bool Success, string Message)> VerifyEmailAsync(string token);
-        Task LogoutAsync(RefreshTokenRequestDto dto);
+        Task<bool> VerifyEmailAsync(string token);
+        Task<bool> LogoutAsync(RefreshTokenRequestDto dto);
     }
 }
