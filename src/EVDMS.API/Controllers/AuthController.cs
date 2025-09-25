@@ -66,5 +66,12 @@ namespace EVDMS.API.Controllers
                 return BadRequest(new ApiResponse<string>(result.Message));
             return Ok(new ApiResponse<string>(result.Message));
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] RefreshTokenRequestDto dto)
+        {
+            await _authService.LogoutAsync(dto);
+            return Ok(new ApiResponse<string>("Logged out successfully."));
+        }
     }
 }

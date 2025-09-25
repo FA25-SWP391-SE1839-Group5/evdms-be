@@ -91,10 +91,84 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userTokenRepository.AddAsync(userToken);
             await _userTokenRepository.SaveChangesAsync();
 
-            // Send verification email using EmailService helper
             var emailSubject = "Verify your email";
             var emailTemplate =
-                "<p>Welcome to EVDMS!</p><p>Please <a href='{0}'>click here to verify your email</a>.</p>";
+                @"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Verify Your Email</title>
+    <style>
+        body {{
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6fb;
+            margin: 0;
+            padding: 0;
+        }}
+        .container {{
+            max-width: 480px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+            padding: 32px 24px;
+        }}
+        .logo {{
+            text-align: center;
+            margin-bottom: 24px;
+        }}
+        .logo img {{
+            width: 64px;
+            height: 64px;
+        }}
+        h2 {{
+            color: #2d3a4b;
+            margin-bottom: 8px;
+        }}
+        p {{
+            color: #4a5568;
+            line-height: 1.6;
+        }}
+        .verify-btn {{
+            display: inline-block;
+            background: #2563eb;
+            color: #fff !important;
+            padding: 12px 32px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 20px 0;
+        }}
+        .footer {{
+            text-align: center;
+            color: #a0aec0;
+            font-size: 0.95em;
+            margin-top: 24px;
+        }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='logo'>
+            <img src='https://cdn-icons-png.flaticon.com/512/561/561127.png' alt='Logo'>
+        </div>
+        <h2>Welcome to EVDMS!</h2>
+        <p>Thank you for registering. To complete your registration, please verify your email address by clicking the button below:</p>
+        <p style='text-align:center;'>
+            <a href='{0}' class='verify-btn'>Verify Email</a>
+        </p>
+        <p>If the button doesn't work, copy and paste this link into your browser:</p>
+        <p style='word-break:break-all;'>{0}</p>
+        <p>If you did not create an account, you can safely ignore this email.</p>
+        <div class='footer'>
+            &copy; {1} EVDMS. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+";
             await _emailService.SendActionEmailAsync(
                 user.Email,
                 emailSubject,
@@ -141,6 +215,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     "Email is not verified. Please verify your email before logging in."
                 );
 
+            user.LastLoginAt = DateTime.UtcNow;
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+
             var accessToken = _jwtService.GenerateAccessToken(user);
             var refreshToken = _jwtService.GenerateRefreshToken();
 
@@ -149,7 +227,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             {
                 UserId = user.Id,
                 TokenHash = refreshToken,
-                ExpiresAt = DateTime.UtcNow.AddDays(7), // Example: 7 days
+                ExpiresAt = DateTime.UtcNow.AddDays(7),
                 IsRevoked = false,
             };
             await _refreshTokenRepository.AddAsync(refreshTokenEntity);
@@ -234,6 +312,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userTokenRepository.SaveChangesAsync();
 
             return (true, "Email verified successfully.");
+        }
+
+        public async Task LogoutAsync(RefreshTokenRequestDto dto)
+        {
+            var token = await _refreshTokenRepository.GetByTokenHashAsync(dto.RefreshToken);
+            if (token != null && !token.IsRevoked)
+            {
+                token.IsRevoked = true;
+                _refreshTokenRepository.Update(token);
+                await _refreshTokenRepository.SaveChangesAsync();
+            }
         }
     }
 }

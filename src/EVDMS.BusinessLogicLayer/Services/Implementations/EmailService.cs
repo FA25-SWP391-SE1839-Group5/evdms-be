@@ -53,7 +53,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 environment == "Development"
                     ? $"{baseUrl}/api/auth/{action}?token={token}"
                     : $"{baseUrl}/{action}?token={token}";
-            var body = string.Format(htmlTemplate, link);
+            var body = string.Format(htmlTemplate, link, DateTime.UtcNow.Year);
             await SendEmailAsync(to, subject, body);
         }
     }
