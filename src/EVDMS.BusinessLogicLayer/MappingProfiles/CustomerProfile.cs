@@ -2,7 +2,7 @@ using AutoMapper;
 using EVDMS.Common.DTOs;
 using EVDMS.DataAccessLayer.Entities;
 
-namespace EVDMS.BusinessLogicLayer.Mapping
+namespace EVDMS.BusinessLogicLayer.MappingProfiles
 {
     public class CustomerProfile : Profile
     {

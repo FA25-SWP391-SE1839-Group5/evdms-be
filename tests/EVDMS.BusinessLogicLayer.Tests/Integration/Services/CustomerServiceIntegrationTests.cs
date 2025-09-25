@@ -24,7 +24,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
             var config = new MapperConfiguration(
                 cfg =>
                 {
-                    cfg.AddProfile(new Mapping.CustomerProfile());
+                    cfg.AddProfile(new MappingProfiles.CustomerProfile());
                 },
                 loggerFactory
             );

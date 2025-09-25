@@ -1121,6 +1121,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "RoleName" },
+                values: new object[,]
+                {
+                    { new Guid("90000000-0000-0000-0000-000000000001"), "Dealer Staff" },
+                    { new Guid("90000000-0000-0000-0000-000000000002"), "Dealer Manager" },
+                    { new Guid("90000000-0000-0000-0000-000000000003"), "EVM Staff" },
+                    { new Guid("90000000-0000-0000-0000-000000000004"), "Admin" },
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "SpecCategories",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
