@@ -1,6 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
-using EVDMS.API.Middleware;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
@@ -69,8 +69,7 @@ namespace EVDMS.API
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
-            builder.Services.AddScoped<IJwtService, JwtService>();
-            builder.Services.AddScoped<IEmailService, EmailService>();
+
             builder
                 .Services.AddAuthentication(options =>
                 {
@@ -119,7 +118,7 @@ namespace EVDMS.API
                         .ModelState.Values.SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToArray();
-                    var response = new EVDMS.API.Middleware.ApiResponse<string>(
+                    var response = new EVDMS.API.Middlewares.ApiResponse<string>(
                         string.Join("; ", errors)
                     );
                     return new BadRequestObjectResult(response);

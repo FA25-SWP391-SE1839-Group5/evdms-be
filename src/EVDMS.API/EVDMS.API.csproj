@@ -6,6 +6,12 @@
     <UserSecretsId>a3925521-27ec-49cf-94a9-d20b78306fb9</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Middleware\**" />
+    <Content Remove="Middleware\**" />
+    <EmbeddedResource Remove="Middleware\**" />
+    <None Remove="Middleware\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.20" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -15,8 +21,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EVDMS.BusinessLogicLayer\EVDMS.BusinessLogicLayer.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Middleware\" />
   </ItemGroup>
 </Project>

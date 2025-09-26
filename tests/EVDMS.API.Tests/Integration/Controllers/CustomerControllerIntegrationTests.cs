@@ -1,6 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
-using EVDMS.API.Middleware;
+using EVDMS.API.Middlewares;
 using EVDMS.Common.DTOs;
 
 namespace EVDMS.API.Tests.Integration.Controllers

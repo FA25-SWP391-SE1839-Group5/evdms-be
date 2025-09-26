@@ -1,4 +1,4 @@
-using EVDMS.API.Middleware;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.DTOs;
 using Microsoft.AspNetCore.Mvc;

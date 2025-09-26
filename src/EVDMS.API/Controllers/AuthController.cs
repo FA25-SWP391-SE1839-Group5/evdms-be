@@ -1,4 +1,4 @@
-using EVDMS.API.Middleware;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Dtos.Auth;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;

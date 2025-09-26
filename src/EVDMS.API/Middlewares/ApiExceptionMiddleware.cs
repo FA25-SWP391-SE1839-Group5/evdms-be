@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace EVDMS.API.Middleware
+namespace EVDMS.API.Middlewares
 {
     public class ApiExceptionMiddleware
     {
