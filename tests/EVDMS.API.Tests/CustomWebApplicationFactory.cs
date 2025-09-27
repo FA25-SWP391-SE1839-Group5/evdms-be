@@ -46,5 +46,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>, IAsyn
 
     public async ValueTask InitializeAsync() => await _postgresContainer.StartAsync();
 
-    public async ValueTask DisposeAsync() => await _postgresContainer.DisposeAsync();
+    public override async ValueTask DisposeAsync()
+    {
+        await _postgresContainer.DisposeAsync();
+        GC.SuppressFinalize(this);
+    }
 }
