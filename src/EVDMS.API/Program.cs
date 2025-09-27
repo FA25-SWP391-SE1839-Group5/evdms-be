@@ -2,8 +2,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer;
-using EVDMS.BusinessLogicLayer.Services.Implementations;
-using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

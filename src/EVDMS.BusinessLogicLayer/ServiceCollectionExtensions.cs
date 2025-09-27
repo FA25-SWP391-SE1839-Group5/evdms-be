@@ -1,10 +1,8 @@
 using EVDMS.BusinessLogicLayer.MappingProfiles;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
-using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EVDMS.BusinessLogicLayer
