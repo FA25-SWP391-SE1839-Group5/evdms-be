@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Linq.Expressions;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
@@ -22,18 +23,32 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             return await _dbSet.FindAsync(id);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await _dbSet.ToListAsync();
-        }
-
-        public virtual async Task<(IEnumerable<T> Items, int TotalCount)> GetPaginatedAsync(
+        public virtual async Task<(IEnumerable<T> Items, int TotalCount)> GetAllAsync(
             int page,
-            int pageSize
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null
         )
         {
-            var totalCount = await _dbSet.CountAsync();
-            var items = await _dbSet.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var query = _dbSet.AsQueryable();
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                var prop = typeof(T)
+                    .GetProperties()
+                    .FirstOrDefault(p =>
+                        string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase)
+                    );
+                if (prop != null)
+                {
+                    var actualSortBy = prop.Name;
+                    if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
+                        query = query.OrderByDescending(e => EF.Property<object>(e, actualSortBy));
+                    else
+                        query = query.OrderBy(e => EF.Property<object>(e, actualSortBy));
+                }
+            }
+            var totalCount = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return (items, totalCount);
         }
 

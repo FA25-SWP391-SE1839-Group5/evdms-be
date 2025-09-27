@@ -17,9 +17,19 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PaginatedResult<RoleDto>> GetAllAsync(int page, int pageSize)
+        public async Task<PaginatedResult<RoleDto>> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null
+        )
         {
-            var (roles, totalCount) = await _roleRepository.GetPaginatedAsync(page, pageSize);
+            var (roles, totalCount) = await _roleRepository.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder
+            );
             return new PaginatedResult<RoleDto>
             {
                 Items = _mapper.Map<IEnumerable<RoleDto>>(roles),

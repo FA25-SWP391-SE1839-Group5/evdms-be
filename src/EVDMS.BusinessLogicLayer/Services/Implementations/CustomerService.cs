@@ -17,11 +17,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _mapper = mapper;
         }
 
-        public async Task<PaginatedResult<CustomerDto>> GetAllAsync(int page, int pageSize)
+        public async Task<PaginatedResult<CustomerDto>> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null
+        )
         {
-            var (customers, totalCount) = await _customerRepository.GetPaginatedAsync(
+            var (customers, totalCount) = await _customerRepository.GetAllAsync(
                 page,
-                pageSize
+                pageSize,
+                sortBy,
+                sortOrder
             );
             return new PaginatedResult<CustomerDto>
             {

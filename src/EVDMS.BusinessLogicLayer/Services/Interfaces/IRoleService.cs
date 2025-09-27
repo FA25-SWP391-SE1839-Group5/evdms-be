@@ -4,7 +4,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
     public interface IRoleService
     {
-        Task<PaginatedResult<RoleDto>> GetAllAsync(int page, int pageSize);
+        Task<PaginatedResult<RoleDto>> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null
+        );
         Task<RoleDto?> GetByIdAsync(Guid id);
         Task<RoleDto> CreateAsync(CreateRoleDto dto);
         Task<bool> UpdateAsync(Guid id, UpdateRoleDto dto);

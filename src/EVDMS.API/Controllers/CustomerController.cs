@@ -19,10 +19,12 @@ namespace EVDMS.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll(
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] string? sortOrder = null
         )
         {
-            var result = await _customerService.GetAllAsync(page, pageSize);
+            var result = await _customerService.GetAllAsync(page, pageSize, sortBy, sortOrder);
             return Ok(new ApiResponse<PaginatedResult<CustomerDto>>(result));
         }
 
