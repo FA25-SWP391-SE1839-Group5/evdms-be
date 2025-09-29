@@ -122,17 +122,56 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (user == null || !user.IsActive)
                 return false;
 
+            // Generate token
             var token = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
             user.PasswordResetToken = token;
             user.PasswordResetTokenExpiresAt = DateTime.UtcNow.AddHours(1);
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
 
+            // Build reset link using configuration
             var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
             var resetLink = $"{baseUrl}/reset-password?token={token}";
             var subject = "Password Reset Request";
             var body =
-                $"<p>Click <a href='{resetLink}'>here</a> to reset your password. This link expires in 1 hour.</p>";
+                $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Password Reset</title>
+    <style>
+        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb; margin: 0; padding: 0; }}
+        .container {{ max-width: 480px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px 24px; }}
+        .logo {{ text-align: center; margin-bottom: 24px; }}
+        .logo img {{ width: 64px; height: 64px; }}
+        h2 {{ color: #2d3a4b; margin-bottom: 8px; }}
+        p {{ color: #4a5568; line-height: 1.6; }}
+        .button {{ display: block; width: 100%; text-align: center; margin: 24px 0; }}
+        a.reset-btn {{ background: #2d3a4b; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 1.1em; font-weight: bold; display: inline-block; }}
+        .footer {{ text-align: center; color: #a0aec0; font-size: 0.95em; margin-top: 24px; }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='logo'>
+            <img src='https://cdn-icons-png.flaticon.com/512/561/561127.png' alt='Logo'>
+        </div>
+        <h2>Password Reset Request</h2>
+        <p>Hello {user.FullName},</p>
+        <p>We received a request to reset your password. Click the button below to reset your password. This link will expire in 1 hour.</p>
+        <div class='button'>
+            <a class='reset-btn' href='{resetLink}'>Reset Password</a>
+        </div>
+        <p>If you did not request a password reset, you can safely ignore this email.</p>
+        <div class='footer'>
+            &copy; {DateTime.UtcNow.Year} EVDMS. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+";
             await _emailService.SendEmailAsync(user.Email, subject, body);
 
             return true;

@@ -67,7 +67,41 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             var subject = "Your Account Has Been Created";
             var body =
-                $"Hello {user.FullName},<br/><br/>Your account has been created. Your temporary password is: <b>{tempPassword}</b><br/>Please change your password after logging in.";
+                $@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Account Created</title>
+    <style>
+        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb; margin: 0; padding: 0; }}
+        .container {{ max-width: 480px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px 24px; }}
+        .logo {{ text-align: center; margin-bottom: 24px; }}
+        .logo img {{ width: 64px; height: 64px; }}
+        h2 {{ color: #2d3a4b; margin-bottom: 8px; }}
+        p {{ color: #4a5568; line-height: 1.6; }}
+        .password {{ background: #f4f6fb; padding: 12px; border-radius: 8px; font-size: 1.1em; text-align: center; margin: 16px 0; font-weight: bold; letter-spacing: 1px; }}
+        .footer {{ text-align: center; color: #a0aec0; font-size: 0.95em; margin-top: 24px; }}
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <div class='logo'>
+            <img src='https://cdn-icons-png.flaticon.com/512/561/561127.png' alt='Logo'>
+        </div>
+        <h2>Welcome to EVDMS!</h2>
+        <p>Hello {user.FullName},</p>
+        <p>Your account has been created. Your temporary password is:</p>
+        <div class='password'>{tempPassword}</div>
+        <p>Please change your password after logging in.</p>
+        <div class='footer'>
+            &copy; {DateTime.UtcNow.Year} EVDMS. All rights reserved.
+        </div>
+    </div>
+</body>
+</html>
+";
             await _emailService.SendEmailAsync(user.Email, subject, body);
 
             return _mapper.Map<UserDto>(user);
