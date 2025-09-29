@@ -11,8 +11,7 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<User, UserDto>();
 
             CreateMap<CreateUserDto, User>(MemberList.Source)
-                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true))
-                .ForMember(dest => dest.MustChangePassword, opt => opt.MapFrom(src => true));
+                .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true));
 
             CreateMap<UpdateUserDto, User>(MemberList.Source)
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

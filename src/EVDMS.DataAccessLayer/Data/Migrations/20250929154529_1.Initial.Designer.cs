@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250929141521_1.Initial")]
+    [Migration("20250929154529_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -548,9 +548,6 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("MustChangePassword")
-                        .HasColumnType("boolean");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("text");
@@ -581,10 +578,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("20000000-0000-0000-0000-000000000001"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "admin@email.com",
+                            Email = "admin@example.com",
                             FullName = "Admin User",
                             IsActive = false,
-                            MustChangePassword = false,
                             PasswordHash = "$2a$11$nAccBp1/4t.CxdEBKLXSp.cM3DcozB5b.itLdNwAYPYx/El1ENIdW",
                             Role = "Admin",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -594,10 +590,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("20000000-0000-0000-0000-000000000002"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
-                            Email = "dealermanager@email.com",
+                            Email = "dealermanager@example.com",
                             FullName = "Dealer Manager User",
                             IsActive = false,
-                            MustChangePassword = false,
                             PasswordHash = "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
                             Role = "DealerManager",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -607,10 +602,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("20000000-0000-0000-0000-000000000003"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
-                            Email = "dealerstaff@email.com",
+                            Email = "dealerstaff@example.com",
                             FullName = "Dealer Staff User",
                             IsActive = false,
-                            MustChangePassword = false,
                             PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
                             Role = "DealerStaff",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
@@ -619,10 +613,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("20000000-0000-0000-0000-000000000004"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "evmstaff@email.com",
+                            Email = "evmstaff@example.com",
                             FullName = "EVM Staff User",
                             IsActive = false,
-                            MustChangePassword = false,
                             PasswordHash = "$2a$11$RQaQvAyAEnDiAved/V5wzOQGwKG3CTmDiWa7uxTBlvR2IUUZ06pWm",
                             Role = "EvmStaff",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

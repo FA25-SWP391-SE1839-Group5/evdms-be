@@ -52,5 +52,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         {
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
+
+        public static string HashRefreshToken(string token)
+        {
+            using var sha256 = SHA256.Create();
+            var bytes = Encoding.UTF8.GetBytes(token);
+            var hash = sha256.ComputeHash(bytes);
+            return Convert.ToBase64String(hash);
+        }
+
+        public static DateTime GetRefreshTokenExpiryDate(int expirationDays)
+        {
+            return DateTime.UtcNow.AddDays(expirationDays);
+        }
     }
 }

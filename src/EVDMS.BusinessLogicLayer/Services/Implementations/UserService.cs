@@ -1,5 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
@@ -8,7 +6,6 @@ using EVDMS.Common.Dtos;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.IdentityModel.Tokens;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
@@ -17,7 +14,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
-        private readonly string _jwtSecret = "YourSuperSecretKey123!"; // TODO: Move to config
 
         public UserService(
             IUserRepository userRepository,
@@ -65,7 +61,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             var user = _mapper.Map<User>(dto);
             user.PasswordHash = passwordHash;
-            user.MustChangePassword = true;
 
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();

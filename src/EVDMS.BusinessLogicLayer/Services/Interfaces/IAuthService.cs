@@ -5,5 +5,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
     public interface IAuthService
     {
         Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto);
+        Task<RefreshTokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto dto);
     }
 }

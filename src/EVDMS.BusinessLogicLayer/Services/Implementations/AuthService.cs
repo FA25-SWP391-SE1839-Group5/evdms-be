@@ -15,18 +15,21 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IMapper _mapper;
         private readonly IJwtService _jwtService;
         private readonly JwtSettings _jwtSettings;
+        private readonly IRefreshTokenRepository _refreshTokenRepository;
 
         public AuthService(
             IUserRepository userRepository,
             IMapper mapper,
             IJwtService jwtService,
-            IOptions<JwtSettings> jwtOptions
+            IOptions<JwtSettings> jwtOptions,
+            IRefreshTokenRepository refreshTokenRepository
         )
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _jwtService = jwtService;
             _jwtSettings = jwtOptions.Value;
+            _refreshTokenRepository = refreshTokenRepository;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto)
@@ -43,19 +46,57 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             response.AccessToken = _jwtService.GenerateAccessToken(user);
 
             var refreshToken = _jwtService.GenerateRefreshToken();
+            var refreshTokenHash = JwtService.HashRefreshToken(refreshToken);
             var refreshTokenEntity = new RefreshToken
             {
                 UserId = user.Id,
-                TokenHash = PasswordHasher.HashPassword(refreshToken),
-                ExpiresAt = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
+                TokenHash = refreshTokenHash,
+                ExpiresAt = JwtService.GetRefreshTokenExpiryDate(
+                    _jwtSettings.RefreshTokenExpirationDays
+                ),
                 IsRevoked = false,
                 User = user,
             };
-            user.RefreshTokens.Add(refreshTokenEntity);
-            await _userRepository.SaveChangesAsync();
-
+            await _refreshTokenRepository.AddAsync(refreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
             response.RefreshToken = refreshToken;
             return response;
+        }
+
+        public async Task<RefreshTokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto dto)
+        {
+            var refreshTokenHash = JwtService.HashRefreshToken(dto.RefreshToken);
+            var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(refreshTokenHash);
+            if (
+                storedToken == null
+                || storedToken.IsRevoked
+                || storedToken.ExpiresAt < DateTime.UtcNow
+            )
+                return null;
+            var user = storedToken.User;
+            var newAccessToken = _jwtService.GenerateAccessToken(user);
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
+            var newRefreshTokenHash = JwtService.HashRefreshToken(newRefreshToken);
+            storedToken.IsRevoked = true;
+            _refreshTokenRepository.Update(storedToken);
+            await _refreshTokenRepository.SaveChangesAsync();
+            var newRefreshTokenEntity = new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = newRefreshTokenHash,
+                ExpiresAt = JwtService.GetRefreshTokenExpiryDate(
+                    _jwtSettings.RefreshTokenExpirationDays
+                ),
+                IsRevoked = false,
+                User = user,
+            };
+            await _refreshTokenRepository.AddAsync(newRefreshTokenEntity);
+            await _refreshTokenRepository.SaveChangesAsync();
+            return new RefreshTokenResponseDto
+            {
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken,
+            };
         }
     }
 }

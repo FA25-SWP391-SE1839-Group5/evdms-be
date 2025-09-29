@@ -26,5 +26,14 @@ namespace EVDMS.API.Controllers
                 );
             return Ok(new ApiResponse<LoginResponseDto>(result));
         }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto dto)
+        {
+            var result = await _authService.RefreshTokenAsync(dto);
+            if (result == null)
+                return Unauthorized(new ApiResponse<string>("Invalid or expired refresh token."));
+            return Ok(new ApiResponse<RefreshTokenResponseDto>(result));
+        }
     }
 }

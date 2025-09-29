@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Serialization;
-
-namespace EVDMS.Common.Enums
+﻿namespace EVDMS.Common.Enums
 {
     public enum VehicleColor
     {

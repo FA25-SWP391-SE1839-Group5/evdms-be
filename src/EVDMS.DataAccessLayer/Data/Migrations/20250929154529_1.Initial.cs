@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -219,7 +218,6 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     FullName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    MustChangePassword = table.Column<bool>(type: "boolean", nullable: false),
                     Role = table.Column<string>(type: "text", nullable: false),
                     LastLoginAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
@@ -668,7 +666,6 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     "Email",
                     "FullName",
                     "LastLoginAt",
-                    "MustChangePassword",
                     "PasswordHash",
                     "PasswordResetToken",
                     "PasswordResetTokenExpiresAt",
@@ -679,10 +676,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     {
                         new Guid("20000000-0000-0000-0000-000000000001"),
                         null,
-                        "admin@email.com",
+                        "admin@example.com",
                         "Admin User",
                         null,
-                        false,
                         "$2a$11$nAccBp1/4t.CxdEBKLXSp.cM3DcozB5b.itLdNwAYPYx/El1ENIdW",
                         null,
                         null,
@@ -691,10 +687,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     {
                         new Guid("20000000-0000-0000-0000-000000000004"),
                         null,
-                        "evmstaff@email.com",
+                        "evmstaff@example.com",
                         "EVM Staff User",
                         null,
-                        false,
                         "$2a$11$RQaQvAyAEnDiAved/V5wzOQGwKG3CTmDiWa7uxTBlvR2IUUZ06pWm",
                         null,
                         null,
@@ -732,7 +727,6 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     "Email",
                     "FullName",
                     "LastLoginAt",
-                    "MustChangePassword",
                     "PasswordHash",
                     "PasswordResetToken",
                     "PasswordResetTokenExpiresAt",
@@ -743,10 +737,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     {
                         new Guid("20000000-0000-0000-0000-000000000002"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
-                        "dealermanager@email.com",
+                        "dealermanager@example.com",
                         "Dealer Manager User",
                         null,
-                        false,
                         "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
                         null,
                         null,
@@ -755,10 +748,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     {
                         new Guid("20000000-0000-0000-0000-000000000003"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
-                        "dealerstaff@email.com",
+                        "dealerstaff@example.com",
                         "Dealer Staff User",
                         null,
-                        false,
                         "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
                         null,
                         null,

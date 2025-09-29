@@ -12,14 +12,20 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
 
         public async Task<RefreshToken?> GetByTokenHashAsync(string tokenHash)
         {
-            return await _context
-                .RefreshTokens.Include(r => r.User)
-                .FirstOrDefaultAsync(r => r.TokenHash == tokenHash);
+            return await _dbSet
+                .Include(rt => rt.User)
+                .FirstOrDefaultAsync(rt => rt.TokenHash == tokenHash);
         }
 
-        public async Task<IEnumerable<RefreshToken>> GetByUserIdAsync(Guid userId)
+        public async Task RevokeAsync(string tokenHash)
         {
-            return await _context.RefreshTokens.Where(r => r.UserId == userId).ToListAsync();
+            var token = await _dbSet.FirstOrDefaultAsync(rt => rt.TokenHash == tokenHash);
+            if (token != null)
+            {
+                token.IsRevoked = true;
+                _dbSet.Update(token);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
