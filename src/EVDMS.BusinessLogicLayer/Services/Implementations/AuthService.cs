@@ -5,6 +5,7 @@ using EVDMS.Common.Settings;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
@@ -16,13 +17,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IJwtService _jwtService;
         private readonly JwtSettings _jwtSettings;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
+        private readonly IEmailService _emailService;
+        private readonly IConfiguration _configuration;
 
         public AuthService(
             IUserRepository userRepository,
             IMapper mapper,
             IJwtService jwtService,
             IOptions<JwtSettings> jwtOptions,
-            IRefreshTokenRepository refreshTokenRepository
+            IRefreshTokenRepository refreshTokenRepository,
+            IEmailService emailService,
+            IConfiguration configuration
         )
         {
             _userRepository = userRepository;
@@ -30,6 +35,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _jwtService = jwtService;
             _jwtSettings = jwtOptions.Value;
             _refreshTokenRepository = refreshTokenRepository;
+            _emailService = emailService;
+            _configuration = configuration;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto)
@@ -106,6 +113,57 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (storedToken == null || storedToken.IsRevoked)
                 return false;
             await _refreshTokenRepository.RevokeAsync(refreshTokenHash);
+            return true;
+        }
+
+        public async Task<bool> RequestPasswordResetAsync(PasswordResetRequestDto dto)
+        {
+            var user = await _userRepository.GetByEmailAsync(dto.Email);
+            if (user == null || !user.IsActive)
+                return false;
+
+            var token = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
+            user.PasswordResetToken = token;
+            user.PasswordResetTokenExpiresAt = DateTime.UtcNow.AddHours(1);
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+
+            var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
+            var resetLink = $"{baseUrl}/reset-password?token={token}";
+            var subject = "Password Reset Request";
+            var body =
+                $"<p>Click <a href='{resetLink}'>here</a> to reset your password. This link expires in 1 hour.</p>";
+            await _emailService.SendEmailAsync(user.Email, subject, body);
+
+            return true;
+        }
+
+        public async Task<bool> ResetPasswordAsync(string token, PasswordResetDto dto)
+        {
+            var user = (
+                await _userRepository.FindAsync(u => u.PasswordResetToken == token)
+            ).FirstOrDefault();
+            if (
+                user == null
+                || user.PasswordResetTokenExpiresAt == null
+                || user.PasswordResetTokenExpiresAt < DateTime.UtcNow
+            )
+            {
+                return false;
+            }
+            if (!PasswordHasher.VerifyPassword(dto.OldPassword, user.PasswordHash))
+            {
+                return false;
+            }
+            if (dto.NewPassword != dto.ConfirmNewPassword)
+            {
+                return false;
+            }
+            user.PasswordHash = PasswordHasher.HashPassword(dto.NewPassword);
+            user.PasswordResetToken = null;
+            user.PasswordResetTokenExpiresAt = null;
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
             return true;
         }
     }

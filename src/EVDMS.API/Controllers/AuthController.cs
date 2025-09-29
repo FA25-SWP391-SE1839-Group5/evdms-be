@@ -1,6 +1,7 @@
 ﻿using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -44,7 +45,30 @@ namespace EVDMS.API.Controllers
                 return BadRequest(
                     new ApiResponse<string>("Invalid or already revoked refresh token.")
                 );
-            return Ok(new ApiResponse<string>(null, "Logout successful."));
+            return Ok(new ApiResponse<string>("Logout successful."));
+        }
+
+        [HttpPost("request-password-reset")]
+        public async Task<IActionResult> RequestPasswordReset(
+            [FromBody] PasswordResetRequestDto dto
+        )
+        {
+            var result = await _authService.RequestPasswordResetAsync(dto);
+            if (!result)
+                return BadRequest(new ApiResponse<string>("User not found or inactive."));
+            return Ok(new ApiResponse<string>(null, "Password reset link sent successfully."));
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword(
+            [FromQuery] string token,
+            [FromBody] PasswordResetDto dto
+        )
+        {
+            var result = await _authService.ResetPasswordAsync(token, dto);
+            if (!result)
+                return BadRequest(new ApiResponse<string>("Password reset failed."));
+            return Ok(new ApiResponse<string>(null, "Password has been reset successfully."));
         }
     }
 }
