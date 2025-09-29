@@ -114,15 +114,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return _mapper.Map<UserDto>(user);
         }
 
-        // Overload for the generic interface (not used, but required for compatibility)
-        public override async Task<UserDto> CreateAsync(CreateUserDto dto)
-        {
-            // You can throw or implement a default behavior if needed
-            throw new NotImplementedException(
-                "Use CreateAsync(CreateUserDto dto, UserRole currentUserRole) instead."
-            );
-        }
-
         private static string GenerateTemporaryPassword(int length = 12)
         {
             const string valid =
@@ -139,6 +130,14 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 }
             }
             return res.ToString();
+        }
+
+        public async Task<UserDto?> GetCurrentUserAsync(Guid userId)
+        {
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user == null)
+                return null;
+            return _mapper.Map<UserDto>(user);
         }
     }
 }

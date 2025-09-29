@@ -52,15 +52,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var response = _mapper.Map<LoginResponseDto>(user);
             response.AccessToken = _jwtService.GenerateAccessToken(user);
 
-            var refreshToken = _jwtService.GenerateRefreshToken();
-            var refreshTokenHash = JwtService.HashRefreshToken(refreshToken);
+            var refreshToken = JwtUtils.GenerateRefreshToken();
+            var refreshTokenHash = JwtUtils.HashRefreshToken(refreshToken);
+            var refreshTokenExpiry = JwtUtils.GetRefreshTokenExpiryDate(
+                _jwtSettings.RefreshTokenExpirationDays
+            );
             var refreshTokenEntity = new RefreshToken
             {
                 UserId = user.Id,
                 TokenHash = refreshTokenHash,
-                ExpiresAt = JwtService.GetRefreshTokenExpiryDate(
-                    _jwtSettings.RefreshTokenExpirationDays
-                ),
+                ExpiresAt = refreshTokenExpiry,
                 IsRevoked = false,
                 User = user,
             };
@@ -72,7 +73,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<RefreshTokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto dto)
         {
-            var refreshTokenHash = JwtService.HashRefreshToken(dto.RefreshToken);
+            var refreshTokenHash = JwtUtils.HashRefreshToken(dto.RefreshToken);
             var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(refreshTokenHash);
             if (
                 storedToken == null
@@ -82,8 +83,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 return null;
             var user = storedToken.User;
             var newAccessToken = _jwtService.GenerateAccessToken(user);
-            var newRefreshToken = _jwtService.GenerateRefreshToken();
-            var newRefreshTokenHash = JwtService.HashRefreshToken(newRefreshToken);
+            var newRefreshToken = JwtUtils.GenerateRefreshToken();
+            var newRefreshTokenHash = JwtUtils.HashRefreshToken(newRefreshToken);
             storedToken.IsRevoked = true;
             _refreshTokenRepository.Update(storedToken);
             await _refreshTokenRepository.SaveChangesAsync();
@@ -91,7 +92,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             {
                 UserId = user.Id,
                 TokenHash = newRefreshTokenHash,
-                ExpiresAt = JwtService.GetRefreshTokenExpiryDate(
+                ExpiresAt = JwtUtils.GetRefreshTokenExpiryDate(
                     _jwtSettings.RefreshTokenExpirationDays
                 ),
                 IsRevoked = false,
@@ -108,7 +109,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<bool> LogoutAsync(RefreshTokenRequestDto dto)
         {
-            var refreshTokenHash = JwtService.HashRefreshToken(dto.RefreshToken);
+            var refreshTokenHash = JwtUtils.HashRefreshToken(dto.RefreshToken);
             var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(refreshTokenHash);
             if (storedToken == null || storedToken.IsRevoked)
                 return false;

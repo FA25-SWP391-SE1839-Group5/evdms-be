@@ -1,7 +1,7 @@
 ﻿using EVDMS.API.Middlewares;
-using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -43,7 +43,7 @@ namespace EVDMS.API.Controllers
         {
             try
             {
-                var currentUserRole = JwtService.GetUserRoleFromClaims(User);
+                var currentUserRole = JwtUtils.GetUserRoleFromClaims(User);
                 if (currentUserRole == null)
                     return StatusCode(
                         403,
@@ -88,6 +88,21 @@ namespace EVDMS.API.Controllers
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<string>(null, "User deleted successfully"));
+        }
+
+        [HttpGet("me")]
+        public async Task<IActionResult> Me()
+        {
+            var userId = JwtUtils.GetUserIdFromClaims(User);
+            if (userId == null)
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing user ID in token.")
+                );
+
+            var user = await userService.GetCurrentUserAsync(userId.Value);
+            if (user == null)
+                return NotFound(new ApiResponse<string>("User not found"));
+            return Ok(new ApiResponse<UserDto>(user));
         }
     }
 }

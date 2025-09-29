@@ -79,6 +79,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
             var updated = await service.UpdateAsync(created.Id, updateDto);
             var found = await service.GetByIdAsync(created.Id);
             Assert.True(updated);
+            Assert.NotNull(found);
             Assert.Equal("After Update", found.FullName);
         }
 

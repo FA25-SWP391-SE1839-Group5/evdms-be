@@ -7,5 +7,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
         : IBaseService<UserDto, CreateUserDto, UpdateUserDto, PatchUserDto>
     {
         Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole);
+        Task<UserDto?> GetCurrentUserAsync(Guid userId);
     }
 }
