@@ -26,6 +26,24 @@ namespace EVDMS.BusinessLogicLayer
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPromotionRepository, PromotionRepository>();
             services.AddScoped<IPromotionService, PromotionService>();
+            services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+            services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<IQuotationRepository, QuotationRepository>();
+            services.AddScoped<IQuotationService, QuotationService>();
+            services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
+            services.AddScoped<ISalesOrderService, SalesOrderService>();
+            services.AddScoped<ITestDriveRepository, TestDriveRepository>();
+            services.AddScoped<ITestDriveService, TestDriveService>();
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IVehicleService, VehicleService>();
+            services.AddScoped<IVehicleModelRepository, VehicleModelRepository>();
+            services.AddScoped<IVehicleModelService, VehicleModelService>();
+            services.AddScoped<IVehicleVariantRepository, VehicleVariantRepository>();
+            services.AddScoped<IVehicleVariantService, VehicleVariantService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IOemInventoryRepository, OemInventoryRepository>();
+            services.AddScoped<IOemInventoryService, OemInventoryService>();
 
             // Register AutoMapper profiles
             services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
@@ -34,6 +52,15 @@ namespace EVDMS.BusinessLogicLayer
             services.AddAutoMapper(cfg => cfg.AddProfile<DealerProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<DealerContractProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<PromotionProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<FeedbackProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<QuotationProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<SalesOrderProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<TestDriveProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<VehicleProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<VehicleModelProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<VehicleVariantProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<PaymentProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<OemInventoryProfile>());
 
             return services;
         }

@@ -1,9 +1,7 @@
-﻿using System.Security.Claims;
-using EVDMS.API.Middlewares;
+﻿using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
-using EVDMS.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
