@@ -1,6 +1,5 @@
 ﻿using EVDMS.Common.Enums;
 using EVDMS.Common.Helpers;
-using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
@@ -12,8 +11,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 // Tesla Model Y
                 new VehicleVariant
                 {
-                    Id = VehicleVariantIds.TeslaModelYLongRange,
-                    ModelId = VehicleModelIds.TeslaModelY,
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111101"),
+                    ModelId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     Name = "Tesla Model Y Long Range All-Wheel Drive",
                     BasePrice = 46630,
                     SpecsObject = new VehicleSpecs
@@ -85,8 +84,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new VehicleVariant
                 {
-                    Id = VehicleVariantIds.TeslaModelYPerformance,
-                    ModelId = VehicleModelIds.TeslaModelY,
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111102"),
+                    ModelId = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     Name = "Tesla Model Y Performance",
                     BasePrice = 57000,
                     SpecsObject = new VehicleSpecs
@@ -153,8 +152,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 // Tesla Model 3
                 new VehicleVariant
                 {
-                    Id = VehicleVariantIds.TeslaModel3Performance,
-                    ModelId = VehicleModelIds.TeslaModel3,
+                    Id = Guid.Parse("22222222-2222-2222-2222-222222222201"),
+                    ModelId = Guid.Parse("22222222-2222-2222-2222-222222222222"),
                     Name = "Tesla Model 3 Performance",
                     BasePrice = 54990,
                     SpecsObject = new VehicleSpecs

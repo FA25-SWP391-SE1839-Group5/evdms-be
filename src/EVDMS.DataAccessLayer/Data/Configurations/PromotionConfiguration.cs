@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Promotion> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(p => p.Type).HasConversion<string>();
             builder
                 .HasOne(p => p.Dealer)
                 .WithMany(d => d.Promotions)

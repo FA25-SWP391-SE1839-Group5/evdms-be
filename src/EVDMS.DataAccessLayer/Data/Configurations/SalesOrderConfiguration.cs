@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<SalesOrder> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(so => so.Status).HasConversion<string>();
             builder
                 .HasOne(so => so.Quotation)
                 .WithMany(q => q.SalesOrders)

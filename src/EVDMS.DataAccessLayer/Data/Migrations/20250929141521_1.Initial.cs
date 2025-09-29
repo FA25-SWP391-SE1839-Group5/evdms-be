@@ -137,7 +137,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     DealerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -175,7 +175,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     DealerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Type = table.Column<int>(type: "integer", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     DiscountPercent = table.Column<decimal>(type: "numeric", nullable: false),
                     StartDate = table.Column<DateTime>(
@@ -220,7 +220,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Email = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     MustChangePassword = table.Column<bool>(type: "boolean", nullable: false),
-                    Role = table.Column<int>(type: "integer", nullable: false),
+                    Role = table.Column<string>(type: "text", nullable: false),
                     LastLoginAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
@@ -230,7 +230,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         type: "timestamp with time zone",
                         nullable: true
                     ),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    IsActive = table.Column<bool>(
+                        type: "boolean",
+                        nullable: false,
+                        defaultValue: true
+                    ),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -298,7 +302,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -412,9 +416,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     VariantId = table.Column<Guid>(type: "uuid", nullable: false),
                     DealerId = table.Column<Guid>(type: "uuid", nullable: false),
                     Vin = table.Column<string>(type: "text", nullable: false),
-                    Color = table.Column<int>(type: "integer", nullable: false),
-                    Type = table.Column<int>(type: "integer", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Color = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -460,7 +464,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -525,7 +529,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Status = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -575,7 +579,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Method = table.Column<int>(type: "integer", nullable: false),
+                    Method = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -644,6 +648,62 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "Dealers",
+                columns: new[] { "Id", "Address", "Name", "Region" },
+                values: new object[]
+                {
+                    new Guid("30000000-0000-0000-0000-000000000001"),
+                    "100 Nguyen Van Cu, District 1, Ho Chi Minh City",
+                    "EV Motors Saigon",
+                    "Ho Chi Minh City",
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[]
+                {
+                    "Id",
+                    "DealerId",
+                    "Email",
+                    "FullName",
+                    "LastLoginAt",
+                    "MustChangePassword",
+                    "PasswordHash",
+                    "PasswordResetToken",
+                    "PasswordResetTokenExpiresAt",
+                    "Role",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("20000000-0000-0000-0000-000000000001"),
+                        null,
+                        "admin@email.com",
+                        "Admin User",
+                        null,
+                        false,
+                        "$2a$11$nAccBp1/4t.CxdEBKLXSp.cM3DcozB5b.itLdNwAYPYx/El1ENIdW",
+                        null,
+                        null,
+                        "Admin",
+                    },
+                    {
+                        new Guid("20000000-0000-0000-0000-000000000004"),
+                        null,
+                        "evmstaff@email.com",
+                        "EVM Staff User",
+                        null,
+                        false,
+                        "$2a$11$RQaQvAyAEnDiAved/V5wzOQGwKG3CTmDiWa7uxTBlvR2IUUZ06pWm",
+                        null,
+                        null,
+                        "EvmStaff",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "VehicleModels",
                 columns: new[] { "Id", "Description", "ImageUrl", "Name" },
                 values: new object[,]
@@ -659,6 +719,50 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
                         "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
                         "Tesla Model 3",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[]
+                {
+                    "Id",
+                    "DealerId",
+                    "Email",
+                    "FullName",
+                    "LastLoginAt",
+                    "MustChangePassword",
+                    "PasswordHash",
+                    "PasswordResetToken",
+                    "PasswordResetTokenExpiresAt",
+                    "Role",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("20000000-0000-0000-0000-000000000002"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "dealermanager@email.com",
+                        "Dealer Manager User",
+                        null,
+                        false,
+                        "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
+                        null,
+                        null,
+                        "DealerManager",
+                    },
+                    {
+                        new Guid("20000000-0000-0000-0000-000000000003"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "dealerstaff@email.com",
+                        "Dealer Staff User",
+                        null,
+                        false,
+                        "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                        null,
+                        null,
+                        "DealerStaff",
                     },
                 }
             );

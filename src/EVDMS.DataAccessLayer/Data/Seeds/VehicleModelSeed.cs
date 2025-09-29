@@ -1,4 +1,3 @@
-using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
@@ -9,7 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
             [
                 new VehicleModel
                 {
-                    Id = VehicleModelIds.TeslaModelY,
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
                     Name = "Tesla Model Y",
                     Description =
                         "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
@@ -18,7 +17,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new VehicleModel
                 {
-                    Id = VehicleModelIds.TeslaModel3,
+                    Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
                     Name = "Tesla Model 3",
                     Description =
                         "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",

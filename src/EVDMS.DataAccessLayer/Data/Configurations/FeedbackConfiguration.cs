@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Feedback> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(f => f.Status).HasConversion<string>();
             builder
                 .HasOne(f => f.Customer)
                 .WithMany(c => c.Feedbacks)

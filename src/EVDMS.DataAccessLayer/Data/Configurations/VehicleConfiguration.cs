@@ -9,6 +9,9 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Vehicle> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(v => v.Color).HasConversion<string>();
+            builder.Property(v => v.Status).HasConversion<string>();
+            builder.Property(v => v.Type).HasConversion<string>();
             builder
                 .HasOne(v => v.VehicleVariant)
                 .WithMany(vv => vv.Vehicles)

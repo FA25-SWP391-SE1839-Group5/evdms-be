@@ -25,9 +25,6 @@ namespace EVDMS.Common.Dtos
         public required string Email { get; set; }
 
         [Required]
-        public required string PasswordHash { get; set; }
-
-        [Required]
         public UserRole Role { get; set; }
     }
 
@@ -43,7 +40,7 @@ namespace EVDMS.Common.Dtos
         public required string Email { get; set; }
 
         [Required]
-        public required string PasswordHash { get; set; }
+        public required string Password { get; set; }
 
         [Required]
         public UserRole Role { get; set; }

@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<TestDrive> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(td => td.Status).HasConversion<string>();
             builder
                 .HasOne(td => td.Customer)
                 .WithMany(c => c.TestDrives)

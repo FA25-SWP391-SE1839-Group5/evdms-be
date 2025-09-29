@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(u => u.Method).HasConversion<string>();
             builder
                 .HasOne(p => p.SalesOrder)
                 .WithMany(so => so.Payments)

@@ -1,12 +1,14 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
-using EVDMS.DataAccessLayer.Data;
+using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
@@ -14,11 +16,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
+        private readonly string _jwtSecret = "YourSuperSecretKey123!"; // TODO: Move to config
 
-        public UserService(IUserRepository userRepository, IMapper mapper)
+        public UserService(
+            IUserRepository userRepository,
+            IMapper mapper,
+            IEmailService emailService
+        )
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task<PaginatedResult<UserDto>> GetAllAsync(
@@ -51,10 +60,40 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<UserDto> CreateAsync(CreateUserDto dto)
         {
+            var tempPassword = GenerateTemporaryPassword();
+            var passwordHash = PasswordHasher.HashPassword(tempPassword);
+
             var user = _mapper.Map<User>(dto);
+            user.PasswordHash = passwordHash;
+            user.MustChangePassword = true;
+
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
+
+            var subject = "Your Account Has Been Created";
+            var body =
+                $"Hello {user.FullName},<br/><br/>Your account has been created. Your temporary password is: <b>{tempPassword}</b><br/>Please change your password after logging in.";
+            await _emailService.SendEmailAsync(user.Email, subject, body);
+
             return _mapper.Map<UserDto>(user);
+        }
+
+        private static string GenerateTemporaryPassword(int length = 12)
+        {
+            const string valid =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
+            var res = new StringBuilder();
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var uintBuffer = new byte[sizeof(uint)];
+                while (res.Length < length)
+                {
+                    rng.GetBytes(uintBuffer);
+                    var num = BitConverter.ToUInt32(uintBuffer, 0);
+                    res.Append(valid[(int)(num % (uint)valid.Length)]);
+                }
+            }
+            return res.ToString();
         }
 
         public async Task<bool> UpdateAsync(Guid id, UpdateUserDto dto)

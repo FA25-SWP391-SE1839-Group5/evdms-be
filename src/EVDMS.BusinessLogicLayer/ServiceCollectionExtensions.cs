@@ -18,10 +18,14 @@ namespace EVDMS.BusinessLogicLayer
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             // Register AutoMapper profiles
             services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<UserProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<AuthProfile>());
 
             return services;
         }

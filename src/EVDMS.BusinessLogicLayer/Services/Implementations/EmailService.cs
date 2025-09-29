@@ -1,6 +1,5 @@
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
 using Microsoft.Extensions.Options;

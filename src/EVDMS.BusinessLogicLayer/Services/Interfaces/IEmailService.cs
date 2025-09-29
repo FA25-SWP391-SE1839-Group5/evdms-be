@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
     public interface IEmailService
