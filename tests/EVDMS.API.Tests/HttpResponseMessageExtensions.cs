@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 using EVDMS.API.Middlewares;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 
 namespace EVDMS.API.Tests
 {

@@ -1,4 +1,4 @@
-﻿namespace EVDMS.Common.DTOs
+﻿namespace EVDMS.Common.Dtos
 {
     public class PaginatedResult<T>
     {

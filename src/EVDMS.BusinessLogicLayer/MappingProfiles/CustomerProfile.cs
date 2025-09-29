@@ -1,5 +1,5 @@
 using AutoMapper;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.BusinessLogicLayer.MappingProfiles

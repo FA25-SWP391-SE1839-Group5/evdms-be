@@ -1,7 +1,7 @@
 using EVDMS.API.Controllers;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 

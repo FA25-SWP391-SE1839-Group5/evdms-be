@@ -1,61 +1,42 @@
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
     public class EmailService : IEmailService
     {
-        private readonly EmailSettings _settings;
-        private readonly IConfiguration _configuration;
+        private readonly EmailSettings _emailSettings;
 
-        public EmailService(IOptions<EmailSettings> options, IConfiguration configuration)
+        public EmailService(IOptions<EmailSettings> emailOptions)
         {
-            _settings = options.Value;
-            _configuration = configuration;
+            _emailSettings = emailOptions.Value;
         }
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
-            using var client = new SmtpClient(_settings.SmtpServer, _settings.Port)
+            using var client = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port)
             {
                 Credentials = new NetworkCredential(
-                    _settings.SenderEmail,
-                    _settings.SenderPassword
+                    _emailSettings.SenderEmail,
+                    _emailSettings.SenderPassword
                 ),
                 EnableSsl = true,
             };
-            var mail = new MailMessage
+
+            var mailMessage = new MailMessage()
             {
-                From = new MailAddress(_settings.SenderEmail, _settings.SenderName),
+                From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
                 Subject = subject,
                 Body = body,
                 IsBodyHtml = true,
             };
-            mail.To.Add(to);
-            await client.SendMailAsync(mail);
-        }
+            mailMessage.To.Add(to);
 
-        public async Task SendActionEmailAsync(
-            string to,
-            string subject,
-            string action,
-            string token,
-            string htmlTemplate
-        )
-        {
-            var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
-            var environment = _configuration["ASPNETCORE_ENVIRONMENT"] ?? "Production";
-            var encodedToken = Uri.EscapeDataString(token);
-            string link =
-                environment == "Development"
-                    ? $"{baseUrl}/api/auth/{action}?token={encodedToken}"
-                    : $"{baseUrl}/{action}?token={encodedToken}";
-            var body = string.Format(htmlTemplate, link, DateTime.UtcNow.Year);
-            await SendEmailAsync(to, subject, body);
+            await client.SendMailAsync(mailMessage);
         }
     }
 }

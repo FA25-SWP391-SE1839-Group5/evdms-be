@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace EVDMS.Common.DTOs
+namespace EVDMS.Common.Dtos
 {
     public class CustomerDto
     {

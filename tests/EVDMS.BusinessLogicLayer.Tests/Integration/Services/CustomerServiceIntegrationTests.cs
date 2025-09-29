@@ -1,6 +1,6 @@
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;

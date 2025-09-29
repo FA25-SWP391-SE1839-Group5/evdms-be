@@ -219,6 +219,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     FullName = table.Column<string>(type: "text", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
+                    MustChangePassword = table.Column<bool>(type: "boolean", nullable: false),
                     Role = table.Column<int>(type: "integer", nullable: false),
                     LastLoginAt = table.Column<DateTime>(
                         type: "timestamp with time zone",

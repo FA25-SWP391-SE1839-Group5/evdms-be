@@ -1,7 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Entities;
@@ -21,13 +25,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public string GenerateAccessToken(User user)
         {
-            var claims = new[]
+            var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("fullName", user.FullName),
-                //new Claim("roleId", user.RoleId.ToString()),
+                new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new(JwtRegisteredClaimNames.Email, user.Email),
+                new("fullName", user.FullName),
+                new("role", user.Role.ToString()),
             };
+
+            if (user.DealerId.HasValue)
+            {
+                claims.Add(new Claim("dealerId", user.DealerId.Value.ToString()));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
