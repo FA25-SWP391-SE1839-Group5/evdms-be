@@ -16,6 +16,7 @@ namespace EVDMS.BusinessLogicLayer
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IDealerRepository, DealerRepository>();
+            services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
@@ -26,6 +27,7 @@ namespace EVDMS.BusinessLogicLayer
             services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<UserProfile>());
             services.AddAutoMapper(cfg => cfg.AddProfile<AuthProfile>());
+            services.AddAutoMapper(cfg => cfg.AddProfile<DealerProfile>());
 
             return services;
         }
