@@ -8,7 +8,6 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Vehicle> builder)
         {
-            builder.HasIndex(v => v.Vin).IsUnique();
             builder.ConfigureTimestamps();
             builder
                 .HasOne(v => v.VehicleVariant)
@@ -16,10 +15,11 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasForeignKey(v => v.VariantId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder
-                .HasOne(v => v.VehicleColor)
-                .WithMany(vc => vc.Vehicles)
-                .HasForeignKey(v => v.ColorId)
+                .HasOne(v => v.Dealer)
+                .WithMany(d => d.Vehicles)
+                .HasForeignKey(v => v.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasIndex(v => v.Vin).IsUnique();
         }
     }
 }

@@ -26,7 +26,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim("fullName", user.FullName),
-                new Claim("roleId", user.RoleId.ToString()),
+                //new Claim("roleId", user.RoleId.ToString()),
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));

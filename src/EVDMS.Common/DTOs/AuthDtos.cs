@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using EVDMS.Common.Enums;
 
 namespace EVDMS.BusinessLogicLayer.Dtos.Auth
 {
@@ -16,7 +17,7 @@ namespace EVDMS.BusinessLogicLayer.Dtos.Auth
         public string Phone { get; set; } = string.Empty;
 
         [Required]
-        public string Role { get; set; } = string.Empty;
+        public UserRole Role { get; set; }
         public string? DealerName { get; set; } = null;
 
         [Required]
@@ -39,7 +40,6 @@ namespace EVDMS.BusinessLogicLayer.Dtos.Auth
         public string RefreshToken { get; set; } = string.Empty;
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public bool IsEmailVerified { get; set; }
     }
 
     public class RefreshTokenRequestDto

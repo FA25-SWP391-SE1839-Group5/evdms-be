@@ -15,6 +15,8 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(vm => vm.VehicleVariants)
                 .HasForeignKey(vv => vv.ModelId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(vv => vv.Specs).HasColumnType("jsonb");
+            builder.Property(vv => vv.Features).HasColumnType("jsonb");
             builder.HasData(VehicleVariantSeed.VehicleVariants);
         }
     }

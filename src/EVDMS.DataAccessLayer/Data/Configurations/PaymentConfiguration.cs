@@ -10,9 +10,9 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.ConfigureTimestamps();
             builder
-                .HasOne(p => p.SalesContract)
-                .WithMany(sc => sc.Payments)
-                .HasForeignKey(p => p.SalesContractId)
+                .HasOne(p => p.SalesOrder)
+                .WithMany(so => so.Payments)
+                .HasForeignKey(p => p.SalesOrderId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

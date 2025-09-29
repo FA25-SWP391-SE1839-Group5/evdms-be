@@ -2,9 +2,8 @@ namespace EVDMS.DataAccessLayer.Entities
 {
     public class VehicleModel : BaseEntity
     {
-        public required string ModelName { get; set; }
+        public required string Name { get; set; }
         public required string Description { get; set; }
-        public short Year { get; set; }
         public string? ImageUrl { get; set; }
 
         public ICollection<VehicleVariant> VehicleVariants { get; set; } = [];

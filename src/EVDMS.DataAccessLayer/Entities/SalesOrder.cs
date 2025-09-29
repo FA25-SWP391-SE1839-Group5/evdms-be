@@ -9,6 +9,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid UserId { get; set; }
         public Guid CustomerId { get; set; }
         public Guid VehicleId { get; set; }
+        public DateTime Date { get; set; }
         public SalesOrderStatus Status { get; set; }
 
         public Quotation Quotation { get; set; } = null!;
@@ -16,6 +17,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public User User { get; set; } = null!;
         public Customer Customer { get; set; } = null!;
         public Vehicle Vehicle { get; set; } = null!;
-        public ICollection<SalesContract> SalesContracts { get; set; } = [];
+        public ICollection<Payment> Payments { get; set; } = [];
     }
 }
