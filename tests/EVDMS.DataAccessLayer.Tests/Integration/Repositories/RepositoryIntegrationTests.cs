@@ -7,7 +7,7 @@ namespace EVDMS.DataAccessLayer.Tests.Integration.Repositories
 {
     public class RepositoryIntegrationTests
     {
-        private AppDbContext GetInMemoryDbContext()
+        private static AppDbContext GetInMemoryDbContext()
         {
             var options = new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())

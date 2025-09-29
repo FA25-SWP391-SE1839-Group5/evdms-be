@@ -5,10 +5,14 @@ using EVDMS.Common.Dtos;
 
 namespace EVDMS.API.Tests.Integration.Controllers
 {
-    public class CustomerControllerIntegrationTests(CustomWebApplicationFactory factory)
-        : IClassFixture<CustomWebApplicationFactory>
+    public class CustomerControllerIntegrationTests : IClassFixture<CustomWebApplicationFactory>
     {
-        private readonly HttpClient _client = factory.CreateClient();
+        private readonly HttpClient _client;
+
+        public CustomerControllerIntegrationTests(CustomWebApplicationFactory factory)
+        {
+            _client = factory.CreateClient();
+        }
 
         [Trait("Category", "Integration")]
         [Fact]
