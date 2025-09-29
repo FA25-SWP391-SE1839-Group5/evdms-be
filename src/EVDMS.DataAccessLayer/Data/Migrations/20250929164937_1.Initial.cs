@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -903,6 +904,13 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 name: "IX_Users_DealerId",
                 table: "Users",
                 column: "DealerId"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true
             );
 
             migrationBuilder.CreateIndex(

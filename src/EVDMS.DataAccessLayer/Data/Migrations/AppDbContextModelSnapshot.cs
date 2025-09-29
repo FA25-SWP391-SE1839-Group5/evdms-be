@@ -568,6 +568,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
                     b.HasIndex("DealerId");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("Users");
 
                     b.HasData(

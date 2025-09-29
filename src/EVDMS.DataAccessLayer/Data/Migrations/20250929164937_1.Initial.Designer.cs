@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250929154529_1.Initial")]
+    [Migration("20250929164937_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -570,6 +570,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DealerId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
 

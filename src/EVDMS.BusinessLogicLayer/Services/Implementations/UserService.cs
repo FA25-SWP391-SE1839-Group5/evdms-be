@@ -91,6 +91,9 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
             }
 
+            if (await _userRepository.ExistsByEmailAsync(dto.Email))
+                throw new Exception($"A user with email '{dto.Email}' already exists.");
+
             var tempPassword = GenerateTemporaryPassword();
             var passwordHash = PasswordHasher.HashPassword(tempPassword);
 

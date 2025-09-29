@@ -12,6 +12,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
             builder.ConfigureTimestamps();
             builder.Property(u => u.Role).HasConversion<string>();
             builder.Property(u => u.IsActive).HasDefaultValue(true);
+            builder.HasIndex(u => u.Email).IsUnique();
             builder
                 .HasOne(u => u.Dealer)
                 .WithMany(d => d.Users)
