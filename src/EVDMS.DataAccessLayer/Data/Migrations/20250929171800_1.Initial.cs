@@ -574,7 +574,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     SalesOrderId = table.Column<Guid>(type: "uuid", nullable: false),
                     Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    PaymentDate = table.Column<DateTime>(
+                    Date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
@@ -655,6 +655,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     "100 Nguyen Van Cu, District 1, Ho Chi Minh City",
                     "EV Motors Saigon",
                     "Ho Chi Minh City",
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Promotions",
+                columns: new[]
+                {
+                    "Id",
+                    "DealerId",
+                    "Description",
+                    "DiscountPercent",
+                    "EndDate",
+                    "StartDate",
+                    "Type",
+                },
+                values: new object[]
+                {
+                    new Guid("60000000-0000-0000-0000-000000000001"),
+                    null,
+                    "Spring Sale: 10% off all vehicles!",
+                    10m,
+                    new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                    new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                    "Oem",
                 }
             );
 
@@ -752,6 +776,59 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "Feedbacks",
+                columns: new[] { "Id", "Content", "CustomerId", "DealerId", "Status" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000001"),
+                        "Great service and friendly staff!",
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "New",
+                    },
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000002"),
+                        "Quick response to my queries.",
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Reviewed",
+                    },
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000003"),
+                        "Had some issues with paperwork, but resolved.",
+                        new Guid("10000000-0000-0000-0000-000000000003"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Resolved",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Promotions",
+                columns: new[]
+                {
+                    "Id",
+                    "DealerId",
+                    "Description",
+                    "DiscountPercent",
+                    "EndDate",
+                    "StartDate",
+                    "Type",
+                },
+                values: new object[]
+                {
+                    new Guid("60000000-0000-0000-0000-000000000002"),
+                    new Guid("30000000-0000-0000-0000-000000000001"),
+                    "Year-end Clearance: 15% off selected models!",
+                    15m,
+                    new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                    new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                    "Dealer",
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[]
                 {
@@ -820,6 +897,188 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new Guid("22222222-2222-2222-2222-222222222222"),
                         "Tesla Model 3 Performance",
                         "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\",\"Unit\":null},\"MotorType\":{\"Value\":\"Dual PMSM\",\"Unit\":null},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\",\"Unit\":null},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\",\"Unit\":null},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\",\"Unit\":null},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":null,\"Unit\":null},\"V2lCapability\":{\"Value\":null,\"Unit\":null}}",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "OemInventories",
+                columns: new[] { "Id", "Quantity", "VariantId" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("50000000-0000-0000-0000-000000000001"),
+                        10,
+                        new Guid("11111111-1111-1111-1111-111111111101"),
+                    },
+                    {
+                        new Guid("50000000-0000-0000-0000-000000000002"),
+                        5,
+                        new Guid("11111111-1111-1111-1111-111111111102"),
+                    },
+                    {
+                        new Guid("50000000-0000-0000-0000-000000000003"),
+                        8,
+                        new Guid("22222222-2222-2222-2222-222222222201"),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Quotations",
+                columns: new[]
+                {
+                    "Id",
+                    "CustomerId",
+                    "DealerId",
+                    "Status",
+                    "TotalAmount",
+                    "UserId",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("70000000-0000-0000-0000-000000000001"),
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Sent",
+                        0m,
+                        new Guid("20000000-0000-0000-0000-000000000002"),
+                    },
+                    {
+                        new Guid("70000000-0000-0000-0000-000000000002"),
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Approved",
+                        0m,
+                        new Guid("20000000-0000-0000-0000-000000000003"),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Vehicles",
+                columns: new[] { "Id", "Color", "DealerId", "Status", "Type", "VariantId", "Vin" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("80000000-0000-0000-0000-000000000001"),
+                        "White",
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Available",
+                        "Sale",
+                        new Guid("11111111-1111-1111-1111-111111111101"),
+                        "5YJYGDEE8LF000001",
+                    },
+                    {
+                        new Guid("80000000-0000-0000-0000-000000000002"),
+                        "Black",
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Reserved",
+                        "Display",
+                        new Guid("11111111-1111-1111-1111-111111111102"),
+                        "5YJYGDEE8LF000002",
+                    },
+                    {
+                        new Guid("80000000-0000-0000-0000-000000000003"),
+                        "Blue",
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        "Reserved",
+                        "Demo",
+                        new Guid("22222222-2222-2222-2222-222222222201"),
+                        "5YJ3E1EA7LF000003",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "SalesOrders",
+                columns: new[]
+                {
+                    "Id",
+                    "CustomerId",
+                    "Date",
+                    "DealerId",
+                    "QuotationId",
+                    "Status",
+                    "UserId",
+                    "VehicleId",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("90000000-0000-0000-0000-000000000001"),
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new Guid("70000000-0000-0000-0000-000000000001"),
+                        "Pending",
+                        new Guid("20000000-0000-0000-0000-000000000002"),
+                        new Guid("80000000-0000-0000-0000-000000000001"),
+                    },
+                    {
+                        new Guid("90000000-0000-0000-0000-000000000002"),
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new Guid("70000000-0000-0000-0000-000000000002"),
+                        "Confirmed",
+                        new Guid("20000000-0000-0000-0000-000000000003"),
+                        new Guid("80000000-0000-0000-0000-000000000002"),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "TestDrives",
+                columns: new[]
+                {
+                    "Id",
+                    "CustomerId",
+                    "DealerId",
+                    "ScheduledAt",
+                    "Status",
+                    "VehicleId",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("b0000000-0000-0000-0000-000000000001"),
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new DateTime(2024, 4, 10, 9, 0, 0, 0, DateTimeKind.Utc),
+                        "Scheduled",
+                        new Guid("80000000-0000-0000-0000-000000000001"),
+                    },
+                    {
+                        new Guid("b0000000-0000-0000-0000-000000000002"),
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new DateTime(2024, 5, 15, 14, 0, 0, 0, DateTimeKind.Utc),
+                        "Completed",
+                        new Guid("80000000-0000-0000-0000-000000000002"),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
+                table: "Payments",
+                columns: new[] { "Id", "Amount", "Date", "Method", "SalesOrderId" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("a0000000-0000-0000-0000-000000000001"),
+                        500000m,
+                        new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                        "BankTransfer",
+                        new Guid("90000000-0000-0000-0000-000000000001"),
+                    },
+                    {
+                        new Guid("a0000000-0000-0000-0000-000000000002"),
+                        750000m,
+                        new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                        "Cash",
+                        new Guid("90000000-0000-0000-0000-000000000002"),
                     },
                 }
             );

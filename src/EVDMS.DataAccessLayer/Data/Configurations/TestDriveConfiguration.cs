@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -25,6 +26,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(v => v.TestDrives)
                 .HasForeignKey(td => td.VehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(TestDriveSeed.TestDrives);
         }
     }
 }

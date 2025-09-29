@@ -254,6 +254,38 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("DealerId");
 
                     b.ToTable("Feedbacks");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000001"),
+                            Content = "Great service and friendly staff!",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "New",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000002"),
+                            Content = "Quick response to my queries.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reviewed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000003"),
+                            Content = "Had some issues with paperwork, but resolved.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000003"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Resolved",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.OemInventory", b =>
@@ -283,6 +315,32 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("VariantId");
 
                     b.ToTable("OemInventories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Quantity = 10,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Quantity = 5,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Quantity = 8,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Payment", b =>
@@ -299,12 +357,12 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Method")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("SalesOrderId")
                         .HasColumnType("uuid");
@@ -319,6 +377,28 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("SalesOrderId");
 
                     b.ToTable("Payments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a0000000-0000-0000-0000-000000000001"),
+                            Amount = 500000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Method = "BankTransfer",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000001"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("a0000000-0000-0000-0000-000000000002"),
+                            Amount = 750000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Method = "Cash",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000002"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Promotion", b =>
@@ -362,6 +442,31 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("DealerId");
 
                     b.ToTable("Promotions");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Spring Sale: 10% off all vehicles!",
+                            DiscountPercent = 10m,
+                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Oem",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Description = "Year-end Clearance: 15% off selected models!",
+                            DiscountPercent = 15m,
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Quotation", b =>
@@ -405,6 +510,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Quotations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Sent",
+                            TotalAmount = 0m,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Approved",
+                            TotalAmount = 0m,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
@@ -494,6 +623,34 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("VehicleId");
 
                     b.ToTable("SalesOrders");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("90000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            QuotationId = new Guid("70000000-0000-0000-0000-000000000001"),
+                            Status = "Pending",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000002"),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("90000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            QuotationId = new Guid("70000000-0000-0000-0000-000000000002"),
+                            Status = "Confirmed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.TestDrive", b =>
@@ -537,6 +694,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("VehicleId");
 
                     b.ToTable("TestDrives");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            ScheduledAt = new DateTime(2024, 4, 10, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Scheduled",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            ScheduledAt = new DateTime(2024, 5, 15, 14, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Completed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.User", b =>
@@ -694,6 +875,44 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Vehicles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000001"),
+                            Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Available",
+                            Type = "Sale",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
+                            Vin = "5YJYGDEE8LF000001"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000002"),
+                            Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reserved",
+                            Type = "Display",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
+                            Vin = "5YJYGDEE8LF000002"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000003"),
+                            Color = "Blue",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reserved",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
+                            Vin = "5YJ3E1EA7LF000003"
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleModel", b =>

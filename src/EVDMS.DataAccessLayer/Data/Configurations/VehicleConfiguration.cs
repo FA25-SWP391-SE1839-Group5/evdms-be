@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,6 +24,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasForeignKey(v => v.DealerId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasIndex(v => v.Vin).IsUnique();
+            builder.HasData(VehicleSeed.Vehicles);
         }
     }
 }

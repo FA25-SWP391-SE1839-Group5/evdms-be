@@ -6,7 +6,7 @@ namespace EVDMS.DataAccessLayer.Entities
     {
         public Guid SalesOrderId { get; set; }
         public decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public DateTime Date { get; set; }
         public PaymentMethod Method { get; set; }
 
         public SalesOrder SalesOrder { get; set; } = null!;
