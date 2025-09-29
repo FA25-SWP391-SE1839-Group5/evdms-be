@@ -12,15 +12,25 @@ namespace EVDMS.Common.Dtos
 
     public class CreateDealerDto
     {
+        [Required]
         public required string Name { get; set; }
+
+        [Required]
         public required string Region { get; set; }
+
+        [Required]
         public required string Address { get; set; }
     }
 
     public class UpdateDealerDto
     {
+        [Required]
         public required string Name { get; set; }
+
+        [Required]
         public required string Region { get; set; }
+
+        [Required]
         public required string Address { get; set; }
     }
 

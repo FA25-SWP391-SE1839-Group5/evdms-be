@@ -122,14 +122,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (user == null || !user.IsActive)
                 return false;
 
-            // Generate token
             var token = Guid.NewGuid().ToString("N") + Guid.NewGuid().ToString("N");
             user.PasswordResetToken = token;
             user.PasswordResetTokenExpiresAt = DateTime.UtcNow.AddHours(1);
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
 
-            // Build reset link using configuration
             var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
             var resetLink = $"{baseUrl}/reset-password?token={token}";
             var subject = "Password Reset Request";

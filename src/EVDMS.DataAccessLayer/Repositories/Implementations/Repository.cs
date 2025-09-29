@@ -46,6 +46,10 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                         query = query.OrderBy(e => EF.Property<object>(e, actualSortBy));
                 }
             }
+            else
+            {
+                query = query.OrderBy(e => EF.Property<object>(e, "Id"));
+            }
             var totalCount = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return (items, totalCount);

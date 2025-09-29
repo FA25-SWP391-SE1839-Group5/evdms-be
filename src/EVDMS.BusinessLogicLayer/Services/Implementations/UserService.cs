@@ -10,12 +10,13 @@ using EVDMS.DataAccessLayer.Repositories.Interfaces;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
-    public class UserService : IUserService
+    public class UserService
+        : BaseService<User, UserDto, CreateUserDto, UpdateUserDto, PatchUserDto>,
+            IUserService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IDealerRepository _dealerRepository;
-        private readonly IMapper _mapper;
-        private readonly IEmailService _emailService;
+        private readonly IUserRepository userRepository;
+        private readonly IDealerRepository dealerRepository;
+        private readonly IEmailService emailService;
 
         public UserService(
             IUserRepository userRepository,
@@ -23,48 +24,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             IMapper mapper,
             IEmailService emailService
         )
+            : base(userRepository, mapper)
         {
-            _userRepository = userRepository;
-            _dealerRepository = dealerRepository;
-            _mapper = mapper;
-            _emailService = emailService;
-        }
-
-        public async Task<PaginatedResult<UserDto>> GetAllAsync(
-            int page,
-            int pageSize,
-            string? sortBy = null,
-            string? sortOrder = null
-        )
-        {
-            var (users, totalCount) = await _userRepository.GetAllAsync(
-                page,
-                pageSize,
-                sortBy,
-                sortOrder
-            );
-            return new PaginatedResult<UserDto>
-            {
-                Items = _mapper.Map<IEnumerable<UserDto>>(users),
-                TotalResults = totalCount,
-                Page = page,
-                PageSize = pageSize,
-            };
-        }
-
-        public async Task<UserDto?> GetByIdAsync(Guid id)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            return user == null ? null : _mapper.Map<UserDto>(user);
+            this.userRepository = userRepository;
+            this.dealerRepository = dealerRepository;
+            this.emailService = emailService;
         }
 
         public async Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole)
         {
-            // Role-based creation validation
-            if (currentUserRole == UserRole.Admin)
-            {
-                // Admins can create any user
-            }
+            if (currentUserRole == UserRole.Admin) { }
             else if (currentUserRole == UserRole.DealerManager)
             {
                 if (dto.Role != UserRole.DealerStaff)
@@ -78,7 +47,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (dto.DealerId != null)
             {
                 var dealer =
-                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
+                    await dealerRepository.GetByIdAsync(dto.DealerId.Value)
                     ?? throw new Exception("Dealer not found.");
                 if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
                     throw new Exception(
@@ -91,7 +60,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
             }
 
-            if (await _userRepository.ExistsByEmailAsync(dto.Email))
+            if (await userRepository.ExistsByEmailAsync(dto.Email))
                 throw new Exception($"A user with email '{dto.Email}' already exists.");
 
             var tempPassword = GenerateTemporaryPassword();
@@ -100,8 +69,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var user = _mapper.Map<User>(dto);
             user.PasswordHash = passwordHash;
 
-            await _userRepository.AddAsync(user);
-            await _userRepository.SaveChangesAsync();
+            await userRepository.AddAsync(user);
+            await userRepository.SaveChangesAsync();
 
             var subject = "Your Account Has Been Created";
             var body =
@@ -140,9 +109,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 </body>
 </html>
 ";
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+            await emailService.SendEmailAsync(user.Email, subject, body);
 
             return _mapper.Map<UserDto>(user);
+        }
+
+        // Overload for the generic interface (not used, but required for compatibility)
+        public override async Task<UserDto> CreateAsync(CreateUserDto dto)
+        {
+            // You can throw or implement a default behavior if needed
+            throw new NotImplementedException(
+                "Use CreateAsync(CreateUserDto dto, UserRole currentUserRole) instead."
+            );
         }
 
         private static string GenerateTemporaryPassword(int length = 12)
@@ -161,38 +139,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 }
             }
             return res.ToString();
-        }
-
-        public async Task<bool> UpdateAsync(Guid id, UpdateUserDto dto)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            if (user == null)
-                return false;
-            _mapper.Map(dto, user);
-            _userRepository.Update(user);
-            await _userRepository.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> PatchAsync(Guid id, PatchUserDto dto)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            if (user == null)
-                return false;
-            _mapper.Map(dto, user);
-            _userRepository.Update(user);
-            await _userRepository.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<bool> DeleteAsync(Guid id)
-        {
-            var user = await _userRepository.GetByIdAsync(id);
-            if (user == null)
-                return false;
-            _userRepository.Remove(user);
-            await _userRepository.SaveChangesAsync();
-            return true;
         }
     }
 }

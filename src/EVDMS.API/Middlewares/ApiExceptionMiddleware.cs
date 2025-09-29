@@ -2,16 +2,13 @@ using System.Text.Json;
 
 namespace EVDMS.API.Middlewares
 {
-    public class ApiExceptionMiddleware
+    public class ApiExceptionMiddleware(
+        RequestDelegate next,
+        ILogger<ApiExceptionMiddleware> logger
+    )
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ApiExceptionMiddleware> _logger;
-
-        public ApiExceptionMiddleware(RequestDelegate next, ILogger<ApiExceptionMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ApiExceptionMiddleware> _logger = logger;
 
         public async Task Invoke(HttpContext context)
         {

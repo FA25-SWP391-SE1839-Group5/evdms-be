@@ -9,11 +9,11 @@ namespace EVDMS.API.Controllers
     [Route("api/dealer-contracts")]
     public class DealerContractController : ControllerBase
     {
-        private readonly IDealerContractService _dealerContractService;
+        private readonly IDealerContractService dealerContractService;
 
         public DealerContractController(IDealerContractService dealerContractService)
         {
-            _dealerContractService = dealerContractService;
+            this.dealerContractService = dealerContractService;
         }
 
         [HttpGet]
@@ -24,19 +24,14 @@ namespace EVDMS.API.Controllers
             [FromQuery] string? sortOrder = null
         )
         {
-            var result = await _dealerContractService.GetAllAsync(
-                page,
-                pageSize,
-                sortBy,
-                sortOrder
-            );
+            var result = await dealerContractService.GetAllAsync(page, pageSize, sortBy, sortOrder);
             return Ok(new ApiResponse<PaginatedResult<DealerContractDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var contract = await _dealerContractService.GetByIdAsync(id);
+            var contract = await dealerContractService.GetByIdAsync(id);
             if (contract == null)
                 return NotFound(new ApiResponse<string>("DealerContract not found"));
             return Ok(new ApiResponse<DealerContractDto>(contract));
@@ -45,7 +40,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateDealerContractDto dto)
         {
-            var created = await _dealerContractService.CreateAsync(dto);
+            var created = await dealerContractService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -56,7 +51,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateDealerContractDto dto)
         {
-            var success = await _dealerContractService.UpdateAsync(id, dto);
+            var success = await dealerContractService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("DealerContract not found"));
             return Ok(new ApiResponse<string>(null, "DealerContract updated successfully"));
@@ -65,7 +60,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchDealerContractDto dto)
         {
-            var success = await _dealerContractService.PatchAsync(id, dto);
+            var success = await dealerContractService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("DealerContract not found"));
             return Ok(new ApiResponse<string>(null, "DealerContract patched successfully"));
@@ -74,7 +69,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await _dealerContractService.DeleteAsync(id);
+            var success = await dealerContractService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("DealerContract not found"));
             return Ok(new ApiResponse<string>(null, "DealerContract deleted successfully"));

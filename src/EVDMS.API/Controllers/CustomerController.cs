@@ -9,11 +9,11 @@ namespace EVDMS.API.Controllers
     [Route("api/customers")]
     public class CustomerController : ControllerBase
     {
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerService customerService;
 
         public CustomerController(ICustomerService customerService)
         {
-            _customerService = customerService;
+            this.customerService = customerService;
         }
 
         [HttpGet]
@@ -24,14 +24,14 @@ namespace EVDMS.API.Controllers
             [FromQuery] string? sortOrder = null
         )
         {
-            var result = await _customerService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            var result = await customerService.GetAllAsync(page, pageSize, sortBy, sortOrder);
             return Ok(new ApiResponse<PaginatedResult<CustomerDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var customer = await _customerService.GetByIdAsync(id);
+            var customer = await customerService.GetByIdAsync(id);
             if (customer == null)
                 return NotFound(new ApiResponse<string>("Customer not found"));
             return Ok(new ApiResponse<CustomerDto>(customer));
@@ -40,7 +40,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCustomerDto dto)
         {
-            var created = await _customerService.CreateAsync(dto);
+            var created = await customerService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -51,7 +51,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerDto dto)
         {
-            var success = await _customerService.UpdateAsync(id, dto);
+            var success = await customerService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Customer not found"));
             return Ok(new ApiResponse<string>(null, "Customer updated successfully"));
@@ -60,7 +60,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchCustomerDto dto)
         {
-            var success = await _customerService.PatchAsync(id, dto);
+            var success = await customerService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Customer not found"));
             return Ok(new ApiResponse<string>(null, "Customer patched successfully"));
@@ -69,7 +69,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await _customerService.DeleteAsync(id);
+            var success = await customerService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("Customer not found"));
             return Ok(new ApiResponse<string>(null, "Customer deleted successfully"));
