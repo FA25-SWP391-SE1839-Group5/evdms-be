@@ -6,5 +6,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
     {
         Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto);
         Task<RefreshTokenResponseDto?> RefreshTokenAsync(RefreshTokenRequestDto dto);
+        Task<bool> LogoutAsync(RefreshTokenRequestDto dto);
     }
 }

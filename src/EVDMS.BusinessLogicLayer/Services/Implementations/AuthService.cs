@@ -98,5 +98,15 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 RefreshToken = newRefreshToken,
             };
         }
+
+        public async Task<bool> LogoutAsync(RefreshTokenRequestDto dto)
+        {
+            var refreshTokenHash = JwtService.HashRefreshToken(dto.RefreshToken);
+            var storedToken = await _refreshTokenRepository.GetByTokenHashAsync(refreshTokenHash);
+            if (storedToken == null || storedToken.IsRevoked)
+                return false;
+            await _refreshTokenRepository.RevokeAsync(refreshTokenHash);
+            return true;
+        }
     }
 }

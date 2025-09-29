@@ -35,5 +35,16 @@ namespace EVDMS.API.Controllers
                 return Unauthorized(new ApiResponse<string>("Invalid or expired refresh token."));
             return Ok(new ApiResponse<RefreshTokenResponseDto>(result));
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout([FromBody] RefreshTokenRequestDto dto)
+        {
+            var success = await _authService.LogoutAsync(dto);
+            if (!success)
+                return BadRequest(
+                    new ApiResponse<string>("Invalid or already revoked refresh token.")
+                );
+            return Ok(new ApiResponse<string>(null, "Logout successful."));
+        }
     }
 }
