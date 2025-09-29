@@ -720,6 +720,38 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "DealerContracts",
+                columns: new[]
+                {
+                    "Id",
+                    "DealerId",
+                    "EndDate",
+                    "OutstandingDebt",
+                    "SalesTarget",
+                    "StartDate",
+                },
+                values: new object[,]
+                {
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000001"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                        50000m,
+                        1000000m,
+                        new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                    },
+                    {
+                        new Guid("10000000-0000-0000-0000-000000000002"),
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                        25000m,
+                        750000m,
+                        new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[]
                 {

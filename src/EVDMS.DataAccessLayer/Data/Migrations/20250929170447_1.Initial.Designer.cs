@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250929164937_1.Initial")]
+    [Migration("20250929170447_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -194,6 +194,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("DealerId");
 
                     b.ToTable("DealerContracts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 50000m,
+                            SalesTarget = 1000000m,
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            EndDate = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 25000m,
+                            SalesTarget = 750000m,
+                            StartDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
