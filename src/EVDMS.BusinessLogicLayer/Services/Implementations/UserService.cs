@@ -3,6 +3,7 @@ using System.Text;
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
@@ -12,16 +13,19 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IDealerRepository _dealerRepository;
         private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
 
         public UserService(
             IUserRepository userRepository,
+            IDealerRepository dealerRepository,
             IMapper mapper,
             IEmailService emailService
         )
         {
             _userRepository = userRepository;
+            _dealerRepository = dealerRepository;
             _mapper = mapper;
             _emailService = emailService;
         }
@@ -54,8 +58,39 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return user == null ? null : _mapper.Map<UserDto>(user);
         }
 
-        public async Task<UserDto> CreateAsync(CreateUserDto dto)
+        public async Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole)
         {
+            // Role-based creation validation
+            if (currentUserRole == UserRole.Admin)
+            {
+                // Admins can create any user
+            }
+            else if (currentUserRole == UserRole.DealerManager)
+            {
+                if (dto.Role != UserRole.DealerStaff)
+                    throw new Exception("Dealer managers can only create Dealer Staff users.");
+            }
+            else
+            {
+                throw new Exception("You are not allowed to create users.");
+            }
+
+            if (dto.DealerId != null)
+            {
+                var dealer =
+                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
+                    ?? throw new Exception("Dealer not found.");
+                if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
+                    throw new Exception(
+                        "If DealerId is provided, role must be DealerStaff or DealerManager."
+                    );
+            }
+            else
+            {
+                if (dto.Role != UserRole.EvmStaff && dto.Role != UserRole.Admin)
+                    throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
+            }
+
             var tempPassword = GenerateTemporaryPassword();
             var passwordHash = PasswordHasher.HashPassword(tempPassword);
 

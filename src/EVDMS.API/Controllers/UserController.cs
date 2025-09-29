@@ -1,6 +1,9 @@
-﻿using EVDMS.API.Middlewares;
+﻿using System.Security.Claims;
+using EVDMS.API.Middlewares;
+using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -40,12 +43,26 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
         {
-            var created = await _userService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<UserDto>(created)
-            );
+            try
+            {
+                var currentUserRole = JwtService.GetUserRoleFromClaims(User);
+                if (currentUserRole == null)
+                    return StatusCode(
+                        403,
+                        new ApiResponse<string>("You are not allowed to create users.")
+                    );
+
+                var created = await _userService.CreateAsync(dto, currentUserRole.Value);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<UserDto>(created)
+                );
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]

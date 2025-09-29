@@ -1,4 +1,5 @@
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
@@ -11,7 +12,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             string? sortOrder = null
         );
         Task<UserDto?> GetByIdAsync(Guid id);
-        Task<UserDto> CreateAsync(CreateUserDto dto);
+        Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole);
         Task<bool> UpdateAsync(Guid id, UpdateUserDto dto);
         Task<bool> PatchAsync(Guid id, PatchUserDto dto);
         Task<bool> DeleteAsync(Guid id);

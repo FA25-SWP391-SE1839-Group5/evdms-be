@@ -12,15 +12,15 @@ namespace EVDMS.BusinessLogicLayer
         public static IServiceCollection AddServices(this IServiceCollection services)
         {
             // Register repos & services
+            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IDealerRepository, DealerRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IJwtService, JwtService>();
-            services.AddScoped<IEmailService, EmailService>();
 
             // Register AutoMapper profiles
             services.AddAutoMapper(cfg => cfg.AddProfile<CustomerProfile>());
