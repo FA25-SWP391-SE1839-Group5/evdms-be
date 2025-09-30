@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -13,20 +14,20 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Customers",
+                name: "customers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    FullName = table.Column<string>(type: "text", nullable: false),
-                    Phone = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    full_name = table.Column<string>(type: "text", nullable: false),
+                    phone = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    address = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -34,24 +35,24 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
+                    table.PrimaryKey("pk_customers", x => x.id);
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Dealers",
+                name: "dealers",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Region = table.Column<string>(type: "text", nullable: false),
-                    Address = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    region = table.Column<string>(type: "text", nullable: false),
+                    address = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -59,24 +60,24 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Dealers", x => x.Id);
+                    table.PrimaryKey("pk_dealers", x => x.id);
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "VehicleModels",
+                name: "vehicle_models",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    ImageUrl = table.Column<string>(type: "text", nullable: true),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    image_url = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -84,32 +85,32 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleModels", x => x.Id);
+                    table.PrimaryKey("pk_vehicle_models", x => x.id);
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "DealerContracts",
+                name: "dealer_contracts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    StartDate = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    start_date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    EndDate = table.Column<DateTime>(
+                    end_date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    SalesTarget = table.Column<decimal>(type: "numeric", nullable: false),
-                    OutstandingDebt = table.Column<decimal>(type: "numeric", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    sales_target = table.Column<decimal>(type: "numeric", nullable: false),
+                    outstanding_debt = table.Column<decimal>(type: "numeric", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -117,32 +118,32 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DealerContracts", x => x.Id);
+                    table.PrimaryKey("pk_dealer_contracts", x => x.id);
                     table.ForeignKey(
-                        name: "FK_DealerContracts_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_dealer_contracts_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
+                name: "feedbacks",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    content = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -150,47 +151,47 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
+                    table.PrimaryKey("pk_feedbacks", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Feedbacks_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
+                        name: "fk_feedbacks_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_Feedbacks_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_feedbacks_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Promotions",
+                name: "promotions",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    DiscountPercent = table.Column<decimal>(type: "numeric", nullable: false),
-                    StartDate = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    discount_percent = table.Column<decimal>(type: "numeric", nullable: false),
+                    start_date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    EndDate = table.Column<DateTime>(
+                    end_date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    CreatedAt = table.Column<DateTime>(
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -198,81 +199,47 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Promotions", x => x.Id);
+                    table.PrimaryKey("pk_promotions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Promotions_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_promotions_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "users",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: true),
-                    FullName = table.Column<string>(type: "text", nullable: false),
-                    Email = table.Column<string>(type: "text", nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    Role = table.Column<string>(type: "text", nullable: false),
-                    LastLoginAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    full_name = table.Column<string>(type: "text", nullable: false),
+                    email = table.Column<string>(type: "text", nullable: false),
+                    password_hash = table.Column<string>(type: "text", nullable: false),
+                    role = table.Column<string>(type: "text", nullable: false),
+                    last_login_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
                     ),
-                    PasswordResetToken = table.Column<string>(type: "text", nullable: true),
-                    PasswordResetTokenExpiresAt = table.Column<DateTime>(
+                    password_reset_token = table.Column<string>(type: "text", nullable: true),
+                    password_reset_token_expires_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: true
                     ),
-                    IsActive = table.Column<bool>(
+                    is_active = table.Column<bool>(
                         type: "boolean",
                         nullable: false,
                         defaultValue: true
                     ),
-                    CreatedAt = table.Column<DateTime>(
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
-                        type: "timestamp with time zone",
-                        nullable: false,
-                        defaultValueSql: "CURRENT_TIMESTAMP"
-                    ),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Users_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                }
-            );
-
-            migrationBuilder.CreateTable(
-                name: "VehicleVariants",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ModelId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    BasePrice = table.Column<decimal>(type: "numeric", nullable: false),
-                    Specs = table.Column<string>(type: "jsonb", nullable: false),
-                    Features = table.Column<string>(type: "jsonb", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
-                        type: "timestamp with time zone",
-                        nullable: false,
-                        defaultValueSql: "CURRENT_TIMESTAMP"
-                    ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -280,33 +247,33 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehicleVariants", x => x.Id);
+                    table.PrimaryKey("pk_users", x => x.id);
                     table.ForeignKey(
-                        name: "FK_VehicleVariants_VehicleModels_ModelId",
-                        column: x => x.ModelId,
-                        principalTable: "VehicleModels",
-                        principalColumn: "Id",
+                        name: "fk_users_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Quotations",
+                name: "vehicle_variants",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    model_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "text", nullable: false),
+                    base_price = table.Column<decimal>(type: "numeric", nullable: false),
+                    specs = table.Column<string>(type: "jsonb", nullable: false),
+                    features = table.Column<string>(type: "jsonb", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -314,49 +281,83 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Quotations", x => x.Id);
+                    table.PrimaryKey("pk_vehicle_variants", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Quotations_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                    table.ForeignKey(
-                        name: "FK_Quotations_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                    table.ForeignKey(
-                        name: "FK_Quotations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "fk_vehicle_variants_vehicle_models_model_id",
+                        column: x => x.model_id,
+                        principalTable: "vehicle_models",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "RefreshTokens",
+                name: "quotations",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TokenHash = table.Column<string>(type: "text", nullable: false),
-                    ExpiresAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    total_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_quotations", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_quotations_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_quotations_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_quotations_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "refresh_tokens",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    token_hash = table.Column<string>(type: "text", nullable: false),
+                    expires_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    IsRevoked = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    is_revoked = table.Column<bool>(type: "boolean", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -364,30 +365,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                    table.PrimaryKey("pk_refresh_tokens", x => x.id);
                     table.ForeignKey(
-                        name: "FK_RefreshTokens_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "fk_refresh_tokens_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "OemInventories",
+                name: "oem_inventories",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    VariantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<int>(type: "integer", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -395,34 +396,34 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OemInventories", x => x.Id);
+                    table.PrimaryKey("pk_oem_inventories", x => x.id);
                     table.ForeignKey(
-                        name: "FK_OemInventories_VehicleVariants_VariantId",
-                        column: x => x.VariantId,
-                        principalTable: "VehicleVariants",
-                        principalColumn: "Id",
+                        name: "fk_oem_inventories_vehicle_variants_variant_id",
+                        column: x => x.variant_id,
+                        principalTable: "vehicle_variants",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Vehicles",
+                name: "vehicles",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    VariantId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Vin = table.Column<string>(type: "text", nullable: false),
-                    Color = table.Column<string>(type: "text", nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    vin = table.Column<string>(type: "text", nullable: false),
+                    color = table.Column<string>(type: "text", nullable: false),
+                    type = table.Column<string>(type: "text", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -430,45 +431,45 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vehicles", x => x.Id);
+                    table.PrimaryKey("pk_vehicles", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Vehicles_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_vehicles_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_Vehicles_VehicleVariants_VariantId",
-                        column: x => x.VariantId,
-                        principalTable: "VehicleVariants",
-                        principalColumn: "Id",
+                        name: "fk_vehicles_vehicle_variants_variant_id",
+                        column: x => x.variant_id,
+                        principalTable: "vehicle_variants",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "SalesOrders",
+                name: "sales_orders",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    QuotationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Date = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quotation_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    vehicle_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -476,64 +477,64 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SalesOrders", x => x.Id);
+                    table.PrimaryKey("pk_sales_orders", x => x.id);
                     table.ForeignKey(
-                        name: "FK_SalesOrders_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
+                        name: "fk_sales_orders_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_SalesOrders_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_sales_orders_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_SalesOrders_Quotations_QuotationId",
-                        column: x => x.QuotationId,
-                        principalTable: "Quotations",
-                        principalColumn: "Id",
+                        name: "fk_sales_orders_quotations_quotation_id",
+                        column: x => x.quotation_id,
+                        principalTable: "quotations",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_SalesOrders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "fk_sales_orders_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_SalesOrders_Vehicles_VehicleId",
-                        column: x => x.VehicleId,
-                        principalTable: "Vehicles",
-                        principalColumn: "Id",
+                        name: "fk_sales_orders_vehicles_vehicle_id",
+                        column: x => x.vehicle_id,
+                        principalTable: "vehicles",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "TestDrives",
+                name: "test_drives",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    DealerId = table.Column<Guid>(type: "uuid", nullable: false),
-                    VehicleId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ScheduledAt = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    vehicle_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    scheduled_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -541,49 +542,49 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TestDrives", x => x.Id);
+                    table.PrimaryKey("pk_test_drives", x => x.id);
                     table.ForeignKey(
-                        name: "FK_TestDrives_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "Id",
+                        name: "fk_test_drives_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_TestDrives_Dealers_DealerId",
-                        column: x => x.DealerId,
-                        principalTable: "Dealers",
-                        principalColumn: "Id",
+                        name: "fk_test_drives_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                     table.ForeignKey(
-                        name: "FK_TestDrives_Vehicles_VehicleId",
-                        column: x => x.VehicleId,
-                        principalTable: "Vehicles",
-                        principalColumn: "Id",
+                        name: "fk_test_drives_vehicles_vehicle_id",
+                        column: x => x.vehicle_id,
+                        principalTable: "vehicles",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.CreateTable(
-                name: "Payments",
+                name: "payments",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    SalesOrderId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    Date = table.Column<DateTime>(
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    sales_order_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    date = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false
                     ),
-                    Method = table.Column<string>(type: "text", nullable: false),
-                    CreatedAt = table.Column<DateTime>(
+                    method = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
                     ),
-                    UpdatedAt = table.Column<DateTime>(
+                    updated_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
                         defaultValueSql: "CURRENT_TIMESTAMP"
@@ -591,20 +592,20 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Payments", x => x.Id);
+                    table.PrimaryKey("pk_payments", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Payments_SalesOrders_SalesOrderId",
-                        column: x => x.SalesOrderId,
-                        principalTable: "SalesOrders",
-                        principalColumn: "Id",
+                        name: "fk_payments_sales_orders_sales_order_id",
+                        column: x => x.sales_order_id,
+                        principalTable: "sales_orders",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
                     );
                 }
             );
 
             migrationBuilder.InsertData(
-                table: "Customers",
-                columns: new[] { "Id", "Address", "Email", "FullName", "Phone" },
+                table: "customers",
+                columns: new[] { "id", "address", "email", "full_name", "phone" },
                 values: new object[,]
                 {
                     {
@@ -646,8 +647,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Dealers",
-                columns: new[] { "Id", "Address", "Name", "Region" },
+                table: "dealers",
+                columns: new[] { "id", "address", "name", "region" },
                 values: new object[]
                 {
                     new Guid("30000000-0000-0000-0000-000000000001"),
@@ -658,16 +659,16 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Promotions",
+                table: "promotions",
                 columns: new[]
                 {
-                    "Id",
-                    "DealerId",
-                    "Description",
-                    "DiscountPercent",
-                    "EndDate",
-                    "StartDate",
-                    "Type",
+                    "id",
+                    "dealer_id",
+                    "description",
+                    "discount_percent",
+                    "end_date",
+                    "start_date",
+                    "type",
                 },
                 values: new object[]
                 {
@@ -682,18 +683,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Users",
+                table: "users",
                 columns: new[]
                 {
-                    "Id",
-                    "DealerId",
-                    "Email",
-                    "FullName",
-                    "LastLoginAt",
-                    "PasswordHash",
-                    "PasswordResetToken",
-                    "PasswordResetTokenExpiresAt",
-                    "Role",
+                    "id",
+                    "dealer_id",
+                    "email",
+                    "full_name",
+                    "last_login_at",
+                    "password_hash",
+                    "password_reset_token",
+                    "password_reset_token_expires_at",
+                    "role",
                 },
                 values: new object[,]
                 {
@@ -723,8 +724,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "VehicleModels",
-                columns: new[] { "Id", "Description", "ImageUrl", "Name" },
+                table: "vehicle_models",
+                columns: new[] { "id", "description", "image_url", "name" },
                 values: new object[,]
                 {
                     {
@@ -743,15 +744,15 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "DealerContracts",
+                table: "dealer_contracts",
                 columns: new[]
                 {
-                    "Id",
-                    "DealerId",
-                    "EndDate",
-                    "OutstandingDebt",
-                    "SalesTarget",
-                    "StartDate",
+                    "id",
+                    "dealer_id",
+                    "end_date",
+                    "outstanding_debt",
+                    "sales_target",
+                    "start_date",
                 },
                 values: new object[,]
                 {
@@ -775,8 +776,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Feedbacks",
-                columns: new[] { "Id", "Content", "CustomerId", "DealerId", "Status" },
+                table: "feedbacks",
+                columns: new[] { "id", "content", "customer_id", "dealer_id", "status" },
                 values: new object[,]
                 {
                     {
@@ -804,16 +805,16 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Promotions",
+                table: "promotions",
                 columns: new[]
                 {
-                    "Id",
-                    "DealerId",
-                    "Description",
-                    "DiscountPercent",
-                    "EndDate",
-                    "StartDate",
-                    "Type",
+                    "id",
+                    "dealer_id",
+                    "description",
+                    "discount_percent",
+                    "end_date",
+                    "start_date",
+                    "type",
                 },
                 values: new object[]
                 {
@@ -828,18 +829,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Users",
+                table: "users",
                 columns: new[]
                 {
-                    "Id",
-                    "DealerId",
-                    "Email",
-                    "FullName",
-                    "LastLoginAt",
-                    "PasswordHash",
-                    "PasswordResetToken",
-                    "PasswordResetTokenExpiresAt",
-                    "Role",
+                    "id",
+                    "dealer_id",
+                    "email",
+                    "full_name",
+                    "last_login_at",
+                    "password_hash",
+                    "password_reset_token",
+                    "password_reset_token_expires_at",
+                    "role",
                 },
                 values: new object[,]
                 {
@@ -869,8 +870,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "VehicleVariants",
-                columns: new[] { "Id", "BasePrice", "Features", "ModelId", "Name", "Specs" },
+                table: "vehicle_variants",
+                columns: new[] { "id", "base_price", "features", "model_id", "name", "specs" },
                 values: new object[,]
                 {
                     {
@@ -901,8 +902,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "OemInventories",
-                columns: new[] { "Id", "Quantity", "VariantId" },
+                table: "oem_inventories",
+                columns: new[] { "id", "quantity", "variant_id" },
                 values: new object[,]
                 {
                     {
@@ -924,15 +925,15 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Quotations",
+                table: "quotations",
                 columns: new[]
                 {
-                    "Id",
-                    "CustomerId",
-                    "DealerId",
-                    "Status",
-                    "TotalAmount",
-                    "UserId",
+                    "id",
+                    "customer_id",
+                    "dealer_id",
+                    "status",
+                    "total_amount",
+                    "user_id",
                 },
                 values: new object[,]
                 {
@@ -956,8 +957,17 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Vehicles",
-                columns: new[] { "Id", "Color", "DealerId", "Status", "Type", "VariantId", "Vin" },
+                table: "vehicles",
+                columns: new[]
+                {
+                    "id",
+                    "color",
+                    "dealer_id",
+                    "status",
+                    "type",
+                    "variant_id",
+                    "vin",
+                },
                 values: new object[,]
                 {
                     {
@@ -991,17 +1001,17 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "SalesOrders",
+                table: "sales_orders",
                 columns: new[]
                 {
-                    "Id",
-                    "CustomerId",
-                    "Date",
-                    "DealerId",
-                    "QuotationId",
-                    "Status",
-                    "UserId",
-                    "VehicleId",
+                    "id",
+                    "customer_id",
+                    "date",
+                    "dealer_id",
+                    "quotation_id",
+                    "status",
+                    "user_id",
+                    "vehicle_id",
                 },
                 values: new object[,]
                 {
@@ -1029,15 +1039,15 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "TestDrives",
+                table: "test_drives",
                 columns: new[]
                 {
-                    "Id",
-                    "CustomerId",
-                    "DealerId",
-                    "ScheduledAt",
-                    "Status",
-                    "VehicleId",
+                    "id",
+                    "customer_id",
+                    "dealer_id",
+                    "scheduled_at",
+                    "status",
+                    "vehicle_id",
                 },
                 values: new object[,]
                 {
@@ -1061,8 +1071,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
-                table: "Payments",
-                columns: new[] { "Id", "Amount", "Date", "Method", "SalesOrderId" },
+                table: "payments",
+                columns: new[] { "id", "amount", "date", "method", "sales_order_id" },
                 values: new object[,]
                 {
                     {
@@ -1083,184 +1093,184 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_DealerContracts_DealerId",
-                table: "DealerContracts",
-                column: "DealerId"
+                name: "ix_dealer_contracts_dealer_id",
+                table: "dealer_contracts",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_CustomerId",
-                table: "Feedbacks",
-                column: "CustomerId"
+                name: "ix_feedbacks_customer_id",
+                table: "feedbacks",
+                column: "customer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Feedbacks_DealerId",
-                table: "Feedbacks",
-                column: "DealerId"
+                name: "ix_feedbacks_dealer_id",
+                table: "feedbacks",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_OemInventories_VariantId",
-                table: "OemInventories",
-                column: "VariantId"
+                name: "ix_oem_inventories_variant_id",
+                table: "oem_inventories",
+                column: "variant_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payments_SalesOrderId",
-                table: "Payments",
-                column: "SalesOrderId"
+                name: "ix_payments_sales_order_id",
+                table: "payments",
+                column: "sales_order_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Promotions_DealerId",
-                table: "Promotions",
-                column: "DealerId"
+                name: "ix_promotions_dealer_id",
+                table: "promotions",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quotations_CustomerId",
-                table: "Quotations",
-                column: "CustomerId"
+                name: "ix_quotations_customer_id",
+                table: "quotations",
+                column: "customer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quotations_DealerId",
-                table: "Quotations",
-                column: "DealerId"
+                name: "ix_quotations_dealer_id",
+                table: "quotations",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Quotations_UserId",
-                table: "Quotations",
-                column: "UserId"
+                name: "ix_quotations_user_id",
+                table: "quotations",
+                column: "user_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_UserId",
-                table: "RefreshTokens",
-                column: "UserId"
+                name: "ix_refresh_tokens_user_id",
+                table: "refresh_tokens",
+                column: "user_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrders_CustomerId",
-                table: "SalesOrders",
-                column: "CustomerId"
+                name: "ix_sales_orders_customer_id",
+                table: "sales_orders",
+                column: "customer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrders_DealerId",
-                table: "SalesOrders",
-                column: "DealerId"
+                name: "ix_sales_orders_dealer_id",
+                table: "sales_orders",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrders_QuotationId",
-                table: "SalesOrders",
-                column: "QuotationId"
+                name: "ix_sales_orders_quotation_id",
+                table: "sales_orders",
+                column: "quotation_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrders_UserId",
-                table: "SalesOrders",
-                column: "UserId"
+                name: "ix_sales_orders_user_id",
+                table: "sales_orders",
+                column: "user_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_SalesOrders_VehicleId",
-                table: "SalesOrders",
-                column: "VehicleId"
+                name: "ix_sales_orders_vehicle_id",
+                table: "sales_orders",
+                column: "vehicle_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestDrives_CustomerId",
-                table: "TestDrives",
-                column: "CustomerId"
+                name: "ix_test_drives_customer_id",
+                table: "test_drives",
+                column: "customer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestDrives_DealerId",
-                table: "TestDrives",
-                column: "DealerId"
+                name: "ix_test_drives_dealer_id",
+                table: "test_drives",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_TestDrives_VehicleId",
-                table: "TestDrives",
-                column: "VehicleId"
+                name: "ix_test_drives_vehicle_id",
+                table: "test_drives",
+                column: "vehicle_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_DealerId",
-                table: "Users",
-                column: "DealerId"
+                name: "ix_users_dealer_id",
+                table: "users",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_Email",
-                table: "Users",
-                column: "Email",
+                name: "ix_users_email",
+                table: "users",
+                column: "email",
                 unique: true
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_DealerId",
-                table: "Vehicles",
-                column: "DealerId"
+                name: "ix_vehicle_variants_model_id",
+                table: "vehicle_variants",
+                column: "model_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_VariantId",
-                table: "Vehicles",
-                column: "VariantId"
+                name: "ix_vehicles_dealer_id",
+                table: "vehicles",
+                column: "dealer_id"
             );
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vehicles_Vin",
-                table: "Vehicles",
-                column: "Vin",
+                name: "ix_vehicles_variant_id",
+                table: "vehicles",
+                column: "variant_id"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_vehicles_vin",
+                table: "vehicles",
+                column: "vin",
                 unique: true
-            );
-
-            migrationBuilder.CreateIndex(
-                name: "IX_VehicleVariants_ModelId",
-                table: "VehicleVariants",
-                column: "ModelId"
             );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "DealerContracts");
+            migrationBuilder.DropTable(name: "dealer_contracts");
 
-            migrationBuilder.DropTable(name: "Feedbacks");
+            migrationBuilder.DropTable(name: "feedbacks");
 
-            migrationBuilder.DropTable(name: "OemInventories");
+            migrationBuilder.DropTable(name: "oem_inventories");
 
-            migrationBuilder.DropTable(name: "Payments");
+            migrationBuilder.DropTable(name: "payments");
 
-            migrationBuilder.DropTable(name: "Promotions");
+            migrationBuilder.DropTable(name: "promotions");
 
-            migrationBuilder.DropTable(name: "RefreshTokens");
+            migrationBuilder.DropTable(name: "refresh_tokens");
 
-            migrationBuilder.DropTable(name: "TestDrives");
+            migrationBuilder.DropTable(name: "test_drives");
 
-            migrationBuilder.DropTable(name: "SalesOrders");
+            migrationBuilder.DropTable(name: "sales_orders");
 
-            migrationBuilder.DropTable(name: "Quotations");
+            migrationBuilder.DropTable(name: "quotations");
 
-            migrationBuilder.DropTable(name: "Vehicles");
+            migrationBuilder.DropTable(name: "vehicles");
 
-            migrationBuilder.DropTable(name: "Customers");
+            migrationBuilder.DropTable(name: "customers");
 
-            migrationBuilder.DropTable(name: "Users");
+            migrationBuilder.DropTable(name: "users");
 
-            migrationBuilder.DropTable(name: "VehicleVariants");
+            migrationBuilder.DropTable(name: "vehicle_variants");
 
-            migrationBuilder.DropTable(name: "Dealers");
+            migrationBuilder.DropTable(name: "dealers");
 
-            migrationBuilder.DropTable(name: "VehicleModels");
+            migrationBuilder.DropTable(name: "vehicle_models");
         }
     }
 }

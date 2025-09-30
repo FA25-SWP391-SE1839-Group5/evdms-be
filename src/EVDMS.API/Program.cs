@@ -62,7 +62,10 @@ namespace EVDMS.API
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options
+                    .UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+                    .UseSnakeCaseNamingConvention();
+                ;
             });
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
