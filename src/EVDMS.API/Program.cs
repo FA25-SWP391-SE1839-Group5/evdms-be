@@ -125,9 +125,7 @@ namespace EVDMS.API
                         .ModelState.Values.SelectMany(v => v.Errors)
                         .Select(e => e.ErrorMessage)
                         .ToArray();
-                    var response = new EVDMS.API.Middlewares.ApiResponse<string>(
-                        string.Join("; ", errors)
-                    );
+                    var response = new ApiResponse<string>(string.Join("; ", errors));
                     return new BadRequestObjectResult(response);
                 };
             });

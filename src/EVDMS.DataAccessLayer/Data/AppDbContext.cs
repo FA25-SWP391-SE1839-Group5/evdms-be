@@ -1,6 +1,7 @@
 using EVDMS.DataAccessLayer.Data.Configurations;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EVDMS.DataAccessLayer.Data
 {
@@ -39,6 +40,23 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new VehicleConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleModelConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleVariantConfiguration());
+
+            var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
+                v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
+            );
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (
+                    var property in entityType
+                        .GetProperties()
+                        .Where(p => p.ClrType == typeof(DateTime))
+                )
+                {
+                    property.SetValueConverter(dateTimeConverter);
+                }
+            }
         }
 
         public override int SaveChanges()

@@ -1,3 +1,4 @@
+using System.Globalization;
 using EVDMS.Common.Enums;
 using EVDMS.DataAccessLayer.Entities;
 
@@ -15,7 +16,10 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     UserId = Guid.Parse("20000000-0000-0000-0000-000000000002"),
                     CustomerId = Guid.Parse("10000000-0000-0000-0000-000000000001"),
                     VehicleId = Guid.Parse("80000000-0000-0000-0000-000000000001"),
-                    Date = DateTime.SpecifyKind(DateTime.Parse("2024-04-01"), DateTimeKind.Utc),
+                    Date = DateTime.SpecifyKind(
+                        DateTime.Parse("2024-04-01", CultureInfo.InvariantCulture),
+                        DateTimeKind.Utc
+                    ),
                     Status = SalesOrderStatus.Pending,
                 },
                 new SalesOrder
@@ -26,7 +30,10 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     UserId = Guid.Parse("20000000-0000-0000-0000-000000000003"),
                     CustomerId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
                     VehicleId = Guid.Parse("80000000-0000-0000-0000-000000000002"),
-                    Date = DateTime.SpecifyKind(DateTime.Parse("2024-05-01"), DateTimeKind.Utc),
+                    Date = DateTime.SpecifyKind(
+                        DateTime.Parse("2024-05-01", CultureInfo.InvariantCulture),
+                        DateTimeKind.Utc
+                    ),
                     Status = SalesOrderStatus.Confirmed,
                 },
             ];
