@@ -52,4 +52,5 @@ jobs:
           app-name: 'EVDMS'
           slot-name: 'Production'
           package: .
+
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9136F081068D4BDFA19626A95045C908 }}
