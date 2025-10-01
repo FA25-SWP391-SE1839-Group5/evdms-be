@@ -41,10 +41,14 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                 .WhenWritingNull,
         };
 
-        private static string SerializeSpecs(VehicleSpecs specs) =>
-            System.Text.Json.JsonSerializer.Serialize(specs, IgnoreNullOptions);
+        private static string? SerializeSpecs(VehicleSpecs? specs) =>
+            specs == null
+                ? null
+                : System.Text.Json.JsonSerializer.Serialize(specs, IgnoreNullOptions);
 
-        private static string SerializeFeatures(VehicleFeatures features) =>
-            System.Text.Json.JsonSerializer.Serialize(features, IgnoreNullOptions);
+        private static string? SerializeFeatures(VehicleFeatures? features) =>
+            features == null
+                ? null
+                : System.Text.Json.JsonSerializer.Serialize(features, IgnoreNullOptions);
     }
 }
