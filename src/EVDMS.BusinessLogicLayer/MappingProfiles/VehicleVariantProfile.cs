@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using AutoMapper;
 using EVDMS.Common.Dtos;
 using EVDMS.Common.Helpers;
@@ -31,24 +33,15 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }
 
-        private static readonly System.Text.Json.JsonSerializerOptions IgnoreNullOptions = new()
+        private static readonly JsonSerializerOptions IgnoreNullOptions = new()
         {
-            DefaultIgnoreCondition = System
-                .Text
-                .Json
-                .Serialization
-                .JsonIgnoreCondition
-                .WhenWritingNull,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
         };
 
         private static string? SerializeSpecs(VehicleSpecs? specs) =>
-            specs == null
-                ? null
-                : System.Text.Json.JsonSerializer.Serialize(specs, IgnoreNullOptions);
+            specs == null ? null : JsonSerializer.Serialize(specs, IgnoreNullOptions);
 
         private static string? SerializeFeatures(VehicleFeatures? features) =>
-            features == null
-                ? null
-                : System.Text.Json.JsonSerializer.Serialize(features, IgnoreNullOptions);
+            features == null ? null : JsonSerializer.Serialize(features, IgnoreNullOptions);
     }
 }

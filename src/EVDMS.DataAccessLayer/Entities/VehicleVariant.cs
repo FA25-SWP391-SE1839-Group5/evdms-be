@@ -17,21 +17,20 @@ namespace EVDMS.DataAccessLayer.Entities
         public ICollection<Vehicle> Vehicles { get; set; } = [];
         public ICollection<OemInventory> OemInventories { get; set; } = [];
 
+        private static readonly JsonSerializerOptions IgnoreNullOptions = new()
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        };
+
         [NotMapped]
         public VehicleSpecs SpecsObject
         {
             get =>
                 string.IsNullOrWhiteSpace(Specs)
                     ? new VehicleSpecs()
-                    : JsonSerializer.Deserialize<VehicleSpecs>(Specs) ?? new VehicleSpecs();
-            set =>
-                Specs = JsonSerializer.Serialize(
-                    value,
-                    new JsonSerializerOptions
-                    {
-                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    }
-                );
+                    : JsonSerializer.Deserialize<VehicleSpecs>(Specs, IgnoreNullOptions)
+                        ?? new VehicleSpecs();
+            set => Specs = JsonSerializer.Serialize(value, IgnoreNullOptions);
         }
 
         [NotMapped]
@@ -40,16 +39,9 @@ namespace EVDMS.DataAccessLayer.Entities
             get =>
                 string.IsNullOrWhiteSpace(Features)
                     ? new VehicleFeatures()
-                    : JsonSerializer.Deserialize<VehicleFeatures>(Features)
+                    : JsonSerializer.Deserialize<VehicleFeatures>(Features, IgnoreNullOptions)
                         ?? new VehicleFeatures();
-            set =>
-                Features = JsonSerializer.Serialize(
-                    value,
-                    new JsonSerializerOptions
-                    {
-                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                    }
-                );
+            set => Features = JsonSerializer.Serialize(value, IgnoreNullOptions);
         }
 
         public static readonly string[] SearchableColumns =
