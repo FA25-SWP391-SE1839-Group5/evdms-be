@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using EVDMS.Common.Helpers;
 
 namespace EVDMS.DataAccessLayer.Entities
@@ -23,7 +24,14 @@ namespace EVDMS.DataAccessLayer.Entities
                 string.IsNullOrWhiteSpace(Specs)
                     ? new VehicleSpecs()
                     : JsonSerializer.Deserialize<VehicleSpecs>(Specs) ?? new VehicleSpecs();
-            set => Specs = JsonSerializer.Serialize(value);
+            set =>
+                Specs = JsonSerializer.Serialize(
+                    value,
+                    new JsonSerializerOptions
+                    {
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    }
+                );
         }
 
         [NotMapped]
@@ -34,7 +42,14 @@ namespace EVDMS.DataAccessLayer.Entities
                     ? new VehicleFeatures()
                     : JsonSerializer.Deserialize<VehicleFeatures>(Features)
                         ?? new VehicleFeatures();
-            set => Features = JsonSerializer.Serialize(value);
+            set =>
+                Features = JsonSerializer.Serialize(
+                    value,
+                    new JsonSerializerOptions
+                    {
+                        DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    }
+                );
         }
 
         public static readonly string[] SearchableColumns =

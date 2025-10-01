@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251001050611_1.Initial")]
+    [Migration("20251001051438_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -1238,7 +1238,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\"],\"Entertainment\":[\"PremiumSoundSystem\"],\"Exterior\":[\"LedHeadlights\",\"AlloyWheels\"],\"Seating\":[\"HeatedSeats\"]}",
                             ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Name = "Tesla Model 3 Performance",
-                            Specs = "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"},\"HeatPump\":null,\"V2lCapability\":null}",
+                            Specs = "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"}}",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
