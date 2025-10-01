@@ -44,7 +44,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: .net-app
-          path: ./publish_output
       
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -52,5 +51,5 @@ jobs:
         with:
           app-name: 'EVDMS'
           slot-name: 'Production'
-          package: ./publish_output
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EFCF95DEEFC94D139CEA2983D62746B3 }}
+          package: .
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_9136F081068D4BDFA19626A95045C908 }}
