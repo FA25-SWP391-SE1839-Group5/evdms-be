@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -287,6 +288,38 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         principalTable: "vehicle_models",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "audit_logs",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    action = table.Column<int>(type: "integer", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_audit_logs", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_audit_logs_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -1092,6 +1125,12 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.CreateIndex(
+                name: "ix_audit_logs_user_id",
+                table: "audit_logs",
+                column: "user_id"
+            );
+
+            migrationBuilder.CreateIndex(
                 name: "ix_dealer_contracts_dealer_id",
                 table: "dealer_contracts",
                 column: "dealer_id"
@@ -1241,6 +1280,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(name: "audit_logs");
+
             migrationBuilder.DropTable(name: "dealer_contracts");
 
             migrationBuilder.DropTable(name: "feedbacks");

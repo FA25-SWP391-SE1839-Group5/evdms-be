@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250930121213_1.Initial")]
+    [Migration("20250930235839_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -24,6 +24,47 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.AuditLog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Action")
+                        .HasColumnType("integer")
+                        .HasColumnName("action");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_audit_logs");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_audit_logs_user_id");
+
+                    b.ToTable("audit_logs", (string)null);
+                });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Customer", b =>
                 {
@@ -1202,6 +1243,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.AuditLog", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_audit_logs_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerContract", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
@@ -1476,6 +1529,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.User", b =>
                 {
+                    b.Navigation("AuditLogs");
+
                     b.Navigation("Quotations");
 
                     b.Navigation("RefreshTokens");

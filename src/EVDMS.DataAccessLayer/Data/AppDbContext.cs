@@ -7,6 +7,7 @@ namespace EVDMS.DataAccessLayer.Data
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
+        public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Dealer> Dealers { get; set; }
         public DbSet<DealerContract> DealerContracts { get; set; }
@@ -15,16 +16,17 @@ namespace EVDMS.DataAccessLayer.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<Promotion> Promotions { get; set; }
         public DbSet<Quotation> Quotations { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<SalesOrder> SalesOrders { get; set; }
         public DbSet<TestDrive> TestDrives { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<VehicleModel> VehicleModels { get; set; }
         public DbSet<VehicleVariant> VehicleVariants { get; set; }
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new AuditLogConfiguration());
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new DealerConfiguration());
             modelBuilder.ApplyConfiguration(new DealerContractConfiguration());
@@ -41,20 +43,32 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new VehicleModelConfiguration());
             modelBuilder.ApplyConfiguration(new VehicleVariantConfiguration());
 
+            // Ensures DateTime properties are treated as UTC
             var dateTimeConverter = new ValueConverter<DateTime, DateTime>(
                 v => v.Kind == DateTimeKind.Utc ? v : v.ToUniversalTime(),
                 v => DateTime.SpecifyKind(v, DateTimeKind.Utc)
             );
 
+            var nullableDateTimeConverter = new ValueConverter<DateTime?, DateTime?>(
+                v =>
+                    v.HasValue
+                        ? (v.Value.Kind == DateTimeKind.Utc ? v.Value : v.Value.ToUniversalTime())
+                        : v,
+                v => v.HasValue ? DateTime.SpecifyKind(v.Value, DateTimeKind.Utc) : v
+            );
+
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
-                foreach (
-                    var property in entityType
-                        .GetProperties()
-                        .Where(p => p.ClrType == typeof(DateTime))
-                )
+                foreach (var property in entityType.GetProperties())
                 {
-                    property.SetValueConverter(dateTimeConverter);
+                    if (property.ClrType == typeof(DateTime))
+                    {
+                        property.SetValueConverter(dateTimeConverter);
+                    }
+                    else if (property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(nullableDateTimeConverter);
+                    }
                 }
             }
         }
