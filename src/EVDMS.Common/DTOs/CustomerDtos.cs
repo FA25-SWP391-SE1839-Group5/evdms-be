@@ -9,40 +9,46 @@ namespace EVDMS.Common.Dtos
         public string Phone { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class CreateCustomerDto
     {
         [Required]
-        public string FullName { get; set; } = string.Empty;
+        [MinLength(1)]
+        public required string FullName { get; set; }
 
         [Required]
         [Phone]
-        public string Phone { get; set; } = string.Empty;
+        public required string Phone { get; set; }
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public required string Email { get; set; }
 
         [Required]
-        public string Address { get; set; } = string.Empty;
+        [MinLength(1)]
+        public required string Address { get; set; }
     }
 
     public class UpdateCustomerDto
     {
         [Required]
-        public string FullName { get; set; } = string.Empty;
+        [MinLength(1)]
+        public required string FullName { get; set; }
 
         [Required]
         [Phone]
-        public string Phone { get; set; } = string.Empty;
+        public required string Phone { get; set; }
 
         [Required]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public required string Email { get; set; }
 
         [Required]
-        public string Address { get; set; } = string.Empty;
+        [MinLength(1)]
+        public required string Address { get; set; }
     }
 
     public class PatchCustomerDto

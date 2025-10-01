@@ -16,9 +16,11 @@ namespace EVDMS.Common.Dtos
     public class CreateVehicleModelDto
     {
         [Required]
+        [MinLength(1)]
         public required string Name { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
         public string? ImageUrl { get; set; }
     }
@@ -32,9 +34,11 @@ namespace EVDMS.Common.Dtos
     public class UpdateVehicleModelDto
     {
         [Required]
+        [MinLength(1)]
         public required string Name { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
         public string? ImageUrl { get; set; }
     }

@@ -12,6 +12,8 @@ namespace EVDMS.Common.Dtos
         public decimal DiscountPercent { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class CreatePromotionDto
@@ -22,8 +24,10 @@ namespace EVDMS.Common.Dtos
         public required PromotionType Type { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
 
+        [Required]
         [Range(0, 100)]
         public required decimal DiscountPercent { get; set; }
 
@@ -42,8 +46,10 @@ namespace EVDMS.Common.Dtos
         public required PromotionType Type { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
 
+        [Required]
         [Range(0, 100)]
         public required decimal DiscountPercent { get; set; }
 

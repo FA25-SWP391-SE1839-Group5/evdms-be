@@ -5,7 +5,7 @@ namespace EVDMS.Common.Dtos
     public class OemInventoryDto
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public Guid VariantId { get; set; }
         public int Quantity { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
@@ -14,7 +14,7 @@ namespace EVDMS.Common.Dtos
     public class CreateOemInventoryDto
     {
         [Required]
-        public required string Name { get; set; } = string.Empty;
+        public required Guid VariantId { get; set; }
 
         [Required]
         public required int Quantity { get; set; }
@@ -23,7 +23,7 @@ namespace EVDMS.Common.Dtos
     public class UpdateOemInventoryDto
     {
         [Required]
-        public required string Name { get; set; } = string.Empty;
+        public required Guid VariantId { get; set; }
 
         [Required]
         public required int Quantity { get; set; }
@@ -31,7 +31,7 @@ namespace EVDMS.Common.Dtos
 
     public class PatchOemInventoryDto
     {
-        public string? Name { get; set; }
+        public Guid? VariantId { get; set; }
         public int? Quantity { get; set; }
     }
 }

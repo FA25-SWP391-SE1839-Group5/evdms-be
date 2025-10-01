@@ -3,34 +3,34 @@
     public class VehicleSpecs
     {
         // Performance
-        public SpecDetail Horsepower { get; set; } = new();
-        public SpecDetail Torque { get; set; } = new();
-        public SpecDetail Acceleration { get; set; } = new(); // 0-100 km/h
-        public SpecDetail DriveType { get; set; } = new();
-        public SpecDetail MotorType { get; set; } = new();
-        public SpecDetail TopSpeed { get; set; } = new();
-        public SpecDetail CurbWeight { get; set; } = new();
+        public SpecDetail? Horsepower { get; set; }
+        public SpecDetail? Torque { get; set; }
+        public SpecDetail? Acceleration { get; set; } // 0-100 km/h
+        public SpecDetail? DriveType { get; set; }
+        public SpecDetail? MotorType { get; set; }
+        public SpecDetail? TopSpeed { get; set; }
+        public SpecDetail? CurbWeight { get; set; }
 
         // Energy
-        public SpecDetail BatteryCapacity { get; set; } = new();
-        public SpecDetail Range { get; set; } = new();
-        public SpecDetail Efficiency { get; set; } = new();
-        public SpecDetail BatteryChemistry { get; set; } = new();
-        public SpecDetail BatteryVoltageArchitecture { get; set; } = new();
-        public SpecDetail RegenerativeBrakingCapacity { get; set; } = new();
+        public SpecDetail? BatteryCapacity { get; set; }
+        public SpecDetail? Range { get; set; }
+        public SpecDetail? Efficiency { get; set; }
+        public SpecDetail? BatteryChemistry { get; set; }
+        public SpecDetail? BatteryVoltageArchitecture { get; set; }
+        public SpecDetail? RegenerativeBrakingCapacity { get; set; }
 
         // Charging
-        public SpecDetail MaxAcChargingRate { get; set; } = new();
-        public SpecDetail MaxDcFastChargingRate { get; set; } = new();
-        public SpecDetail DcFastChargingTime { get; set; } = new(); // 10–80%
-        public SpecDetail AcChargingTime { get; set; } = new(); // 0–100%
-        public SpecDetail ChargingPortTypes { get; set; } = new();
+        public SpecDetail? MaxAcChargingRate { get; set; }
+        public SpecDetail? MaxDcFastChargingRate { get; set; }
+        public SpecDetail? DcFastChargingTime { get; set; } // 10–80%
+        public SpecDetail? AcChargingTime { get; set; } // 0–100%
+        public SpecDetail? ChargingPortTypes { get; set; }
 
         // Practicality
-        public SpecDetail TowingCapacity { get; set; } = new();
-        public SpecDetail FrunkVolume { get; set; } = new();
-        public SpecDetail CargoVolume { get; set; } = new();
-        public SpecDetail HeatPump { get; set; } = new();
-        public SpecDetail V2lCapability { get; set; } = new(); // Vehicle-to-Load
+        public SpecDetail? TowingCapacity { get; set; }
+        public SpecDetail? FrunkVolume { get; set; }
+        public SpecDetail? CargoVolume { get; set; }
+        public SpecDetail? HeatPump { get; set; }
+        public SpecDetail? V2lCapability { get; set; } // Vehicle-to-Load
     }
 }

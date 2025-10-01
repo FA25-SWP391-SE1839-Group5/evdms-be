@@ -19,24 +19,59 @@ namespace EVDMS.Common.Dtos
     public class CreateVehicleDto
     {
         [Required]
-        public required string Name { get; set; } = string.Empty;
+        public required Guid VariantId { get; set; }
 
         [Required]
         public required Guid DealerId { get; set; }
+
+        [Required]
+        [MinLength(11)]
+        public required string Vin { get; set; }
+
+        [Required]
+        public required VehicleColor Color { get; set; }
+
+        [Required]
+        public required VehicleType Type { get; set; }
+
+        [Required]
+        public required VehicleStatus Status { get; set; }
     }
 
     public class UpdateVehicleDto
     {
         [Required]
-        public required string Name { get; set; } = string.Empty;
+        public required Guid VariantId { get; set; }
 
         [Required]
         public required Guid DealerId { get; set; }
+
+        [Required]
+        [MinLength(11)]
+        public required string Vin { get; set; }
+
+        [Required]
+        public required VehicleColor Color { get; set; }
+
+        [Required]
+        public required VehicleType Type { get; set; }
+
+        [Required]
+        public required VehicleStatus Status { get; set; }
     }
 
     public class PatchVehicleDto
     {
-        public string? Name { get; set; }
+        public Guid? VariantId { get; set; }
+
         public Guid? DealerId { get; set; }
+
+        public string? Vin { get; set; }
+
+        public VehicleColor? Color { get; set; }
+
+        public VehicleType? Type { get; set; }
+
+        public VehicleStatus? Status { get; set; }
     }
 }

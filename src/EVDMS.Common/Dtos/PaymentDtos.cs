@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using EVDMS.Common.Enums;
 
 namespace EVDMS.Common.Dtos
 {
@@ -7,6 +8,8 @@ namespace EVDMS.Common.Dtos
         public Guid Id { get; set; }
         public Guid SalesOrderId { get; set; }
         public decimal Amount { get; set; }
+        public DateTime Date { get; set; }
+        public PaymentMethod Method { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -18,6 +21,12 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public required decimal Amount { get; set; }
+
+        [Required]
+        public required DateTime Date { get; set; }
+
+        [Required]
+        public required PaymentMethod Method { get; set; }
     }
 
     public class UpdatePaymentDto
@@ -27,11 +36,22 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public required decimal Amount { get; set; }
+
+        [Required]
+        public required DateTime Date { get; set; }
+
+        [Required]
+        public required PaymentMethod Method { get; set; }
     }
 
     public class PatchPaymentDto
     {
         public Guid? SalesOrderId { get; set; }
+
         public decimal? Amount { get; set; }
+
+        public DateTime? Date { get; set; }
+
+        public PaymentMethod? Method { get; set; }
     }
 }

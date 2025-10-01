@@ -9,6 +9,7 @@ namespace EVDMS.Common.Dtos
         public required string Email { get; set; }
 
         [Required]
+        [MinLength(6)]
         public required string Password { get; set; }
     }
 
@@ -26,21 +27,22 @@ namespace EVDMS.Common.Dtos
     {
         [Required]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public required string Email { get; set; }
     }
 
     public class PasswordResetDto
     {
         [Required]
-        public string OldPassword { get; set; } = string.Empty;
+        [MinLength(6)]
+        public required string OldPassword { get; set; }
 
         [Required]
         [MinLength(6)]
-        public string NewPassword { get; set; } = string.Empty;
+        public required string NewPassword { get; set; }
 
         [Required]
         [MinLength(6)]
         [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
-        public string ConfirmNewPassword { get; set; } = string.Empty;
+        public required string ConfirmNewPassword { get; set; }
     }
 }

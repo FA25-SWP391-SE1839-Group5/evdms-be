@@ -16,24 +16,26 @@ namespace EVDMS.Common.Dtos
     public class CreateAuditLogDto
     {
         [Required]
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [Required]
-        public AuditLogAction Action { get; set; }
+        public required AuditLogAction Action { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
     }
 
     public class UpdateAuditLogDto
     {
         [Required]
-        public Guid UserId { get; set; }
+        public required Guid UserId { get; set; }
 
         [Required]
-        public AuditLogAction Action { get; set; }
+        public required AuditLogAction Action { get; set; }
 
         [Required]
+        [MinLength(1)]
         public required string Description { get; set; }
     }
 

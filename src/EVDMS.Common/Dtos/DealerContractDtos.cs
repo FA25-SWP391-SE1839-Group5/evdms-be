@@ -10,6 +10,8 @@ namespace EVDMS.Common.Dtos
         public DateTime EndDate { get; set; }
         public decimal SalesTarget { get; set; }
         public decimal OutstandingDebt { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 
     public class CreateDealerContractDto
