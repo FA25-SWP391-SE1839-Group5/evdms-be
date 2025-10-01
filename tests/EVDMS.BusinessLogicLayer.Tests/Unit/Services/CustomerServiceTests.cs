@@ -134,7 +134,13 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
         public async Task UpdateAsync_ReturnsFalse_WhenCustomerNotFound()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test",
+                Phone = "123",
+                Email = "a@b.com",
+                Address = "Addr",
+            };
             _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer?)null);
 
             var result = await _service.UpdateAsync(id, dto);

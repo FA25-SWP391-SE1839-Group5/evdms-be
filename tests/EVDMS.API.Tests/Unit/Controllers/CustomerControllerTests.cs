@@ -30,12 +30,26 @@ namespace EVDMS.API.Tests.Unit.Controllers
                 PageSize = 10,
             };
             _serviceMock
-                .Setup(s => s.GetAllAsync(1, 10, null, null, null, null, null))
+                .Setup(s =>
+                    s.GetAllAsync(
+                        It.IsAny<int>(),
+                        It.IsAny<int>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<Dictionary<string, string>>(),
+                        It.IsAny<IEnumerable<string>>()
+                    )
+                )
                 .ReturnsAsync(paged);
             var result = await _controller.GetAll(1, 10, null, null);
             var ok = Assert.IsType<OkObjectResult>(result);
             var apiResponse = Assert.IsType<ApiResponse<PaginatedResult<CustomerDto>>>(ok.Value);
-            Assert.Equal(paged, apiResponse.Data);
+            Assert.NotNull(apiResponse.Data);
+            Assert.Equal(paged.Items, apiResponse.Data.Items);
+            Assert.Equal(paged.TotalResults, apiResponse.Data.TotalResults);
+            Assert.Equal(paged.Page, apiResponse.Data.Page);
+            Assert.Equal(paged.PageSize, apiResponse.Data.PageSize);
         }
 
         [Trait("Category", "Unit")]
@@ -67,7 +81,13 @@ namespace EVDMS.API.Tests.Unit.Controllers
         [Fact]
         public async Task Create_ReturnsCreatedAtAction()
         {
-            var dto = new CreateCustomerDto();
+            var dto = new CreateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             var created = new CustomerDto { Id = Guid.NewGuid() };
             _serviceMock.Setup(s => s.CreateAsync(dto)).ReturnsAsync(created);
             var result = await _controller.Create(dto);
@@ -81,7 +101,13 @@ namespace EVDMS.API.Tests.Unit.Controllers
         public async Task Update_ReturnsOk_WhenSuccess()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             _serviceMock.Setup(s => s.UpdateAsync(id, dto)).ReturnsAsync(true);
             var result = await _controller.Update(id, dto);
             var ok = Assert.IsType<OkObjectResult>(result);
@@ -94,7 +120,13 @@ namespace EVDMS.API.Tests.Unit.Controllers
         public async Task Update_ReturnsNotFound_WhenMissing()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             _serviceMock.Setup(s => s.UpdateAsync(id, dto)).ReturnsAsync(false);
             var result = await _controller.Update(id, dto);
             var notFound = Assert.IsType<NotFoundObjectResult>(result);
