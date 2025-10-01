@@ -29,7 +29,9 @@ namespace EVDMS.API.Tests.Unit.Controllers
                 Page = 1,
                 PageSize = 10,
             };
-            _serviceMock.Setup(s => s.GetAllAsync(1, 10, null, null)).ReturnsAsync(paged);
+            _serviceMock
+                .Setup(s => s.GetAllAsync(1, 10, null, null, null, null, null))
+                .ReturnsAsync(paged);
             var result = await _controller.GetAll(1, 10, null, null);
             var ok = Assert.IsType<OkObjectResult>(result);
             var apiResponse = Assert.IsType<ApiResponse<PaginatedResult<CustomerDto>>>(ok.Value);

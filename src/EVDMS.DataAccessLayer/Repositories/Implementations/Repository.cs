@@ -26,10 +26,104 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             int page,
             int pageSize,
             string? sortBy = null,
-            string? sortOrder = null
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
         )
         {
             var query = _dbSet.AsQueryable();
+
+            // Apply filters
+            if (filters != null && allowedColumns != null)
+            {
+                foreach (var filter in filters)
+                {
+                    var allowedCol = allowedColumns.FirstOrDefault(c =>
+                        string.Equals(c, filter.Key, StringComparison.OrdinalIgnoreCase)
+                    );
+                    if (allowedCol != null)
+                    {
+                        var property = typeof(T).GetProperty(allowedCol);
+                        if (property != null)
+                        {
+                            var parameter = Expression.Parameter(typeof(T), "e");
+                            var propertyAccess = Expression.Property(parameter, property);
+                            Expression equals;
+                            if (property.PropertyType == typeof(string))
+                            {
+                                var toLowerMethod = typeof(string).GetMethod(
+                                    "ToLower",
+                                    Type.EmptyTypes
+                                );
+                                var propertyToLower = Expression.Call(
+                                    propertyAccess,
+                                    toLowerMethod!
+                                );
+                                var filterValue = Expression.Constant(
+                                    filter.Value.ToLower(),
+                                    typeof(string)
+                                );
+                                equals = Expression.Equal(propertyToLower, filterValue);
+                            }
+                            else if (property.PropertyType.IsEnum)
+                            {
+                                var enumValue = Enum.Parse(
+                                    property.PropertyType,
+                                    filter.Value,
+                                    true
+                                );
+                                var filterValue = Expression.Constant(enumValue);
+                                equals = Expression.Equal(propertyAccess, filterValue);
+                            }
+                            else
+                            {
+                                var filterValue = Expression.Constant(
+                                    Convert.ChangeType(filter.Value, property.PropertyType)
+                                );
+                                equals = Expression.Equal(propertyAccess, filterValue);
+                            }
+                            var lambda = Expression.Lambda<Func<T, bool>>(equals, parameter);
+                            query = query.Where(lambda);
+                        }
+                    }
+                }
+            }
+
+            // Apply search
+            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
+            {
+                Expression? searchExpression = null;
+                var parameter = Expression.Parameter(typeof(T), "e");
+                var toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                var searchValue = Expression.Constant(search.ToLower());
+                foreach (var col in allowedColumns)
+                {
+                    var property = typeof(T).GetProperty(col);
+                    if (property != null && property.PropertyType == typeof(string))
+                    {
+                        var propertyAccess = Expression.Property(parameter, property);
+                        var propertyToLower = Expression.Call(propertyAccess, toLowerMethod!);
+                        var containsMethod = typeof(string).GetMethod("Contains", [typeof(string)]);
+                        var contains = Expression.Call(
+                            propertyToLower,
+                            containsMethod!,
+                            searchValue
+                        );
+                        searchExpression =
+                            searchExpression == null
+                                ? contains
+                                : Expression.OrElse(searchExpression, contains);
+                    }
+                }
+                if (searchExpression != null)
+                {
+                    var lambda = Expression.Lambda<Func<T, bool>>(searchExpression, parameter);
+                    query = query.Where(lambda);
+                }
+            }
+
+            // Sorting
             if (!string.IsNullOrEmpty(sortBy))
             {
                 var prop = typeof(T)

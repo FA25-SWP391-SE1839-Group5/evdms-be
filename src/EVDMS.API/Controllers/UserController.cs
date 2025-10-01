@@ -1,4 +1,5 @@
-﻿using EVDMS.API.Middlewares;
+﻿using System.Text.Json;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
 using EVDMS.Common.Utils;
@@ -22,10 +23,25 @@ namespace EVDMS.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortBy = null,
-            [FromQuery] string? sortOrder = null
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await userService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await userService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.User.SearchableColumns
+            );
             return Ok(new ApiResponse<PaginatedResult<UserDto>>(result));
         }
 

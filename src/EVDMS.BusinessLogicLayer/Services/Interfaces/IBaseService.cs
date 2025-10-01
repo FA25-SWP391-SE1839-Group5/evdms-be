@@ -8,7 +8,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             int page,
             int pageSize,
             string? sortBy = null,
-            string? sortOrder = null
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
         );
         Task<TDto?> GetByIdAsync(Guid id);
         Task<TDto> CreateAsync(TCreateDto dto);

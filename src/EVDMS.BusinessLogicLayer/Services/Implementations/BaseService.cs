@@ -22,14 +22,20 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             int page,
             int pageSize,
             string? sortBy = null,
-            string? sortOrder = null
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
         )
         {
             var (entities, totalCount) = await _repository.GetAllAsync(
                 page,
                 pageSize,
                 sortBy,
-                sortOrder
+                sortOrder,
+                search,
+                filters,
+                allowedColumns
             );
             return new PaginatedResult<TDto>
             {

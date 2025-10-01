@@ -10,7 +10,10 @@ namespace EVDMS.DataAccessLayer.Repositories.Interfaces
             int page,
             int pageSize,
             string? sortBy = null,
-            string? sortOrder = null
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
         );
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);

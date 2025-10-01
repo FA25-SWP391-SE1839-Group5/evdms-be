@@ -19,5 +19,14 @@ namespace EVDMS.DataAccessLayer.Entities
         public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
         public ICollection<AuditLog> AuditLogs { get; set; } = [];
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];
+
+        public static readonly string[] SearchableColumns =
+        {
+            "DealerId",
+            "FullName",
+            "Email",
+            "Role",
+            "IsActive",
+        };
     }
 }
