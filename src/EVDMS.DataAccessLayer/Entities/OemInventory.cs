@@ -6,5 +6,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public int Quantity { get; set; }
 
         public VehicleVariant VehicleVariant { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns = ["VariantId", "Quantity"];
     }
 }

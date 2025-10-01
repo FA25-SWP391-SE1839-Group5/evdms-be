@@ -15,5 +15,15 @@ namespace EVDMS.DataAccessLayer.Entities
         public Dealer Dealer { get; set; } = null!;
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];
         public ICollection<TestDrive> TestDrives { get; set; } = [];
+
+        public static readonly string[] SearchableColumns =
+        [
+            "VariantId",
+            "DealerId",
+            "Vin",
+            "Color",
+            "Type",
+            "Status",
+        ];
     }
 }

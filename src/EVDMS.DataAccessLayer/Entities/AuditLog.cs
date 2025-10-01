@@ -9,5 +9,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public required string Description { get; set; }
 
         public User User { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns = ["UserId", "Action", "Description"];
     }
 }

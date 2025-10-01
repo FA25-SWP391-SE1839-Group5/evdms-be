@@ -36,5 +36,14 @@ namespace EVDMS.DataAccessLayer.Entities
                         ?? new VehicleFeatures();
             set => Features = JsonSerializer.Serialize(value);
         }
+
+        public static readonly string[] SearchableColumns =
+        [
+            "ModelId",
+            "Name",
+            "BasePrice",
+            "Specs",
+            "Features",
+        ];
     }
 }

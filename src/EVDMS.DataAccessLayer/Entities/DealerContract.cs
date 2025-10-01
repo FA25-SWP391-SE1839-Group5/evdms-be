@@ -9,5 +9,14 @@ namespace EVDMS.DataAccessLayer.Entities
         public decimal OutstandingDebt { get; set; }
 
         public Dealer Dealer { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns =
+        [
+            "DealerId",
+            "StartDate",
+            "EndDate",
+            "SalesTarget",
+            "OutstandingDebt",
+        ];
     }
 }

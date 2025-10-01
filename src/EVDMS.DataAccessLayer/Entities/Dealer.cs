@@ -14,5 +14,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public ICollection<TestDrive> TestDrives { get; set; } = [];
         public ICollection<User> Users { get; set; } = [];
         public ICollection<Vehicle> Vehicles { get; set; } = [];
+
+        public static readonly string[] SearchableColumns = ["Name", "Region", "Address"];
     }
 }

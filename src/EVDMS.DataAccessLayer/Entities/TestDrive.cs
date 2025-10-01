@@ -13,5 +13,14 @@ namespace EVDMS.DataAccessLayer.Entities
         public Customer Customer { get; set; } = null!;
         public Dealer Dealer { get; set; } = null!;
         public Vehicle Vehicle { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns =
+        [
+            "CustomerId",
+            "DealerId",
+            "VehicleId",
+            "ScheduledAt",
+            "Status",
+        ];
     }
 }

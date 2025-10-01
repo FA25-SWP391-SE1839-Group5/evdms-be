@@ -10,5 +10,13 @@ namespace EVDMS.DataAccessLayer.Entities
         public PaymentMethod Method { get; set; }
 
         public SalesOrder SalesOrder { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns =
+        [
+            "SalesOrderId",
+            "Amount",
+            "Date",
+            "Method",
+        ];
     }
 }

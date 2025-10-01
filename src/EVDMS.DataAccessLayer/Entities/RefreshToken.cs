@@ -8,5 +8,13 @@
         public bool IsRevoked { get; set; }
 
         public User User { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns =
+        [
+            "UserId",
+            "TokenHash",
+            "ExpiresAt",
+            "IsRevoked",
+        ];
     }
 }

@@ -1,4 +1,5 @@
-﻿using EVDMS.API.Middlewares;
+﻿using System.Text.Json;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,11 @@ namespace EVDMS.API.Controllers
     [Route("api/audit-logs")]
     public class AuditLogController : ControllerBase
     {
-        private readonly IAuditLogService auditLogService;
+        private readonly IAuditLogService _auditLogService;
 
         public AuditLogController(IAuditLogService auditLogService)
         {
-            this.auditLogService = auditLogService;
+            _auditLogService = auditLogService;
         }
 
         [HttpGet]
@@ -21,17 +22,32 @@ namespace EVDMS.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortBy = null,
-            [FromQuery] string? sortOrder = null
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await auditLogService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await _auditLogService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.AuditLog.SearchableColumns
+            );
             return Ok(new ApiResponse<PaginatedResult<AuditLogDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var auditLog = await auditLogService.GetByIdAsync(id);
+            var auditLog = await _auditLogService.GetByIdAsync(id);
             if (auditLog == null)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<AuditLogDto>(auditLog));
@@ -40,7 +56,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateAuditLogDto dto)
         {
-            var created = await auditLogService.CreateAsync(dto);
+            var created = await _auditLogService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -51,7 +67,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateAuditLogDto dto)
         {
-            var success = await auditLogService.UpdateAsync(id, dto);
+            var success = await _auditLogService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<string>(null, "AuditLog updated successfully"));
@@ -60,7 +76,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchAuditLogDto dto)
         {
-            var success = await auditLogService.PatchAsync(id, dto);
+            var success = await _auditLogService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<string>(null, "AuditLog patched successfully"));
@@ -69,7 +85,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await auditLogService.DeleteAsync(id);
+            var success = await _auditLogService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<string>(null, "AuditLog deleted successfully"));

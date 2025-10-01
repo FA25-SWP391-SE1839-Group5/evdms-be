@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -9,11 +10,11 @@ namespace EVDMS.API.Controllers
     [Route("api/vehicles")]
     public class VehicleController : ControllerBase
     {
-        private readonly IVehicleService vehicleService;
+        private readonly IVehicleService _vehicleService;
 
         public VehicleController(IVehicleService vehicleService)
         {
-            this.vehicleService = vehicleService;
+            _vehicleService = vehicleService;
         }
 
         [HttpGet]
@@ -21,17 +22,32 @@ namespace EVDMS.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortBy = null,
-            [FromQuery] string? sortOrder = null
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await vehicleService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await _vehicleService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.Vehicle.SearchableColumns
+            );
             return Ok(new ApiResponse<PaginatedResult<VehicleDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var vehicle = await vehicleService.GetByIdAsync(id);
+            var vehicle = await _vehicleService.GetByIdAsync(id);
             if (vehicle == null)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
             return Ok(new ApiResponse<VehicleDto>(vehicle));
@@ -40,7 +56,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateVehicleDto dto)
         {
-            var created = await vehicleService.CreateAsync(dto);
+            var created = await _vehicleService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -51,7 +67,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateVehicleDto dto)
         {
-            var success = await vehicleService.UpdateAsync(id, dto);
+            var success = await _vehicleService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
             return Ok(new ApiResponse<string>(null, "Vehicle updated successfully"));
@@ -60,7 +76,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchVehicleDto dto)
         {
-            var success = await vehicleService.PatchAsync(id, dto);
+            var success = await _vehicleService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
             return Ok(new ApiResponse<string>(null, "Vehicle patched successfully"));
@@ -69,7 +85,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await vehicleService.DeleteAsync(id);
+            var success = await _vehicleService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
             return Ok(new ApiResponse<string>(null, "Vehicle deleted successfully"));

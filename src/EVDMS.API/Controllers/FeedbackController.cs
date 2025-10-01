@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -9,11 +10,11 @@ namespace EVDMS.API.Controllers
     [Route("api/feedbacks")]
     public class FeedbackController : ControllerBase
     {
-        private readonly IFeedbackService feedbackService;
+        private readonly IFeedbackService _feedbackService;
 
         public FeedbackController(IFeedbackService feedbackService)
         {
-            this.feedbackService = feedbackService;
+            _feedbackService = feedbackService;
         }
 
         [HttpGet]
@@ -21,17 +22,32 @@ namespace EVDMS.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortBy = null,
-            [FromQuery] string? sortOrder = null
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await feedbackService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await _feedbackService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.Feedback.SearchableColumns
+            );
             return Ok(new ApiResponse<PaginatedResult<FeedbackDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var feedback = await feedbackService.GetByIdAsync(id);
+            var feedback = await _feedbackService.GetByIdAsync(id);
             if (feedback == null)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
             return Ok(new ApiResponse<FeedbackDto>(feedback));
@@ -40,7 +56,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateFeedbackDto dto)
         {
-            var created = await feedbackService.CreateAsync(dto);
+            var created = await _feedbackService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -51,7 +67,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateFeedbackDto dto)
         {
-            var success = await feedbackService.UpdateAsync(id, dto);
+            var success = await _feedbackService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
             return Ok(new ApiResponse<string>(null, "Feedback updated successfully"));
@@ -60,7 +76,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchFeedbackDto dto)
         {
-            var success = await feedbackService.PatchAsync(id, dto);
+            var success = await _feedbackService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
             return Ok(new ApiResponse<string>(null, "Feedback patched successfully"));
@@ -69,7 +85,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await feedbackService.DeleteAsync(id);
+            var success = await _feedbackService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
             return Ok(new ApiResponse<string>(null, "Feedback deleted successfully"));

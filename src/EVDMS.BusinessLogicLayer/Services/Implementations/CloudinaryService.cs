@@ -9,12 +9,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
     public class CloudinaryService : ICloudinaryService
     {
-        private readonly Cloudinary cloudinary;
+        private readonly Cloudinary _cloudinary;
 
         public CloudinaryService(IOptions<CloudinarySettings> cloudinarySettings)
         {
             var settings = cloudinarySettings.Value;
-            cloudinary = new Cloudinary(
+            _cloudinary = new Cloudinary(
                 new Account(settings.CloudName, settings.ApiKey, settings.ApiSecret)
             );
         }
@@ -31,7 +31,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 Transformation = new Transformation().Width(1920).Height(1080).Crop("scale"),
                 Folder = "EVDMS/VehicleModels",
             };
-            var uploadResult = await cloudinary.UploadAsync(uploadParams);
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
             if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
                 return null;

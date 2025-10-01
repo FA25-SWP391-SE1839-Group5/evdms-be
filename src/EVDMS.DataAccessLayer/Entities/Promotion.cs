@@ -12,5 +12,15 @@ namespace EVDMS.DataAccessLayer.Entities
         public DateTime EndDate { get; set; }
 
         public Dealer? Dealer { get; set; }
+
+        public static readonly string[] SearchableColumns =
+        [
+            "DealerId",
+            "Type",
+            "Description",
+            "DiscountPercent",
+            "StartDate",
+            "EndDate",
+        ];
     }
 }

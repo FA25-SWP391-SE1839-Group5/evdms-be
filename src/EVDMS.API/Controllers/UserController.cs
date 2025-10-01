@@ -11,11 +11,11 @@ namespace EVDMS.API.Controllers
     [Route("api/users")]
     public class UserController : ControllerBase
     {
-        private readonly IUserService userService;
+        private readonly IUserService _userService;
 
         public UserController(IUserService userService)
         {
-            this.userService = userService;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace EVDMS.API.Controllers
             {
                 filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
             }
-            var result = await userService.GetAllAsync(
+            var result = await _userService.GetAllAsync(
                 page,
                 pageSize,
                 sortBy,
@@ -48,7 +48,7 @@ namespace EVDMS.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var user = await userService.GetByIdAsync(id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<UserDto>(user));
@@ -66,7 +66,7 @@ namespace EVDMS.API.Controllers
                         new ApiResponse<string>("You are not allowed to create users.")
                     );
 
-                var created = await userService.CreateAsync(dto, currentUserRole.Value);
+                var created = await _userService.CreateAsync(dto, currentUserRole.Value);
                 return CreatedAtAction(
                     nameof(GetById),
                     new { id = created.Id },
@@ -82,7 +82,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
         {
-            var success = await userService.UpdateAsync(id, dto);
+            var success = await _userService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<string>(null, "User updated successfully"));
@@ -91,7 +91,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchUserDto dto)
         {
-            var success = await userService.PatchAsync(id, dto);
+            var success = await _userService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<string>(null, "User patched successfully"));
@@ -100,7 +100,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await userService.DeleteAsync(id);
+            var success = await _userService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<string>(null, "User deleted successfully"));
@@ -115,7 +115,7 @@ namespace EVDMS.API.Controllers
                     new ApiResponse<string>("Invalid or missing user ID in token.")
                 );
 
-            var user = await userService.GetCurrentUserAsync(userId.Value);
+            var user = await _userService.GetCurrentUserAsync(userId.Value);
             if (user == null)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<UserDto>(user));

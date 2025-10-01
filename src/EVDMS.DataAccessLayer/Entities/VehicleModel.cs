@@ -7,5 +7,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public string? ImageUrl { get; set; }
 
         public ICollection<VehicleVariant> VehicleVariants { get; set; } = [];
+
+        public static readonly string[] SearchableColumns = ["Name", "Description"];
     }
 }

@@ -14,9 +14,9 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         : BaseService<User, UserDto, CreateUserDto, UpdateUserDto, PatchUserDto>,
             IUserService
     {
-        private readonly IUserRepository userRepository;
-        private readonly IDealerRepository dealerRepository;
-        private readonly IEmailService emailService;
+        private readonly IUserRepository _userRepository;
+        private readonly IDealerRepository _dealerRepository;
+        private readonly IEmailService _emailService;
 
         public UserService(
             IUserRepository userRepository,
@@ -26,9 +26,9 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         )
             : base(userRepository, mapper)
         {
-            this.userRepository = userRepository;
-            this.dealerRepository = dealerRepository;
-            this.emailService = emailService;
+            _userRepository = userRepository;
+            _dealerRepository = dealerRepository;
+            _emailService = emailService;
         }
 
         public async Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole)
@@ -47,7 +47,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (dto.DealerId != null)
             {
                 var dealer =
-                    await dealerRepository.GetByIdAsync(dto.DealerId.Value)
+                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
                     ?? throw new Exception("Dealer not found.");
                 if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
                     throw new Exception(
@@ -60,7 +60,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
             }
 
-            if (await userRepository.ExistsByEmailAsync(dto.Email))
+            if (await _userRepository.ExistsByEmailAsync(dto.Email))
                 throw new Exception($"A user with email '{dto.Email}' already exists.");
 
             var tempPassword = GenerateTemporaryPassword();
@@ -69,8 +69,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var user = _mapper.Map<User>(dto);
             user.PasswordHash = passwordHash;
 
-            await userRepository.AddAsync(user);
-            await userRepository.SaveChangesAsync();
+            await _userRepository.AddAsync(user);
+            await _userRepository.SaveChangesAsync();
 
             var subject = "Your Account Has Been Created";
             var body =
@@ -109,7 +109,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 </body>
 </html>
 ";
-            await emailService.SendEmailAsync(user.Email, subject, body);
+            await _emailService.SendEmailAsync(user.Email, subject, body);
 
             return _mapper.Map<UserDto>(user);
         }
@@ -134,7 +134,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<UserDto?> GetCurrentUserAsync(Guid userId)
         {
-            var user = await userRepository.GetByIdAsync(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
             if (user == null)
                 return null;
             return _mapper.Map<UserDto>(user);

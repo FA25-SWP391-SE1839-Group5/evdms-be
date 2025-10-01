@@ -1,3 +1,4 @@
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -9,11 +10,11 @@ namespace EVDMS.API.Controllers
     [Route("api/promotions")]
     public class PromotionController : ControllerBase
     {
-        private readonly IPromotionService promotionService;
+        private readonly IPromotionService _promotionService;
 
         public PromotionController(IPromotionService promotionService)
         {
-            this.promotionService = promotionService;
+            _promotionService = promotionService;
         }
 
         [HttpGet]
@@ -21,17 +22,32 @@ namespace EVDMS.API.Controllers
             [FromQuery] int page = 1,
             [FromQuery] int pageSize = 10,
             [FromQuery] string? sortBy = null,
-            [FromQuery] string? sortOrder = null
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await promotionService.GetAllAsync(page, pageSize, sortBy, sortOrder);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await _promotionService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.Promotion.SearchableColumns
+            );
             return Ok(new ApiResponse<PaginatedResult<PromotionDto>>(result));
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            var promotion = await promotionService.GetByIdAsync(id);
+            var promotion = await _promotionService.GetByIdAsync(id);
             if (promotion == null)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
             return Ok(new ApiResponse<PromotionDto>(promotion));
@@ -40,7 +56,7 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePromotionDto dto)
         {
-            var created = await promotionService.CreateAsync(dto);
+            var created = await _promotionService.CreateAsync(dto);
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = created.Id },
@@ -51,7 +67,7 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePromotionDto dto)
         {
-            var success = await promotionService.UpdateAsync(id, dto);
+            var success = await _promotionService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
             return Ok(new ApiResponse<string>(null, "Promotion updated successfully"));
@@ -60,7 +76,7 @@ namespace EVDMS.API.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchPromotionDto dto)
         {
-            var success = await promotionService.PatchAsync(id, dto);
+            var success = await _promotionService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
             return Ok(new ApiResponse<string>(null, "Promotion patched successfully"));
@@ -69,7 +85,7 @@ namespace EVDMS.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var success = await promotionService.DeleteAsync(id);
+            var success = await _promotionService.DeleteAsync(id);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
             return Ok(new ApiResponse<string>(null, "Promotion deleted successfully"));
