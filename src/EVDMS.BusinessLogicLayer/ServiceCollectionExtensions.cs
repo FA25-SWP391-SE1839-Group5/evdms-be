@@ -46,6 +46,7 @@ namespace EVDMS.BusinessLogicLayer
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IVehicleVariantRepository, VehicleVariantRepository>();
             services.AddScoped<IVehicleVariantService, VehicleVariantService>();
+            services.AddScoped<ICloudinaryService, CloudinaryService>();
 
             // Register AutoMapper profiles
             services.AddAutoMapper(cfg => cfg.AddProfile<AuditLogProfile>());

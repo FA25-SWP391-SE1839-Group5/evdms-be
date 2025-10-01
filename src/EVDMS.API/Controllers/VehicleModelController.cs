@@ -10,10 +10,15 @@ namespace EVDMS.API.Controllers
     public class VehicleModelController : ControllerBase
     {
         private readonly IVehicleModelService vehicleModelService;
+        private readonly ICloudinaryService cloudinaryService;
 
-        public VehicleModelController(IVehicleModelService vehicleModelService)
+        public VehicleModelController(
+            IVehicleModelService vehicleModelService,
+            ICloudinaryService cloudinaryService
+        )
         {
             this.vehicleModelService = vehicleModelService;
+            this.cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -73,6 +78,34 @@ namespace EVDMS.API.Controllers
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleModel not found"));
             return Ok(new ApiResponse<string>(null, "VehicleModel deleted successfully"));
+        }
+
+        [HttpPost("upload-image")]
+        public async Task<IActionResult> UploadImage([FromForm] UploadVehicleModelImageDto dto)
+        {
+            var image = dto.Image;
+            if (image == null || image.Length == 0)
+                return BadRequest(new ApiResponse<string>("No image file provided."));
+
+            var allowedTypes = new[]
+            {
+                "image/jpeg",
+                "image/png",
+                "image/gif",
+                "image/webp",
+                "image/bmp",
+            };
+            if (!allowedTypes.Contains(image.ContentType.ToLower()))
+                return BadRequest(
+                    new ApiResponse<string>(
+                        "Only image files (jpg, png, gif, webp, bmp) are allowed."
+                    )
+                );
+
+            var imageUrl = await cloudinaryService.UploadVehicleModelImageAsync(image);
+            if (string.IsNullOrEmpty(imageUrl))
+                return StatusCode(500, new ApiResponse<string>("Image upload failed."));
+            return Ok(new ApiResponse<string>(null, imageUrl));
         }
     }
 }

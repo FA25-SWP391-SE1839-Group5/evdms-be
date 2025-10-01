@@ -70,6 +70,9 @@ namespace EVDMS.API
 
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
             builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
+            builder.Services.Configure<CloudinarySettings>(
+                builder.Configuration.GetSection("Cloudinary")
+            );
 
             builder
                 .Services.AddAuthentication(options =>
