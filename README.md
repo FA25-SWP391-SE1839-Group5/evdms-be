@@ -104,7 +104,7 @@ To keep sensitive information (like connection strings, API keys, JWT secrets) o
 - Update your connection string using User Secrets as described above.
 - Apply migrations:
    ```sh
-   dotnet ef database update --project EVDMS.DataAccessLayer
+   dotnet ef database update --project src/EVDMS.DataAccessLayer --startup-project src/EVDMS.API
    ```
 
 ---
@@ -112,11 +112,11 @@ To keep sensitive information (like connection strings, API keys, JWT secrets) o
 ## Running the Application
 
 ```sh
-dotnet run --project EVDMS.API
+dotnet run --project src/EVDMS.API
 ```
 
-- The API will be available at `https://localhost:5001` (or as configured).
-- Use tools like Postman or Swagger UI to interact with the endpoints.
+- The API will be available at `http://localhost:5197/api`.
+- Use tools like Postman or [Swagger UI](http://localhost:5197/swagger/index.html) to interact with the endpoints.
 
 ---
 

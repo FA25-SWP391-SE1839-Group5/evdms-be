@@ -1,6 +1,7 @@
 using EVDMS.API.Controllers;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
@@ -28,10 +29,27 @@ namespace EVDMS.API.Tests.Unit.Controllers
                 Page = 1,
                 PageSize = 10,
             };
-            _serviceMock.Setup(s => s.GetAllAsync(1, 10)).ReturnsAsync(paged);
-            var result = await _controller.GetAll(1, 10);
-            var ok = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(paged, ok.Value);
+            _serviceMock
+                .Setup(s =>
+                    s.GetAllAsync(
+                        It.IsAny<int>(),
+                        It.IsAny<int>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<Dictionary<string, string>>(),
+                        It.IsAny<IEnumerable<string>>()
+                    )
+                )
+                .ReturnsAsync(paged);
+            var result = await _controller.GetAll(1, 10, null, null);
+            var ok = Assert.IsType<OkObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<PaginatedResult<CustomerDto>>>(ok.Value);
+            Assert.NotNull(apiResponse.Data);
+            Assert.Equal(paged.Items, apiResponse.Data.Items);
+            Assert.Equal(paged.TotalResults, apiResponse.Data.TotalResults);
+            Assert.Equal(paged.Page, apiResponse.Data.Page);
+            Assert.Equal(paged.PageSize, apiResponse.Data.PageSize);
         }
 
         [Trait("Category", "Unit")]
@@ -42,8 +60,9 @@ namespace EVDMS.API.Tests.Unit.Controllers
             var dto = new CustomerDto { Id = id };
             _serviceMock.Setup(s => s.GetByIdAsync(id)).ReturnsAsync(dto);
             var result = await _controller.GetById(id);
-            var ok = Assert.IsType<OkObjectResult>(result.Result);
-            Assert.Equal(dto, ok.Value);
+            var ok = Assert.IsType<OkObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<CustomerDto>>(ok.Value);
+            Assert.Equal(dto, apiResponse.Data);
         }
 
         [Trait("Category", "Unit")]
@@ -53,30 +72,47 @@ namespace EVDMS.API.Tests.Unit.Controllers
             var id = Guid.NewGuid();
             _serviceMock.Setup(s => s.GetByIdAsync(id)).ReturnsAsync((CustomerDto?)null);
             var result = await _controller.GetById(id);
-            Assert.IsType<NotFoundResult>(result.Result);
+            var notFound = Assert.IsType<NotFoundObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(notFound.Value);
+            Assert.False(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
         [Fact]
         public async Task Create_ReturnsCreatedAtAction()
         {
-            var dto = new CreateCustomerDto();
+            var dto = new CreateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             var created = new CustomerDto { Id = Guid.NewGuid() };
             _serviceMock.Setup(s => s.CreateAsync(dto)).ReturnsAsync(created);
             var result = await _controller.Create(dto);
-            var createdAt = Assert.IsType<CreatedAtActionResult>(result.Result);
-            Assert.Equal(created, createdAt.Value);
+            var createdAt = Assert.IsType<CreatedAtActionResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<CustomerDto>>(createdAt.Value);
+            Assert.Equal(created, apiResponse.Data);
         }
 
         [Trait("Category", "Unit")]
         [Fact]
-        public async Task Update_ReturnsNoContent_WhenSuccess()
+        public async Task Update_ReturnsOk_WhenSuccess()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             _serviceMock.Setup(s => s.UpdateAsync(id, dto)).ReturnsAsync(true);
             var result = await _controller.Update(id, dto);
-            Assert.IsType<NoContentResult>(result);
+            var ok = Assert.IsType<OkObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(ok.Value);
+            Assert.True(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
@@ -84,21 +120,31 @@ namespace EVDMS.API.Tests.Unit.Controllers
         public async Task Update_ReturnsNotFound_WhenMissing()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test Name",
+                Phone = "1234567890",
+                Email = "test@example.com",
+                Address = "123 Test St",
+            };
             _serviceMock.Setup(s => s.UpdateAsync(id, dto)).ReturnsAsync(false);
             var result = await _controller.Update(id, dto);
-            Assert.IsType<NotFoundResult>(result);
+            var notFound = Assert.IsType<NotFoundObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(notFound.Value);
+            Assert.False(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
         [Fact]
-        public async Task Patch_ReturnsNoContent_WhenSuccess()
+        public async Task Patch_ReturnsOk_WhenSuccess()
         {
             var id = Guid.NewGuid();
             var dto = new PatchCustomerDto();
             _serviceMock.Setup(s => s.PatchAsync(id, dto)).ReturnsAsync(true);
             var result = await _controller.Patch(id, dto);
-            Assert.IsType<NoContentResult>(result);
+            var ok = Assert.IsType<OkObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(ok.Value);
+            Assert.True(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
@@ -109,17 +155,21 @@ namespace EVDMS.API.Tests.Unit.Controllers
             var dto = new PatchCustomerDto();
             _serviceMock.Setup(s => s.PatchAsync(id, dto)).ReturnsAsync(false);
             var result = await _controller.Patch(id, dto);
-            Assert.IsType<NotFoundResult>(result);
+            var notFound = Assert.IsType<NotFoundObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(notFound.Value);
+            Assert.False(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
         [Fact]
-        public async Task Delete_ReturnsNoContent_WhenSuccess()
+        public async Task Delete_ReturnsOk_WhenSuccess()
         {
             var id = Guid.NewGuid();
             _serviceMock.Setup(s => s.DeleteAsync(id)).ReturnsAsync(true);
             var result = await _controller.Delete(id);
-            Assert.IsType<NoContentResult>(result);
+            var ok = Assert.IsType<OkObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(ok.Value);
+            Assert.True(apiResponse.Success);
         }
 
         [Trait("Category", "Unit")]
@@ -129,7 +179,9 @@ namespace EVDMS.API.Tests.Unit.Controllers
             var id = Guid.NewGuid();
             _serviceMock.Setup(s => s.DeleteAsync(id)).ReturnsAsync(false);
             var result = await _controller.Delete(id);
-            Assert.IsType<NotFoundResult>(result);
+            var notFound = Assert.IsType<NotFoundObjectResult>(result);
+            var apiResponse = Assert.IsType<ApiResponse<string>>(notFound.Value);
+            Assert.False(apiResponse.Success);
         }
     }
 }

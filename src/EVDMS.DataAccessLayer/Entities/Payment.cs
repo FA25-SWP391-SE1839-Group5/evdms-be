@@ -4,11 +4,19 @@ namespace EVDMS.DataAccessLayer.Entities
 {
     public class Payment : BaseEntity
     {
-        public Guid SalesContractId { get; set; }
+        public Guid SalesOrderId { get; set; }
         public decimal Amount { get; set; }
-        public DateTime PaymentDate { get; set; }
+        public DateTime Date { get; set; }
         public PaymentMethod Method { get; set; }
 
-        public SalesContract SalesContract { get; set; } = null!;
+        public SalesOrder SalesOrder { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns =
+        [
+            "SalesOrderId",
+            "Amount",
+            "Date",
+            "Method",
+        ];
     }
 }

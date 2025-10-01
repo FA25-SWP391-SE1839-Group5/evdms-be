@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<Quotation> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(q => q.Status).HasConversion<string>();
             builder
                 .HasOne(q => q.Dealer)
                 .WithMany(d => d.Quotations)
@@ -24,6 +26,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(c => c.Quotations)
                 .HasForeignKey(q => q.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(QuotationSeed.Quotations);
         }
     }
 }

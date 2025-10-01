@@ -1,5 +1,4 @@
-﻿using EVDMS.DataAccessLayer.Data.Seeds.SeedIds;
-using EVDMS.DataAccessLayer.Entities;
+﻿using EVDMS.DataAccessLayer.Entities;
 
 namespace EVDMS.DataAccessLayer.Data.Seeds
 {
@@ -9,7 +8,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
             [
                 new Customer
                 {
-                    Id = CustomerIds.NguyenVanAn,
+                    Id = Guid.Parse("10000000-0000-0000-0000-000000000001"),
                     FullName = "Nguyễn Văn An",
                     Phone = "0901234567",
                     Email = "an.nguyen@email.com",
@@ -17,7 +16,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Customer
                 {
-                    Id = CustomerIds.TranThiBichNgoc,
+                    Id = Guid.Parse("10000000-0000-0000-0000-000000000002"),
                     FullName = "Trần Thị Bích Ngọc",
                     Phone = "0912345678",
                     Email = "ngoc.tran@email.com",
@@ -25,7 +24,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Customer
                 {
-                    Id = CustomerIds.LeMinhTuan,
+                    Id = Guid.Parse("10000000-0000-0000-0000-000000000003"),
                     FullName = "Lê Minh Tuấn",
                     Phone = "0923456789",
                     Email = "tuan.le@email.com",
@@ -33,7 +32,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Customer
                 {
-                    Id = CustomerIds.PhamQuangHuy,
+                    Id = Guid.Parse("10000000-0000-0000-0000-000000000004"),
                     FullName = "Phạm Quang Huy",
                     Phone = "0934567890",
                     Email = "huy.pham@email.com",
@@ -41,7 +40,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 },
                 new Customer
                 {
-                    Id = CustomerIds.VoThiMaiLan,
+                    Id = Guid.Parse("10000000-0000-0000-0000-000000000005"),
                     FullName = "Võ Thị Mai Lan",
                     Phone = "0945678901",
                     Email = "lan.vo@email.com",

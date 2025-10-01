@@ -1,6 +1,6 @@
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Repositories.Implementations;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +24,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
             var config = new MapperConfiguration(
                 cfg =>
                 {
-                    cfg.AddProfile(new Mapping.CustomerProfile());
+                    cfg.AddProfile(new MappingProfiles.CustomerProfile());
                 },
                 loggerFactory
             );
@@ -79,6 +79,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Integration.Services
             var updated = await service.UpdateAsync(created.Id, updateDto);
             var found = await service.GetByIdAsync(created.Id);
             Assert.True(updated);
+            Assert.NotNull(found);
             Assert.Equal("After Update", found.FullName);
         }
 

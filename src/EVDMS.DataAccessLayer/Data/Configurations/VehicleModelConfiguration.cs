@@ -10,7 +10,6 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<VehicleModel> builder)
         {
             builder.ConfigureTimestamps();
-            builder.Property(vm => vm.Year).IsRequired();
             builder.HasData(VehicleModelSeed.VehicleModels);
         }
     }

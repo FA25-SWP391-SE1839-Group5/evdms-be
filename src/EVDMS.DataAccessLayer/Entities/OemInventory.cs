@@ -1,13 +1,12 @@
-using EVDMS.Common.Enums;
-
 namespace EVDMS.DataAccessLayer.Entities
 {
     public class OemInventory : BaseEntity
     {
-        public Guid VehicleId { get; set; }
-        public OemInventoryLocation Location { get; set; }
-        public OemInventoryStatus Status { get; set; }
+        public Guid VariantId { get; set; }
+        public int Quantity { get; set; }
 
-        public Vehicle Vehicle { get; set; } = null!;
+        public VehicleVariant VehicleVariant { get; set; } = null!;
+
+        public static readonly string[] SearchableColumns = ["VariantId", "Quantity"];
     }
 }

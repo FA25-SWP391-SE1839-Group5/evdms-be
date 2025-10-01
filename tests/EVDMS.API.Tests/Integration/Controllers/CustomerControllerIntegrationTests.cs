@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
-using EVDMS.Common.DTOs;
+using EVDMS.API.Middlewares;
+using EVDMS.Common.Dtos;
 
 namespace EVDMS.API.Tests.Integration.Controllers
 {
@@ -21,10 +22,13 @@ namespace EVDMS.API.Tests.Integration.Controllers
                 "/api/customers",
                 TestContext.Current.CancellationToken
             );
-            var result = await response.ReadPagedResultAsync<CustomerDto>();
-
-            Assert.NotNull(result);
-            Assert.NotEmpty(result.Items);
+            var apiResponse = await response.Content.ReadFromJsonAsync<
+                ApiResponse<PaginatedResult<CustomerDto>>
+            >(cancellationToken: TestContext.Current.CancellationToken);
+            Assert.NotNull(apiResponse);
+            Assert.True(apiResponse.Success);
+            Assert.NotNull(apiResponse.Data);
+            Assert.NotEmpty(apiResponse.Data.Items);
         }
 
         [Trait("Category", "Integration")]
@@ -46,9 +50,12 @@ namespace EVDMS.API.Tests.Integration.Controllers
             );
             post.EnsureSuccessStatusCode();
 
-            var created = await post.Content.ReadFromJsonAsync<CustomerDto>(
+            var postApiResponse = await post.Content.ReadFromJsonAsync<ApiResponse<CustomerDto>>(
                 cancellationToken: TestContext.Current.CancellationToken
             );
+            Assert.NotNull(postApiResponse);
+            Assert.True(postApiResponse.Success);
+            var created = postApiResponse.Data;
             Assert.NotNull(created);
 
             var get = await _client.GetAsync(
@@ -57,9 +64,12 @@ namespace EVDMS.API.Tests.Integration.Controllers
             );
             get.EnsureSuccessStatusCode();
 
-            var found = await get.Content.ReadFromJsonAsync<CustomerDto>(
+            var getApiResponse = await get.Content.ReadFromJsonAsync<ApiResponse<CustomerDto>>(
                 cancellationToken: TestContext.Current.CancellationToken
             );
+            Assert.NotNull(getApiResponse);
+            Assert.True(getApiResponse.Success);
+            var found = getApiResponse.Data;
             Assert.Equal(createDto.FullName, found!.FullName);
         }
 
@@ -80,9 +90,10 @@ namespace EVDMS.API.Tests.Integration.Controllers
                 createDto,
                 cancellationToken: TestContext.Current.CancellationToken
             );
-            var created = await post.Content.ReadFromJsonAsync<CustomerDto>(
+            var postApiResponse = await post.Content.ReadFromJsonAsync<ApiResponse<CustomerDto>>(
                 cancellationToken: TestContext.Current.CancellationToken
             );
+            var created = postApiResponse!.Data;
 
             var updateDto = new UpdateCustomerDto
             {
@@ -97,15 +108,16 @@ namespace EVDMS.API.Tests.Integration.Controllers
                 updateDto,
                 cancellationToken: TestContext.Current.CancellationToken
             );
-            Assert.Equal(HttpStatusCode.NoContent, put.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, put.StatusCode);
 
             var get = await _client.GetAsync(
                 $"/api/customers/{created.Id}",
                 TestContext.Current.CancellationToken
             );
-            var found = await get.Content.ReadFromJsonAsync<CustomerDto>(
+            var getApiResponse = await get.Content.ReadFromJsonAsync<ApiResponse<CustomerDto>>(
                 cancellationToken: TestContext.Current.CancellationToken
             );
+            var found = getApiResponse!.Data;
             Assert.Equal("After Update", found!.FullName);
             Assert.Equal("555-2222", found.Phone);
         }
@@ -127,15 +139,16 @@ namespace EVDMS.API.Tests.Integration.Controllers
                 createDto,
                 cancellationToken: TestContext.Current.CancellationToken
             );
-            var created = await post.Content.ReadFromJsonAsync<CustomerDto>(
+            var postApiResponse = await post.Content.ReadFromJsonAsync<ApiResponse<CustomerDto>>(
                 cancellationToken: TestContext.Current.CancellationToken
             );
+            var created = postApiResponse!.Data;
 
             var del = await _client.DeleteAsync(
                 $"/api/customers/{created!.Id}",
                 TestContext.Current.CancellationToken
             );
-            Assert.Equal(HttpStatusCode.NoContent, del.StatusCode);
+            Assert.Equal(HttpStatusCode.OK, del.StatusCode);
 
             var get = await _client.GetAsync(
                 $"/api/customers/{created.Id}",

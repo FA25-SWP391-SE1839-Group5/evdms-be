@@ -1,5 +1,7 @@
+using System.Text.Json;
+using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -16,29 +18,50 @@ namespace EVDMS.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PaginatedResult<CustomerDto>>> GetAll(
+        public async Task<IActionResult> GetAll(
             [FromQuery] int page = 1,
-            [FromQuery] int pageSize = 10
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] string? search = null,
+            [FromQuery] string? filters = null
         )
         {
-            var result = await _customerService.GetAllAsync(page, pageSize);
-            return Ok(result);
+            Dictionary<string, string>? filterDict = null;
+            if (!string.IsNullOrEmpty(filters))
+            {
+                filterDict = JsonSerializer.Deserialize<Dictionary<string, string>>(filters);
+            }
+            var result = await _customerService.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filterDict,
+                DataAccessLayer.Entities.Customer.SearchableColumns
+            );
+            return Ok(new ApiResponse<PaginatedResult<CustomerDto>>(result));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CustomerDto>> GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var customer = await _customerService.GetByIdAsync(id);
             if (customer == null)
-                return NotFound();
-            return Ok(customer);
+                return NotFound(new ApiResponse<string>("Customer not found"));
+            return Ok(new ApiResponse<CustomerDto>(customer));
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerDto>> Create([FromBody] CreateCustomerDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateCustomerDto dto)
         {
             var created = await _customerService.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = created.Id },
+                new ApiResponse<CustomerDto>(created)
+            );
         }
 
         [HttpPut("{id}")]
@@ -46,8 +69,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _customerService.UpdateAsync(id, dto);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Customer not found"));
+            return Ok(new ApiResponse<string>(null, "Customer updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -55,8 +78,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _customerService.PatchAsync(id, dto);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Customer not found"));
+            return Ok(new ApiResponse<string>(null, "Customer patched successfully"));
         }
 
         [HttpDelete("{id}")]
@@ -64,8 +87,8 @@ namespace EVDMS.API.Controllers
         {
             var success = await _customerService.DeleteAsync(id);
             if (!success)
-                return NotFound();
-            return NoContent();
+                return NotFound(new ApiResponse<string>("Customer not found"));
+            return Ok(new ApiResponse<string>(null, "Customer deleted successfully"));
         }
     }
 }

@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<SalesOrder> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(so => so.Status).HasConversion<string>();
             builder
                 .HasOne(so => so.Quotation)
                 .WithMany(q => q.SalesOrders)
@@ -34,6 +36,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(v => v.SalesOrders)
                 .HasForeignKey(so => so.VehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(SalesOrderSeed.SalesOrders);
         }
     }
 }

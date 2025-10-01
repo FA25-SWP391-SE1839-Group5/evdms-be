@@ -5,7 +5,6 @@ namespace EVDMS.Common.Enums
         Draft,
         Sent,
         Approved,
-        Expired,
         Rejected,
     }
 }

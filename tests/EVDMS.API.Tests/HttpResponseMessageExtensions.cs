@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Json;
-using EVDMS.Common.DTOs;
+using EVDMS.API.Middlewares;
+using EVDMS.Common.Dtos;
 
 namespace EVDMS.API.Tests
 {
@@ -15,6 +16,23 @@ namespace EVDMS.API.Tests
             {
                 throw new InvalidOperationException(
                     "Response body could not be deserialized into PaginatedResult."
+                );
+            }
+            return result;
+        }
+
+        public static async Task<ApiResponse<PaginatedResult<T>>> ReadApiPagedResultAsync<T>(
+            this HttpResponseMessage response
+        )
+        {
+            response.EnsureSuccessStatusCode();
+            var result = await response.Content.ReadFromJsonAsync<
+                ApiResponse<PaginatedResult<T>>
+            >();
+            if (result == null)
+            {
+                throw new InvalidOperationException(
+                    "Response body could not be deserialized into ApiResponse<PaginatedResult>."
                 );
             }
             return result;

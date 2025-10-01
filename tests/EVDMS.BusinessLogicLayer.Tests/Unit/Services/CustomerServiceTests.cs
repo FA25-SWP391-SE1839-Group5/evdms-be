@@ -1,6 +1,6 @@
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Implementations;
-using EVDMS.Common.DTOs;
+using EVDMS.Common.Dtos;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
 using Moq;
@@ -55,7 +55,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
         public async Task GetByIdAsync_ReturnsNull_WhenCustomerDoesNotExist()
         {
             var id = Guid.NewGuid();
-            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer)null);
+            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer?)null);
 
             var result = await _service.GetByIdAsync(id);
 
@@ -134,8 +134,14 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
         public async Task UpdateAsync_ReturnsFalse_WhenCustomerNotFound()
         {
             var id = Guid.NewGuid();
-            var dto = new UpdateCustomerDto();
-            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer)null);
+            var dto = new UpdateCustomerDto
+            {
+                FullName = "Test",
+                Phone = "123",
+                Email = "a@b.com",
+                Address = "Addr",
+            };
+            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer?)null);
 
             var result = await _service.UpdateAsync(id, dto);
 
@@ -169,7 +175,7 @@ namespace EVDMS.BusinessLogicLayer.Tests.Unit.Services
         public async Task DeleteAsync_ReturnsFalse_WhenCustomerNotFound()
         {
             var id = Guid.NewGuid();
-            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer)null);
+            _customerRepoMock.Setup(r => r.GetByIdAsync(id)).ReturnsAsync((Customer?)null);
 
             var result = await _service.DeleteAsync(id);
 

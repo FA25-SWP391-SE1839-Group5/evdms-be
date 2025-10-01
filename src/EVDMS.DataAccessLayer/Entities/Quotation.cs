@@ -14,5 +14,14 @@ namespace EVDMS.DataAccessLayer.Entities
         public User User { get; set; } = null!;
         public Customer Customer { get; set; } = null!;
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];
+
+        public static readonly string[] SearchableColumns =
+        [
+            "DealerId",
+            "UserId",
+            "CustomerId",
+            "TotalAmount",
+            "Status",
+        ];
     }
 }

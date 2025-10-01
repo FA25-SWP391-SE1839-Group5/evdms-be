@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -10,10 +11,12 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.ConfigureTimestamps();
             builder
-                .HasOne(oi => oi.Vehicle)
-                .WithMany(v => v.OemInventories)
-                .HasForeignKey(oi => oi.VehicleId)
+                .HasOne(oi => oi.VehicleVariant)
+                .WithMany(vv => vv.OemInventories)
+                .HasForeignKey(oi => oi.VariantId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasData(OemInventorySeed.OemInventories);
         }
     }
 }

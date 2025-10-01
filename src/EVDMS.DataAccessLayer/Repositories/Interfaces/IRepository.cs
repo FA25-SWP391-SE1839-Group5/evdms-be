@@ -6,8 +6,15 @@ namespace EVDMS.DataAccessLayer.Repositories.Interfaces
         where T : class
     {
         Task<T?> GetByIdAsync(Guid id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<(IEnumerable<T> Items, int TotalCount)> GetPaginatedAsync(int page, int pageSize);
+        Task<(IEnumerable<T> Items, int TotalCount)> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
+        );
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task AddAsync(T entity);
         void Update(T entity);

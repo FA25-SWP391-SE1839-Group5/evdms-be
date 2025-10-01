@@ -1,4 +1,5 @@
-﻿using EVDMS.DataAccessLayer.Entities;
+using EVDMS.DataAccessLayer.Data.Seeds;
+using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,17 +10,15 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ConfigureTimestamps();
-            builder
-                .HasOne(u => u.Role)
-                .WithMany(r => r.Users)
-                .HasForeignKey(u => u.RoleId)
-                .OnDelete(DeleteBehavior.Restrict);
+            builder.Property(u => u.Role).HasConversion<string>();
+            builder.Property(u => u.IsActive).HasDefaultValue(true);
+            builder.HasIndex(u => u.Email).IsUnique();
             builder
                 .HasOne(u => u.Dealer)
                 .WithMany(d => d.Users)
                 .HasForeignKey(u => u.DealerId)
-                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(UserSeed.GetUsers());
         }
     }
 }

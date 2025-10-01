@@ -22,769 +22,264 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Customer", b =>
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.AuditLog", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Action")
+                        .HasColumnType("integer")
+                        .HasColumnName("action");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.ToTable("Customers");
+                    b.HasKey("Id")
+                        .HasName("pk_audit_logs");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_audit_logs_user_id");
+
+                    b.ToTable("audit_logs", (string)null);
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("address");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("phone");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_customers");
+
+                    b.ToTable("customers", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000001"),
                             Address = "123 Lê Lợi, Quận 1, TP. Hồ Chí Minh",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "an.nguyen@email.com",
                             FullName = "Nguyễn Văn An",
                             Phone = "0901234567",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000002"),
                             Address = "456 Nguyễn Trãi, Quận 5, TP. Hồ Chí Minh",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "ngoc.tran@email.com",
                             FullName = "Trần Thị Bích Ngọc",
                             Phone = "0912345678",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000003"),
                             Address = "789 Cách Mạng Tháng 8, Quận 10, TP. Hồ Chí Minh",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "tuan.le@email.com",
                             FullName = "Lê Minh Tuấn",
                             Phone = "0923456789",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000004"),
                             Address = "321 Điện Biên Phủ, Quận Bình Thạnh, TP. Hồ Chí Minh",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "huy.pham@email.com",
                             FullName = "Phạm Quang Huy",
                             Phone = "0934567890",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000005"),
                             Address = "654 Võ Văn Tần, Quận 3, TP. Hồ Chí Minh",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "lan.vo@email.com",
                             FullName = "Võ Thị Mai Lan",
                             Phone = "0945678901",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.CustomerDealer", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("DealerId");
-
-                    b.ToTable("CustomerDealers");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Dealer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("address");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("DealerName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<string>("Region")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("region");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_dealers");
 
-                    b.ToTable("Dealers");
-                });
+                    b.ToTable("dealers", (string)null);
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerAllocation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("AllocationDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DealerId");
-
-                    b.HasIndex("VehicleId");
-
-                    b.ToTable("DealerAllocations");
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Address = "100 Nguyen Van Cu, District 1, Ho Chi Minh City",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "EV Motors Saigon",
+                            Region = "Ho Chi Minh City",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerContract", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_date");
 
                     b.Property<decimal>("OutstandingDebt")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("outstanding_debt");
 
                     b.Property<decimal>("SalesTarget")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("sales_target");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_date");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_dealer_contracts");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_dealer_contracts_dealer_id");
 
-                    b.ToTable("DealerContracts");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DealerId");
-
-                    b.ToTable("DealerOrders");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrderItem", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("ColorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("OrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("VariantId");
-
-                    b.ToTable("DealerOrderItems");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feature", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("CategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("FeatureName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Features");
+                    b.ToTable("dealer_contracts", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000001"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Adaptive Cruise Control",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 50000m,
+                            SalesTarget = 1000000m,
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("10000000-0000-0000-0000-000000000002"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Cooled Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Heated Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Heated Steering Wheel",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Keyless Entry",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000006"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Keyless Start",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000007"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Navigation System",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000008"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Power Liftgate",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("10000000-0000-0000-0000-000000000009"),
-                            CategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Rain Sensing Wipers",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000001"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Android Auto®",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000002"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Apple CarPlay®",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000003"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Bluetooth®",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000004"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "HomeLink",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000005"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Premium Sound System",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000006"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "USB Port",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000007"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "WiFi Hotspot",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000008"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Satellite Radio",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("20000000-0000-0000-0000-000000000009"),
-                            CategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "AUX Input",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000001"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Alloy Wheels",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000002"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Tow Hitch",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000003"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Fog Lights",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000004"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Roof Rails",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000005"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Sunroof",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000006"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Power Mirrors",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000007"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Rear Spoiler",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000008"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Automatic Headlights",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("30000000-0000-0000-0000-000000000009"),
-                            CategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Daytime Running Lights",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000001"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Automatic Emergency Braking",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000002"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Backup Camera",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000003"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Blind Spot Monitor",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000004"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Brake Assist",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000005"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "LED Headlights",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000006"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Lane Departure Warning",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000007"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Rear Cross Traffic Alert",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000008"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Stability Control",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000009"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Traction Control",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("40000000-0000-0000-0000-000000000010"),
-                            CategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Parking Sensors",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000001"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Leather Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000002"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Memory Seat",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000003"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Power Driver Seat",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000004"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Power Passenger Seat",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000005"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Heated Rear Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000006"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Ventilated Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000007"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Split Folding Rear Seat",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000008"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Adjustable Lumbar Support",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000009"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Bucket Seats",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("50000000-0000-0000-0000-000000000010"),
-                            CategoryId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            FeatureName = "Third Row Seating",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.FeatureCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FeatureCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CategoryName = "Safety",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CategoryName = "Convenience",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CategoryName = "Entertainment",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CategoryName = "Exterior",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CategoryName = "Seating",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            EndDate = new DateTime(2025, 11, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 25000m,
+                            SalesTarget = 750000m,
+                            StartDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -792,582 +287,509 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
 
                     b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_feedbacks");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_feedbacks_customer_id");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_feedbacks_dealer_id");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("feedbacks", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000001"),
+                            Content = "Great service and friendly staff!",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "New",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000002"),
+                            Content = "Quick response to my queries.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reviewed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000003"),
+                            Content = "Had some issues with paperwork, but resolved.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000003"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Resolved",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.OemInventory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("Location")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_oem_inventories");
 
-                    b.HasIndex("VehicleId");
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_oem_inventories_variant_id");
 
-                    b.ToTable("OemInventories");
+                    b.ToTable("oem_inventories", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Quantity = 10,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Quantity = 5,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
+                        },
+                        new
+                        {
+                            Id = new Guid("50000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Quantity = 8,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Payment", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<decimal>("Amount")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("Method")
-                        .HasColumnType("integer");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
 
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Method")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("method");
 
-                    b.Property<Guid>("SalesContractId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid>("SalesOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("sales_order_id");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_payments");
 
-                    b.HasIndex("SalesContractId");
+                    b.HasIndex("SalesOrderId")
+                        .HasDatabaseName("ix_payments_sales_order_id");
 
-                    b.ToTable("Payments");
+                    b.ToTable("payments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a0000000-0000-0000-0000-000000000001"),
+                            Amount = 500000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Method = "BankTransfer",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000001"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("a0000000-0000-0000-0000-000000000002"),
+                            Amount = 750000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Method = "Cash",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000002"),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Promotion", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                    b.Property<Guid?>("DealerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<decimal>("DiscountPercent")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("discount_percent");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("end_date");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("start_date");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_promotions");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_promotions_dealer_id");
 
-                    b.ToTable("Promotions");
+                    b.ToTable("promotions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Spring Sale: 10% off all vehicles!",
+                            DiscountPercent = 10m,
+                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Oem",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Description = "Year-end Clearance: 15% off selected models!",
+                            DiscountPercent = 15m,
+                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Quotation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
 
                     b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("total_amount");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_quotations");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_quotations_customer_id");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_quotations_dealer_id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_quotations_user_id");
 
-                    b.ToTable("Quotations");
+                    b.ToTable("quotations", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Sent",
+                            TotalAmount = 0m,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Approved",
+                            TotalAmount = 0m,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003")
+                        });
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Role", b =>
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("RoleName")
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_revoked");
+
+                    b.Property<string>("TokenHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("token_hash");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.ToTable("Roles");
-                });
+                    b.HasKey("Id")
+                        .HasName("pk_refresh_tokens");
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesContract", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_refresh_tokens_user_id");
 
-                    b.Property<DateTime>("ContractDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("SalesOrderId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SalesOrderId");
-
-                    b.ToTable("SalesContracts");
+                    b.ToTable("refresh_tokens", (string)null);
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesOrder", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
 
                     b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
                     b.Property<Guid>("QuotationId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("quotation_id");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("vehicle_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_sales_orders");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_sales_orders_customer_id");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_sales_orders_dealer_id");
 
-                    b.HasIndex("QuotationId");
+                    b.HasIndex("QuotationId")
+                        .HasDatabaseName("ix_sales_orders_quotation_id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_sales_orders_user_id");
 
-                    b.HasIndex("VehicleId");
+                    b.HasIndex("VehicleId")
+                        .HasDatabaseName("ix_sales_orders_vehicle_id");
 
-                    b.ToTable("SalesOrders");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Spec", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("SpecCategoryId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("SpecName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Unit")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SpecCategoryId");
-
-                    b.ToTable("Specs");
+                    b.ToTable("sales_orders", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("11111111-1111-1111-1111-111111111110"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Horsepower",
-                            Unit = "hp",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Id = new Guid("90000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            QuotationId = new Guid("70000000-0000-0000-0000-000000000001"),
+                            Status = "Pending",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000002"),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000001")
                         },
                         new
                         {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Torque",
-                            Unit = "Nm",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111112"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "0-100 km/h Acceleration",
-                            Unit = "s",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111113"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Drive Type",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111114"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Motor Type",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111115"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Top Speed",
-                            Unit = "km/h",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111116"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            SpecName = "Curb Weight",
-                            Unit = "kg",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222220"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Battery Capacity",
-                            Unit = "kWh",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222221"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Range",
-                            Unit = "km",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Efficiency",
-                            Unit = "Wh/km",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222223"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Battery Chemistry",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222224"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Battery Voltage Architecture",
-                            Unit = "V",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222225"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            SpecName = "Regenerative Braking Capacity",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333330"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            SpecName = "Max AC Charging Rate",
-                            Unit = "kW",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333331"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            SpecName = "Max DC Fast Charging Rate",
-                            Unit = "kW",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333332"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            SpecName = "DC Fast Charging Time (10-80%)",
-                            Unit = "min",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            SpecName = "AC Charging Time (0-100%)",
-                            Unit = "h",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333334"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            SpecName = "Charging Port Type(s)",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444440"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            SpecName = "Towing Capacity",
-                            Unit = "kg",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444441"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            SpecName = "Frunk Volume",
-                            Unit = "L",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444442"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            SpecName = "Cargo Volume",
-                            Unit = "L",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444443"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            SpecName = "Heat Pump",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecCategoryId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            SpecName = "V2L (Vehicle-to-Load) Capability",
-                            Unit = "kW",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SpecCategory", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SpecCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Performance",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Energy",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Charging",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Practicality",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Id = new Guid("90000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            QuotationId = new Guid("70000000-0000-0000-0000-000000000002"),
+                            Status = "Confirmed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
                         });
                 });
 
@@ -1375,6720 +797,200 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("CustomerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
 
                     b.Property<Guid>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
                     b.Property<DateTime>("ScheduledAt")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("scheduled_at");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("VehicleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("vehicle_id");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_test_drives");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_test_drives_customer_id");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_test_drives_dealer_id");
 
-                    b.HasIndex("VehicleId");
+                    b.HasIndex("VehicleId")
+                        .HasDatabaseName("ix_test_drives_vehicle_id");
 
-                    b.ToTable("TestDrives");
+                    b.ToTable("test_drives", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            ScheduledAt = new DateTime(2024, 4, 10, 9, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Scheduled",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000001")
+                        },
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            ScheduledAt = new DateTime(2024, 5, 15, 14, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Completed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
+                        });
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid?>("DealerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("email");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
+
+                    b.Property<DateTime?>("LastLoginAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_login_at");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("text")
+                        .HasColumnName("password_reset_token");
+
+                    b.Property<DateTime?>("PasswordResetTokenExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("password_reset_token_expires_at");
+
+                    b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("text")
+                        .HasColumnName("role");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
-                    b.HasIndex("DealerId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_users_dealer_id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasDatabaseName("ix_users_email");
 
-                    b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantFeature", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("FeatureId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FeatureId");
-
-                    b.HasIndex("VariantId");
-
-                    b.ToTable("VariantFeatures");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantSpec", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<Guid>("SpecId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("VariantId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("SpecId");
-
-                    b.HasIndex("VariantId");
-
-                    b.ToTable("VariantSpecs");
+                    b.ToTable("users", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("11111111-1111-1111-1111-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "168",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8.5",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Permanent Magnet Synchronous",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "185",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1830",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "58",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~354",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~164",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium-ion (NMC)",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (paddle-controlled)",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~6",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~57",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~531 (max 1,587 seats down)",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.4",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Permanent Magnet Synchronous",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "185",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1910",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "77.4",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~488",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~159",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium-ion (NMC)",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~57",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Same",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.4",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Permanent Magnet Synchronous",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "185",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1950",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "77.4",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~488",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~159",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium-ion (NMC)",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~57",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-00000000003f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Same",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000040"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-000000000041"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("11111111-1111-1111-1111-111111111103")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~264",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~430",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~6.3–6.9",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single permanent magnet",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "180",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2100",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~72",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~402",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~172",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "LFP (Standard Range)",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal drive)",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "115–150",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~32–35",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7–9",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1000",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~100",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "402 / 1420 max",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~265",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "430",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~6.3–6.9",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single permanent magnet",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "180",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2120",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~72",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~402",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~172",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "LFP (Standard Range)",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "115–150",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~32–35",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7–9",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1000",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~100",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "402 / 1420 max",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222202")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "346",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "580",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~5.1",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual permanent magnet",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "180",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2145",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~91",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~505",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~200",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "NMC (Extended Range)",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "150",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~38",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~10–11",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1000",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000003f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~100",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000040"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "841 / 1823 max",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000041"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222203")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000042"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "480",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000043"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "813",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000044"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "4.4",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000045"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000046"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual permanent magnet",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000047"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "200",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000048"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2273",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000049"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~88",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~450",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~230",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "NMC (Extended Range)",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-00000000004f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000050"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "150",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000051"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~38",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000052"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~10",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000053"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000054"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~750",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000055"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~100",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000056"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "402 / 1420 max",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-000000000057"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("22222222-2222-2222-2222-222222222204")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "167",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8.3",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Permanent Magnet Synchronous",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "185",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1875–1880",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "58–63",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~381",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~165",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium‑ion (NMC)",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~523",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (i‑Pedal)",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "180",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~20",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~6",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~52",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "520 / 1300+ seats down",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333301")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.2",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Permanent Magnet Synchronous",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "185",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2050",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "77.4–84",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~499",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~155",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium‑ion (NMC)",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~697",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "240–350",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7–8",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1000",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~52",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "520 / 1300+",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333302")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "576",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "740",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.5–3.6",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual Permanent Magnet Synchronous",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "260",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2220",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "77.4–84",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~395–450",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~203",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Lithium‑ion (NMC)",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~697",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "240–350",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7–8",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-00000000003f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1600",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000040"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~20–52",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000041"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "480–490 / 1260",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000042"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-000000000043"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("33333333-3333-3333-3333-333333333303")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "220",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~330",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.0–7.5",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "FWD",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (front)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~180",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2270",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~85",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~502",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~169",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Ultium Li‑ion (NMC)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "One‑Pedal Driving",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11.5",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "150",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~9.5",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~680",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "722–1674",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444401")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "345–365",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "441",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~5.7–6.0",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (rear)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~210",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2470–2540",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~91–102",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~449–521",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~200–228",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Ultium Li‑ion (NMC)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "One‑Pedal Driving",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11.5",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "150",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1588",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "722–1674",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "V2H supported",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444402")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "615",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "880",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~3.4–4.0",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM (front + rear)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~210+",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2600",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "102",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~486",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~210–220",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Ultium Li‑ion (NMC)",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "One‑Pedal Driving + Regen on Demand",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11.5",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "190–200",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~30–32",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~11.2",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "722–1674",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("44444444-4444-4444-4444-444444444403")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "430",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~550",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "4.7",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (rear)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "200",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2070",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "84",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~676",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~158",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800+",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "22",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "210",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~27",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~10",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~283",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~910 total (frunk + trunk)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Supported",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555501")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "620",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1200",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.6",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2270",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~89–92",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~653",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~162",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "700+",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "19.2",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~32",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~10",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~280",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~910",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Supported",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555502")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "819",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1200",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.2",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "270",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2360–2435",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "112",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~824",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~160",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "900+",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "19.2",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~33",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~13",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~280",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000003f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~910",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000040"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000041"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Supported",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555503")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000042"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1234",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000043"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1390",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000044"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2.0",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000045"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD (triple motor)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000046"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Triple PMSM (2 rear + 1 front)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000047"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "330",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000048"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2420–2435",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000049"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "118",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~687",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~190",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "900",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (track‑tuned)",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-00000000004f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "19.2",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000050"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000051"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~33",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000052"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~13",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000053"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000054"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~280",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000055"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~910",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000056"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-000000000057"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Supported",
-                            VariantId = new Guid("55555555-5555-5555-5555-555555555504")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000000"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "214",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.5",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "FWD",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000004"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (front)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000005"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "160",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000006"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1960",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000007"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "63–66",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000008"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~348",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000009"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~207",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "7.2–11",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "130",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000000f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000010"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~10",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000011"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000012"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "646–1691",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000013"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666601")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000014"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "238",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000015"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000016"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.6",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000017"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "FWD",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000018"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (front)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000019"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "160",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2090",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "87–91",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~465",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~193",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000001f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000020"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000021"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "7.2–11",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000022"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "130",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000023"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000024"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~14",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000025"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000026"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "646–1691",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000027"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666602")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000028"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "238",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000029"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.6",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "FWD",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (front)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "160",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2090",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000002f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "87–91",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000030"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~465",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000031"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~193",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000032"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000033"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000034"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000035"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "7.2–11",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000036"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "130",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000037"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000038"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~14",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000039"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "646–1691",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666603")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "238",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "300",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7.6",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000003f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "FWD",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000040"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM (front)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000041"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "160",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000042"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2090",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000043"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "87–91",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000044"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~465",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000045"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~193",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000046"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000047"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000048"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000049"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "7.2–11",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "130",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~14",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "646–1691",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000004f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666604")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000050"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "389",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000051"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "600",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000052"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~5.1",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000053"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD (e‑4ORCE)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000054"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM (front + rear)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000055"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "160",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000056"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2294–2490",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000057"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "87–91",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000058"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~438",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000059"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~228",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "350",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable (1‑pedal)",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "7.2–11",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "130",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-00000000005f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~35",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000060"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~13",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000061"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000062"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~680–1000",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000063"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "646–1691",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-000000000064"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("66666666-6666-6666-6666-666666666605")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777700"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "402–429",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777701"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "345–420",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777702"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "5.4",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777703"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777704"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single PMSM",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777705"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "230",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777706"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,100–2,125",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777707"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "71–82",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777708"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "431–503",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777709"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~200",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11 (22 opt.)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225–270",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777770f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18–22",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777710"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~9–11",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777711"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777712"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~84",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777713"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~407–491",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777714"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777701")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777715"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "523–590",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777716"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "650–710",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777717"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.7–4.0",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777718"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777719"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,190–2,200",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "82–97",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "407–506",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~210",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777771f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777720"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777721"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777722"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11 (22 opt.)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777723"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225–270",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777724"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18–22",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777725"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~9–11",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777726"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777727"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~84",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777728"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~488",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777729"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777702")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "590–690",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "850",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.3–3.7",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777772f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777730"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,345",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777731"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "84–97",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777732"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "504–505",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777733"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~186–203",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777734"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777735"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777736"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777737"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11 (22 opt.)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777738"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "270–320",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777739"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~11",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~81",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~488",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777703")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777773f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "671–871",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777740"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "850–890",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777741"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "2.7–3.2",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777742"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777743"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777744"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "260",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777745"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,355",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777746"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "84–97",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777747"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "450–505",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777748"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~220–230",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777749"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11 (22 opt.)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "270–320",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777774f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~11",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777750"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777751"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~81",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777752"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~447",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777753"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777704")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777754"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "751–938",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777755"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1,050–1,110",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777756"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "2.4–2.8",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777757"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777758"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777759"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "260",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,295–2,345",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "84–97",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "412–506",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~230–250",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-77777777775f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "800",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777760"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777761"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11 (22 opt.)",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777762"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "270–320",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777763"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~18",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777764"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~11",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777765"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777766"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~81",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777767"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~447",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777768"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("77777777-7777-7777-7777-777777777705")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888800"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "282",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888801"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "400",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888802"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "5.8–6.0",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888803"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888804"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single Synchronous",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888805"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "190",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888806"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,000–2,075",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888807"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "67.1",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888808"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "406–485",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888809"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~156",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~353",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "180",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888880f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~32",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888810"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~7",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888811"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888812"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1,600",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888813"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "470 / 1,290 seats down",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888814"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888801")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888815"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "335–340",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888816"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "430",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888817"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "5.6–5.7",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888818"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "RWD",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888819"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Single Synchronous",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "190",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,050–2,125",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "81.3",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "493–590",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~159",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888881f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888820"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~399",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888821"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888822"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888823"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "205",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888824"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~30",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888825"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888826"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888827"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1,600",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888828"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "470 / 1,290",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888829"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888802")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "396–401",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "600",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "4.8–5.1",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual Synchronous",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888882f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "200",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888830"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,185–2,260",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888831"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "81.3",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888832"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "459–546",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888833"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~166",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888834"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888835"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~399",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888836"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888837"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888838"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "205",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888839"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~30",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1,600",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "470 / 1,290",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Optional",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888803")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888883f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "536–544",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888840"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "795",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888841"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.7–3.9",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888842"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888843"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual Synchronous",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888844"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "225",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888845"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~2,215–2,290",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888846"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "81.3",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888847"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "416–521",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888848"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~180–225",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888849"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NMC)",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~399",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Adjustable",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "205",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~30",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-88888888884f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888850"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "CCS Combo",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888851"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "1,600",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888852"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "470 / 1,290",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888853"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("88888888-8888-8888-8888-888888888804")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999900"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~514",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999901"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~493",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999902"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "4.8",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999903"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD (dual motor)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999904"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999905"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "201",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999906"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,994–2,072",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999907"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~75–78",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999908"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~533",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999909"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~165",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NCM)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~345–360",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard (1‑pedal)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999990f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~27–30",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999910"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999911"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Tesla NACS (NA) / CCS (EU)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999912"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,600",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999913"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~117",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999914"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "854–2,158",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999915"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999901")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999916"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~534",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999917"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~741",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999918"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "3.5–3.7",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999919"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD (dual motor)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,995–2,108",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~77–79",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~460–514",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999991f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~172",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999920"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NCM)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999921"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~360",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999922"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard (1‑pedal)",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999923"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999924"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999925"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~29–30",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999926"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8.5",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999927"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Tesla NACS / CCS",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999928"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,600",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999929"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~117",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "854–2,158",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("99999999-9999-9999-9999-999999999902")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111110"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~510–530",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~660",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111112"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "2.9–3.3",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999992f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111113"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "AWD (dual motor)",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999930"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111114"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Dual PMSM",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999931"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111115"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "260–261",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999932"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("11111111-1111-1111-1111-111111111116"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,851–1,906",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999933"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222220"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~82",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999934"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222221"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~567",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999935"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~139–172",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999936"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222223"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Li‑ion (NCM)",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999937"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222224"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~360",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999938"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("22222222-2222-2222-2222-222222222225"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard (1‑pedal)",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999939"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333330"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "11",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993a"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333331"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "250",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993b"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333332"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~25–27",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993c"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~8",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993d"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("33333333-3333-3333-3333-333333333334"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Tesla NACS / CCS",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993e"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444440"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~1,000",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-99999999993f"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444441"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "~88",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999940"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444442"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "542",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999941"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SpecId = new Guid("44444444-4444-4444-4444-444444444443"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Value = "Standard",
-                            VariantId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01")
+                            Id = new Guid("20000000-0000-0000-0000-000000000001"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "admin@example.com",
+                            FullName = "Admin User",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$nAccBp1/4t.CxdEBKLXSp.cM3DcozB5b.itLdNwAYPYx/El1ENIdW",
+                            Role = "Admin",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Email = "dealermanager@example.com",
+                            FullName = "Dealer Manager User",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
+                            Role = "DealerManager",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Email = "dealerstaff@example.com",
+                            FullName = "Dealer Staff User",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000004"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Email = "evmstaff@example.com",
+                            FullName = "EVM Staff User",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$RQaQvAyAEnDiAved/V5wzOQGwKG3CTmDiWa7uxTBlvR2IUUZ06pWm",
+                            Role = "EvmStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -8096,159 +998,100 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
-                    b.Property<Guid>("ColorId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("DealerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("type");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<Guid>("VariantId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
 
                     b.Property<string>("Vin")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("vin");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_vehicles");
 
-                    b.HasIndex("ColorId");
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_vehicles_dealer_id");
 
-                    b.HasIndex("VariantId");
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_vehicles_variant_id");
 
                     b.HasIndex("Vin")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_vehicles_vin");
 
-                    b.ToTable("Vehicles");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleColor", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ColorName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.Property<string>("HexCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("VehicleColors");
+                    b.ToTable("vehicles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            ColorName = "Red",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#FF0000",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Id = new Guid("80000000-0000-0000-0000-000000000001"),
+                            Color = "White",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Available",
+                            Type = "Sale",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
+                            Vin = "5YJYGDEE8LF000001"
                         },
                         new
                         {
-                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            ColorName = "Blue",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#0000FF",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Id = new Guid("80000000-0000-0000-0000-000000000002"),
+                            Color = "Black",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reserved",
+                            Type = "Display",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
+                            Vin = "5YJYGDEE8LF000002"
                         },
                         new
                         {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            ColorName = "Green",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#00FF00",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            ColorName = "Black",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#000000",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            ColorName = "White",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#FFFFFF",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
-                            ColorName = "Silver",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#C0C0C0",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777777"),
-                            ColorName = "Gray",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#808080",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888888"),
-                            ColorName = "Yellow",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#FFFF00",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
-                            ColorName = "Brown",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#8B4513",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            ColorName = "Orange",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#FFA500",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            Id = new Guid("bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb"),
-                            ColorName = "Beige",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HexCode = "#F5F5DC",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            Id = new Guid("80000000-0000-0000-0000-000000000003"),
+                            Color = "Blue",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Status = "Reserved",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
+                            Vin = "5YJ3E1EA7LF000003"
                         });
                 });
 
@@ -8256,136 +1099,58 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("description");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("image_url");
 
-                    b.Property<string>("ModelName")
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("name");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<short>("Year")
-                        .HasColumnType("smallint");
+                    b.HasKey("Id")
+                        .HasName("pk_vehicle_models");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("VehicleModels");
+                    b.ToTable("vehicle_models", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A distinctive battery-electric compact crossover SUV, notable for its retro-futuristic design and being built on Hyundai's Electric Global Modular Platform (E-GMP) with 800V charging capability.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450493/Hyundai_Ioniq_5_f5npjl.jpg",
-                            ModelName = "Hyundai Ioniq 5",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2021
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                            Name = "Tesla Model Y",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric compact crossover SUV that draws design and naming inspiration from the Mustang line, offering a mix of sporty performance and SUV practicality.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Ford_Mustang_Mach-E_cdvi8o.jpg",
-                            ModelName = "Ford Mustang Mach-E",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2020
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric compact crossover SUV, closely related to the Hyundai Ioniq 5 as it also uses the E-GMP platform, known for its sleek, crossover-coupe styling and fast charging.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/Kia_EV6_boehy3.jpg",
-                            ModelName = "Kia EV6",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2021
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric mid-size crossover SUV built on the GM Ultium platform, offering a sporty design and multiple drivetrain configurations (FWD, RWD, AWD).",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450486/Chevrolet_Blazer_EV_v6t9tq.jpg",
-                            ModelName = "Chevrolet Blazer EV",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2023
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555555"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric four-door luxury sedan known for its focus on maximum driving range, spacious interior packaging, and high-performance capabilities, produced by a Silicon Valley startup.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Lucid_Air_nur4uz.jpg",
-                            ModelName = "Lucid Air",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2021
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666666"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric compact crossover SUV that serves as Nissan's first dedicated zero-emissions SUV, featuring a modern, sleek design and available dual-motor e-4ORCE all-wheel drive.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450488/Nissan_Ariya_ds6ta3.jpg",
-                            ModelName = "Nissan Ariya",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2022
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777777"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Porsche's first all-electric production vehicle, a high-performance luxury sports sedan (and shooting brake) known for its rapid acceleration, precise handling, and 800-volt electrical architecture.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450489/Porsche_Taycan_q2esmf.jpg",
-                            ModelName = "Porsche Taycan",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2019
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888888"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric compact executive car with a five-door liftback body style, closely related to the gasoline-powered BMW 4 Series Gran Coupé and offering a balance of luxury and performance.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450487/BMW_i4_fackc5.jpg",
-                            ModelName = "BMW i4",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2021
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999999"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
-                            ModelName = "Tesla Model Y",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2020
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
                             ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
-                            ModelName = "Tesla Model 3",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Year = (short)2017
+                            Name = "Tesla Model 3",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -8393,379 +1158,98 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<decimal>("BasePrice")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnName("base_price");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("Features")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("features");
+
                     b.Property<Guid>("ModelId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("model_id");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Specs")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("specs");
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<string>("VariantName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("Id")
+                        .HasName("pk_vehicle_variants");
 
-                    b.HasKey("Id");
+                    b.HasIndex("ModelId")
+                        .HasDatabaseName("ix_vehicle_variants_model_id");
 
-                    b.HasIndex("ModelId");
-
-                    b.ToTable("VehicleVariants");
+                    b.ToTable("vehicle_variants", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111101"),
-                            BasePrice = 42600m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BasePrice = 46630m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"LedHeadlights\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"HeatedSeats\",\"VentilatedSeats\",\"ThirdRowSeating\"]}",
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Hyundai Ioniq 5 SE (Standard Range RWD)"
+                            Name = "Tesla Model Y Long Range All-Wheel Drive",
+                            Specs = "{\"Horsepower\":{\"Value\":514,\"Unit\":\"hp\"},\"Torque\":{\"Value\":493,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":4.8,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":201,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1994,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":75,\"Unit\":\"kWh\"},\"Range\":{\"Value\":533,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":165,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCM)\"},\"BatteryVoltageArchitecture\":{\"Value\":345,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":27,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1600,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":117,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":854,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Standard\"},\"V2lCapability\":{\"Value\":3.6,\"Unit\":\"kW\"}}",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("11111111-1111-1111-1111-111111111102"),
-                            BasePrice = 49600m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            BasePrice = 57000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"LedHeadlights\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"HeatedSeats\",\"ThirdRowSeating\"]}",
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Hyundai Ioniq 5 SEL (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("11111111-1111-1111-1111-111111111103"),
-                            BasePrice = 54300m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Hyundai Ioniq 5 Limited (RWD)"
+                            Name = "Tesla Model Y Performance",
+                            Specs = "{\"Horsepower\":{\"Value\":534,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.7,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM Performance\"},\"TopSpeed\":{\"Value\":250,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":2003,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":78,\"Unit\":\"kWh\"},\"Range\":{\"Value\":488,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":175,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Enhanced (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":25,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":7.5,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1500,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":110,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":860,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Standard\"},\"V2lCapability\":{\"Value\":3.6,\"Unit\":\"kW\"}}",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("22222222-2222-2222-2222-222222222201"),
-                            BasePrice = 37995m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang Mach-E Select (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222202"),
-                            BasePrice = 41995m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang Mach-E Premium (RWD, Standard Range)"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222203"),
-                            BasePrice = 54000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang Mach-E California Route 1"
-                        },
-                        new
-                        {
-                            Id = new Guid("22222222-2222-2222-2222-222222222204"),
-                            BasePrice = 54495m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Ford Mustang Mach-E GT (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333301"),
-                            BasePrice = 42900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Kia EV6 Light (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333302"),
-                            BasePrice = 50300m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Kia EV6 Wind (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("33333333-3333-3333-3333-333333333303"),
-                            BasePrice = 63800m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("33333333-3333-3333-3333-333333333333"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Kia EV6 GT (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444401"),
-                            BasePrice = 44600m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Chevrolet Blazer EV LT (FWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444402"),
-                            BasePrice = 49900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Chevrolet Blazer EV RS (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("44444444-4444-4444-4444-444444444403"),
-                            BasePrice = 60600m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("44444444-4444-4444-4444-444444444444"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Chevrolet Blazer EV SS (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555501"),
-                            BasePrice = 69900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Lucid Air Pure (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555502"),
-                            BasePrice = 78900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Lucid Air Touring (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555503"),
-                            BasePrice = 110900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Lucid Air Grand Touring (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("55555555-5555-5555-5555-555555555504"),
-                            BasePrice = 249000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("55555555-5555-5555-5555-555555555555"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Lucid Air Sapphire (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666601"),
-                            BasePrice = 39770m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Nissan Ariya Engage (Standard Range FWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666602"),
-                            BasePrice = 44370m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Nissan Ariya Evolve+ (Extended Range FWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666603"),
-                            BasePrice = 49260m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Nissan Ariya Empower+"
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666604"),
-                            BasePrice = 52380m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Nissan Ariya Premiere"
-                        },
-                        new
-                        {
-                            Id = new Guid("66666666-6666-6666-6666-666666666605"),
-                            BasePrice = 54370m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("66666666-6666-6666-6666-666666666666"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Nissan Ariya Platinum+ (Extended Range AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777701"),
-                            BasePrice = 99400m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Porsche Taycan Base (RWD Sedan)"
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777702"),
-                            BasePrice = 118500m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Porsche Taycan 4S (AWD Sedan)"
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777703"),
-                            BasePrice = 147900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Porsche Taycan GTS (AWD Sedan)"
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777704"),
-                            BasePrice = 173600m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Porsche Taycan Turbo (AWD Sedan)"
-                        },
-                        new
-                        {
-                            Id = new Guid("77777777-7777-7777-7777-777777777705"),
-                            BasePrice = 209000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("77777777-7777-7777-7777-777777777777"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Porsche Taycan Turbo S (AWD Sedan)"
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888801"),
-                            BasePrice = 52200m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "BMW i4 eDrive35 (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888802"),
-                            BasePrice = 57900m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "BMW i4 eDrive40 (RWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888803"),
-                            BasePrice = 62300m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "BMW i4 xDrive40 (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("88888888-8888-8888-8888-888888888804"),
-                            BasePrice = 70700m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("88888888-8888-8888-8888-888888888888"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "BMW i4 M50 (AWD)"
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999901"),
-                            BasePrice = 46630m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model Y Long Range All-Wheel Drive"
-                        },
-                        new
-                        {
-                            Id = new Guid("99999999-9999-9999-9999-999999999902"),
-                            BasePrice = 57000m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("99999999-9999-9999-9999-999999999999"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model Y Performance"
-                        },
-                        new
-                        {
-                            Id = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaa01"),
                             BasePrice = 54990m,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModelId = new Guid("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"),
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            VariantName = "Tesla Model 3 Performance"
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\"],\"Entertainment\":[\"PremiumSoundSystem\"],\"Exterior\":[\"LedHeadlights\",\"AlloyWheels\"],\"Seating\":[\"HeatedSeats\"]}",
+                            ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
+                            Name = "Tesla Model 3 Performance",
+                            Specs = "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"}}",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.CustomerDealer", b =>
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.AuditLog", b =>
                 {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
-                        .WithMany("CustomerDealers")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_audit_logs_users_user_id");
 
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
-                        .WithMany("CustomerDealers")
-                        .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Dealer");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerAllocation", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
-                        .WithMany("DealerAllocations")
-                        .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
-                        .WithMany("DealerAllocations")
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Dealer");
-
-                    b.Navigation("Vehicle");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerContract", b =>
@@ -8774,58 +1258,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("DealerContracts")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_contracts_dealers_dealer_id");
 
                     b.Navigation("Dealer");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
-                        .WithMany("DealerOrders")
-                        .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Dealer");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrderItem", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleColor", "VehicleColor")
-                        .WithMany("DealerOrderItems")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.DealerOrder", "DealerOrder")
-                        .WithMany("DealerOrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
-                        .WithMany("DealerOrderItems")
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("DealerOrder");
-
-                    b.Navigation("VehicleColor");
-
-                    b.Navigation("VehicleVariant");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feature", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.FeatureCategory", "FeatureCategory")
-                        .WithMany("Features")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("FeatureCategory");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
@@ -8834,13 +1270,15 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("Feedbacks")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_feedbacks_customers_customer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Feedbacks")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_feedbacks_dealers_dealer_id");
 
                     b.Navigation("Customer");
 
@@ -8849,24 +1287,26 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.OemInventory", b =>
                 {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
                         .WithMany("OemInventories")
-                        .HasForeignKey("VehicleId")
+                        .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_oem_inventories_vehicle_variants_variant_id");
 
-                    b.Navigation("Vehicle");
+                    b.Navigation("VehicleVariant");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Payment", b =>
                 {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.SalesContract", "SalesContract")
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.SalesOrder", "SalesOrder")
                         .WithMany("Payments")
-                        .HasForeignKey("SalesContractId")
+                        .HasForeignKey("SalesOrderId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_payments_sales_orders_sales_order_id");
 
-                    b.Navigation("SalesContract");
+                    b.Navigation("SalesOrder");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Promotion", b =>
@@ -8875,7 +1315,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("Promotions")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasConstraintName("fk_promotions_dealers_dealer_id");
 
                     b.Navigation("Dealer");
                 });
@@ -8886,19 +1326,22 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("Quotations")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_quotations_customers_customer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Quotations")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_quotations_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
                         .WithMany("Quotations")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_quotations_users_user_id");
 
                     b.Navigation("Customer");
 
@@ -8907,15 +1350,16 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesContract", b =>
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.SalesOrder", "SalesOrder")
-                        .WithMany("SalesContracts")
-                        .HasForeignKey("SalesOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_refresh_tokens_users_user_id");
 
-                    b.Navigation("SalesOrder");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesOrder", b =>
@@ -8924,31 +1368,36 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("SalesOrders")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_customers_customer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("SalesOrders")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Quotation", "Quotation")
                         .WithMany("SalesOrders")
                         .HasForeignKey("QuotationId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_quotations_quotation_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
                         .WithMany("SalesOrders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_users_user_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
                         .WithMany("SalesOrders")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_sales_orders_vehicles_vehicle_id");
 
                     b.Navigation("Customer");
 
@@ -8961,36 +1410,28 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Vehicle");
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Spec", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.SpecCategory", "SpecCategory")
-                        .WithMany("Specs")
-                        .HasForeignKey("SpecCategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("SpecCategory");
-                });
-
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.TestDrive", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("TestDrives")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_test_drives_customers_customer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("TestDrives")
                         .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_test_drives_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
                         .WithMany("TestDrives")
                         .HasForeignKey("VehicleId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_test_drives_vehicles_vehicle_id");
 
                     b.Navigation("Customer");
 
@@ -9004,72 +1445,29 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Users")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasConstraintName("fk_users_dealers_dealer_id");
 
                     b.Navigation("Dealer");
-
-                    b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantFeature", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Feature", "Feature")
-                        .WithMany("VariantFeatures")
-                        .HasForeignKey("FeatureId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
-                        .WithMany("VariantFeatures")
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Feature");
-
-                    b.Navigation("VehicleVariant");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VariantSpec", b =>
-                {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.Spec", "Spec")
-                        .WithMany("VariantSpecs")
-                        .HasForeignKey("SpecId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
-                        .WithMany("VariantSpecs")
-                        .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Spec");
-
-                    b.Navigation("VehicleVariant");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Vehicle", b =>
                 {
-                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleColor", "VehicleColor")
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Vehicles")
-                        .HasForeignKey("ColorId")
+                        .HasForeignKey("DealerId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_vehicles_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
                         .WithMany("Vehicles")
                         .HasForeignKey("VariantId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_vehicles_vehicle_variants_variant_id");
 
-                    b.Navigation("VehicleColor");
+                    b.Navigation("Dealer");
 
                     b.Navigation("VehicleVariant");
                 });
@@ -9080,15 +1478,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .WithMany("VehicleVariants")
                         .HasForeignKey("ModelId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_vehicle_variants_vehicle_models_model_id");
 
                     b.Navigation("VehicleModel");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Customer", b =>
                 {
-                    b.Navigation("CustomerDealers");
-
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Quotations");
@@ -9100,13 +1497,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Dealer", b =>
                 {
-                    b.Navigation("CustomerDealers");
-
-                    b.Navigation("DealerAllocations");
-
                     b.Navigation("DealerContracts");
-
-                    b.Navigation("DealerOrders");
 
                     b.Navigation("Feedbacks");
 
@@ -9119,21 +1510,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("TestDrives");
 
                     b.Navigation("Users");
-                });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
-                {
-                    b.Navigation("DealerOrderItems");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feature", b =>
-                {
-                    b.Navigation("VariantFeatures");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.FeatureCategory", b =>
-                {
-                    b.Navigation("Features");
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Quotation", b =>
@@ -9141,54 +1519,27 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("SalesOrders");
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Role", b =>
-                {
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesContract", b =>
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesOrder", b =>
                 {
                     b.Navigation("Payments");
                 });
 
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SalesOrder", b =>
-                {
-                    b.Navigation("SalesContracts");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Spec", b =>
-                {
-                    b.Navigation("VariantSpecs");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.SpecCategory", b =>
-                {
-                    b.Navigation("Specs");
-                });
-
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.User", b =>
                 {
+                    b.Navigation("AuditLogs");
+
                     b.Navigation("Quotations");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("SalesOrders");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Vehicle", b =>
                 {
-                    b.Navigation("DealerAllocations");
-
-                    b.Navigation("OemInventories");
-
                     b.Navigation("SalesOrders");
 
                     b.Navigation("TestDrives");
-                });
-
-            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleColor", b =>
-                {
-                    b.Navigation("DealerOrderItems");
-
-                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleModel", b =>
@@ -9198,11 +1549,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleVariant", b =>
                 {
-                    b.Navigation("DealerOrderItems");
-
-                    b.Navigation("VariantFeatures");
-
-                    b.Navigation("VariantSpecs");
+                    b.Navigation("OemInventories");
 
                     b.Navigation("Vehicles");
                 });

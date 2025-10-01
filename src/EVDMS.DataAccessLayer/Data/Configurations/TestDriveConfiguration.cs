@@ -1,3 +1,4 @@
+using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +10,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<TestDrive> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(td => td.Status).HasConversion<string>();
             builder
                 .HasOne(td => td.Customer)
                 .WithMany(c => c.TestDrives)
@@ -24,6 +26,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(v => v.TestDrives)
                 .HasForeignKey(td => td.VehicleId)
                 .OnDelete(DeleteBehavior.Restrict);
+            builder.HasData(TestDriveSeed.TestDrives);
         }
     }
 }
