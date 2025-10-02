@@ -28,8 +28,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var uploadParams = new ImageUploadParams
             {
                 File = new FileDescription(image.FileName, stream),
-                Transformation = new Transformation().Width(1920).Height(1080).Crop("scale"),
                 Folder = "EVDMS/VehicleModels",
+                UseFilename = true,
+                UniqueFilename = true,
+                Tags = "vehicle,model",
+                Context = new StringDictionary("alt=Vehicle model image"),
+                Transformation = new Transformation()
+                    .Width(1920)
+                    .Height(1080)
+                    .Crop("pad")
+                    .Background("black"),
             };
             var uploadResult = await _cloudinary.UploadAsync(uploadParams);
 
