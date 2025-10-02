@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using EVDMS.API.Middlewares;
-using EVDMS.BusinessLogicLayer;
+using EVDMS.BusinessLogicLayer.DependencyInjection;
 using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,12 +68,6 @@ namespace EVDMS.API
                 ;
             });
 
-            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
-            builder.Services.Configure<CloudinarySettings>(
-                builder.Configuration.GetSection("Cloudinary")
-            );
-
             builder
                 .Services.AddAuthentication(options =>
                 {
@@ -103,7 +97,7 @@ namespace EVDMS.API
                     };
                 });
 
-            builder.Services.AddServices();
+            builder.Services.AddDependencies(builder.Configuration);
 
             builder.Services.AddCors(options =>
             {

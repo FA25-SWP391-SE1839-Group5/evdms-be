@@ -1,7 +1,3 @@
-using System.Linq;
-using EVDMS.Common.Enums;
-using EVDMS.Common.Helpers;
-
 namespace EVDMS.Common.Helpers
 {
     public static class VehicleFeaturesValidator
