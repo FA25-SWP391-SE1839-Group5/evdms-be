@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -401,6 +402,47 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         name: "fk_refresh_tokens_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "dealer_orders",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<int>(type: "integer", nullable: false),
+                    color = table.Column<int>(type: "integer", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_dealer_orders", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_dealer_orders_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
+                    );
+                    table.ForeignKey(
+                        name: "fk_dealer_orders_vehicle_variants_variant_id",
+                        column: x => x.variant_id,
+                        principalTable: "vehicle_variants",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade
                     );
@@ -933,6 +975,38 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "dealer_orders",
+                columns: new[] { "id", "color", "dealer_id", "quantity", "status", "variant_id" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000001"),
+                        3,
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        5,
+                        "Pending",
+                        new Guid("11111111-1111-1111-1111-111111111101"),
+                    },
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000002"),
+                        2,
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        2,
+                        "Confirmed",
+                        new Guid("11111111-1111-1111-1111-111111111102"),
+                    },
+                    {
+                        new Guid("40000000-0000-0000-0000-000000000003"),
+                        0,
+                        new Guid("30000000-0000-0000-0000-000000000001"),
+                        1,
+                        "Delivered",
+                        new Guid("22222222-2222-2222-2222-222222222201"),
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "oem_inventories",
                 columns: new[] { "id", "quantity", "variant_id" },
                 values: new object[,]
@@ -1136,6 +1210,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.CreateIndex(
+                name: "ix_dealer_orders_dealer_id",
+                table: "dealer_orders",
+                column: "dealer_id"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_dealer_orders_variant_id",
+                table: "dealer_orders",
+                column: "variant_id"
+            );
+
+            migrationBuilder.CreateIndex(
                 name: "ix_feedbacks_customer_id",
                 table: "feedbacks",
                 column: "customer_id"
@@ -1282,6 +1368,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             migrationBuilder.DropTable(name: "audit_logs");
 
             migrationBuilder.DropTable(name: "dealer_contracts");
+
+            migrationBuilder.DropTable(name: "dealer_orders");
 
             migrationBuilder.DropTable(name: "feedbacks");
 

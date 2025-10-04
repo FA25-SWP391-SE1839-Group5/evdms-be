@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251001053054_1.Initial")]
+    [Migration("20251004084740_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -283,6 +283,93 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             SalesTarget = 750000m,
                             StartDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        });
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Color")
+                        .HasColumnType("integer")
+                        .HasColumnName("color");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("DealerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_dealer_orders");
+
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_dealer_orders_dealer_id");
+
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_dealer_orders_variant_id");
+
+                    b.ToTable("dealer_orders", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000001"),
+                            Color = 3,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Quantity = 5,
+                            Status = "Pending",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000002"),
+                            Color = 2,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Quantity = 2,
+                            Status = "Confirmed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000003"),
+                            Color = 0,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Quantity = 1,
+                            Status = "Delivered",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201")
                         });
                 });
 
@@ -1267,6 +1354,27 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Dealer");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
+                        .WithMany("DealerOrders")
+                        .HasForeignKey("DealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_orders_dealers_dealer_id");
+
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
+                        .WithMany("DealerOrders")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_orders_vehicle_variants_variant_id");
+
+                    b.Navigation("Dealer");
+
+                    b.Navigation("VehicleVariant");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
@@ -1502,6 +1610,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Navigation("DealerContracts");
 
+                    b.Navigation("DealerOrders");
+
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Promotions");
@@ -1552,6 +1662,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleVariant", b =>
                 {
+                    b.Navigation("DealerOrders");
+
                     b.Navigation("OemInventories");
 
                     b.Navigation("Vehicles");

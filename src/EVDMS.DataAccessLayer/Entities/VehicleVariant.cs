@@ -15,6 +15,7 @@ namespace EVDMS.DataAccessLayer.Entities
 
         public VehicleModel VehicleModel { get; set; } = null!;
         public ICollection<Vehicle> Vehicles { get; set; } = [];
+        public ICollection<DealerOrder> DealerOrders { get; set; } = [];
         public ICollection<OemInventory> OemInventories { get; set; } = [];
 
         private static readonly JsonSerializerOptions IgnoreNullOptions = new()

@@ -7,6 +7,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public required string Address { get; set; }
 
         public ICollection<DealerContract> DealerContracts { get; set; } = [];
+        public ICollection<DealerOrder> DealerOrders { get; set; } = [];
         public ICollection<Feedback> Feedbacks { get; set; } = [];
         public ICollection<Promotion> Promotions { get; set; } = [];
         public ICollection<Quotation> Quotations { get; set; } = [];
