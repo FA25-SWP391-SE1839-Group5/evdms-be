@@ -106,7 +106,7 @@ namespace EVDMS.API
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:5173")
+                            .WithOrigins("http://localhost:5173", "http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();

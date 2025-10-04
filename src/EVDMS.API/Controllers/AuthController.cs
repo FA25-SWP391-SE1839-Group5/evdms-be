@@ -44,7 +44,7 @@ namespace EVDMS.API.Controllers
                 return BadRequest(
                     new ApiResponse<string>("Invalid or already revoked refresh token.")
                 );
-            return Ok(new ApiResponse<string>("Logout successful."));
+            return Ok(new ApiResponse<string>(null, "Logout successful."));
         }
 
         [HttpPost("request-password-reset")]

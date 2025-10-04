@@ -31,6 +31,11 @@ namespace EVDMS.Common.Dtos
         public IFormFile Image { get; set; } = default!;
     }
 
+    public class UploadVehicleModelImageResponseDto
+    {
+        public string? ImageUrl { get; set; }
+    }
+
     public class UpdateVehicleModelDto
     {
         [Required]

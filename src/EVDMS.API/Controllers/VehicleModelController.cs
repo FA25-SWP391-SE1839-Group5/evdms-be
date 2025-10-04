@@ -121,7 +121,13 @@ namespace EVDMS.API.Controllers
             var imageUrl = await _cloudinaryService.UploadVehicleModelImageAsync(image);
             if (string.IsNullOrEmpty(imageUrl))
                 return StatusCode(500, new ApiResponse<string>("Image upload failed."));
-            return Ok(new ApiResponse<string>(null, imageUrl));
+            var responseDto = new UploadVehicleModelImageResponseDto { ImageUrl = imageUrl };
+            return Ok(
+                new ApiResponse<UploadVehicleModelImageResponseDto>(
+                    responseDto,
+                    "Image uploaded successfully"
+                )
+            );
         }
     }
 }
