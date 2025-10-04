@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _testDriveService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("TestDrive not found"));
-            return Ok(new ApiResponse<string>(null, "TestDrive updated successfully"));
+            var updated = await _testDriveService.GetByIdAsync(id);
+            return Ok(new ApiResponse<TestDriveDto>(updated!, "TestDrive updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _testDriveService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("TestDrive not found"));
-            return Ok(new ApiResponse<string>(null, "TestDrive patched successfully"));
+            var updated = await _testDriveService.GetByIdAsync(id);
+            return Ok(new ApiResponse<TestDriveDto>(updated!, "TestDrive patched successfully"));
         }
 
         [HttpDelete("{id}")]

@@ -70,7 +70,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleVariantService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleVariant not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleVariant updated successfully"));
+            var updated = await _vehicleVariantService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleVariantDto>(updated!, "VehicleVariant updated successfully")
+            );
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +82,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleVariantService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleVariant not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleVariant patched successfully"));
+            var updated = await _vehicleVariantService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleVariantDto>(updated!, "VehicleVariant patched successfully")
+            );
         }
 
         [HttpDelete("{id}")]

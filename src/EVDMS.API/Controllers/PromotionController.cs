@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _promotionService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
-            return Ok(new ApiResponse<string>(null, "Promotion updated successfully"));
+            var updated = await _promotionService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PromotionDto>(updated!, "Promotion updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _promotionService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
-            return Ok(new ApiResponse<string>(null, "Promotion patched successfully"));
+            var updated = await _promotionService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PromotionDto>(updated!, "Promotion patched successfully"));
         }
 
         [HttpDelete("{id}")]

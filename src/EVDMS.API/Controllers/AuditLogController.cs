@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _auditLogService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
-            return Ok(new ApiResponse<string>(null, "AuditLog updated successfully"));
+            var updated = await _auditLogService.GetByIdAsync(id);
+            return Ok(new ApiResponse<AuditLogDto>(updated!, "AuditLog updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _auditLogService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
-            return Ok(new ApiResponse<string>(null, "AuditLog patched successfully"));
+            var updated = await _auditLogService.GetByIdAsync(id);
+            return Ok(new ApiResponse<AuditLogDto>(updated!, "AuditLog patched successfully"));
         }
 
         [HttpDelete("{id}")]

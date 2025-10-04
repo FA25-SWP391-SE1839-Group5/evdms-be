@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _quotationService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Quotation not found"));
-            return Ok(new ApiResponse<string>(null, "Quotation updated successfully"));
+            var updated = await _quotationService.GetByIdAsync(id);
+            return Ok(new ApiResponse<QuotationDto>(updated!, "Quotation updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _quotationService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Quotation not found"));
-            return Ok(new ApiResponse<string>(null, "Quotation patched successfully"));
+            var updated = await _quotationService.GetByIdAsync(id);
+            return Ok(new ApiResponse<QuotationDto>(updated!, "Quotation patched successfully"));
         }
 
         [HttpDelete("{id}")]

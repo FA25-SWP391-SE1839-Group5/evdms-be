@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _salesOrderService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("SalesOrder not found"));
-            return Ok(new ApiResponse<string>(null, "SalesOrder updated successfully"));
+            var updated = await _salesOrderService.GetByIdAsync(id);
+            return Ok(new ApiResponse<SalesOrderDto>(updated!, "SalesOrder updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _salesOrderService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("SalesOrder not found"));
-            return Ok(new ApiResponse<string>(null, "SalesOrder patched successfully"));
+            var updated = await _salesOrderService.GetByIdAsync(id);
+            return Ok(new ApiResponse<SalesOrderDto>(updated!, "SalesOrder patched successfully"));
         }
 
         [HttpDelete("{id}")]

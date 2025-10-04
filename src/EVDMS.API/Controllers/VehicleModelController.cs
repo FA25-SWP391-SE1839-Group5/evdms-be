@@ -75,7 +75,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleModelService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleModel not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleModel updated successfully"));
+            var updated = await _vehicleModelService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleModelDto>(updated!, "VehicleModel updated successfully")
+            );
         }
 
         [HttpPatch("{id}")]
@@ -84,7 +87,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleModelService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleModel not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleModel patched successfully"));
+            var updated = await _vehicleModelService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleModelDto>(updated!, "VehicleModel patched successfully")
+            );
         }
 
         [HttpDelete("{id}")]

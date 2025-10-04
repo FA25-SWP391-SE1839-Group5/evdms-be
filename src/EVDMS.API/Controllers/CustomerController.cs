@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _customerService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Customer not found"));
-            return Ok(new ApiResponse<string>(null, "Customer updated successfully"));
+            var updated = await _customerService.GetByIdAsync(id);
+            return Ok(new ApiResponse<CustomerDto>(updated!, "Customer updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _customerService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Customer not found"));
-            return Ok(new ApiResponse<string>(null, "Customer patched successfully"));
+            var updated = await _customerService.GetByIdAsync(id);
+            return Ok(new ApiResponse<CustomerDto>(updated!, "Customer patched successfully"));
         }
 
         [HttpDelete("{id}")]

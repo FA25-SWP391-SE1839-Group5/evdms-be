@@ -70,7 +70,10 @@ namespace EVDMS.API.Controllers
             var success = await _oemInventoryService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("OemInventory not found"));
-            return Ok(new ApiResponse<string>(null, "OemInventory updated successfully"));
+            var updated = await _oemInventoryService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<OemInventoryDto>(updated!, "OemInventory updated successfully")
+            );
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +82,10 @@ namespace EVDMS.API.Controllers
             var success = await _oemInventoryService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("OemInventory not found"));
-            return Ok(new ApiResponse<string>(null, "OemInventory patched successfully"));
+            var updated = await _oemInventoryService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<OemInventoryDto>(updated!, "OemInventory patched successfully")
+            );
         }
 
         [HttpDelete("{id}")]

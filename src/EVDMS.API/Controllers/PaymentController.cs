@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _paymentService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Payment not found"));
-            return Ok(new ApiResponse<string>(null, "Payment updated successfully"));
+            var updated = await _paymentService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PaymentDto>(updated!, "Payment updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _paymentService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Payment not found"));
-            return Ok(new ApiResponse<string>(null, "Payment patched successfully"));
+            var updated = await _paymentService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PaymentDto>(updated!, "Payment patched successfully"));
         }
 
         [HttpDelete("{id}")]

@@ -85,7 +85,8 @@ namespace EVDMS.API.Controllers
             var success = await _userService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
-            return Ok(new ApiResponse<string>(null, "User updated successfully"));
+            var updated = await _userService.GetByIdAsync(id);
+            return Ok(new ApiResponse<UserDto>(updated!, "User updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -94,7 +95,8 @@ namespace EVDMS.API.Controllers
             var success = await _userService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("User not found"));
-            return Ok(new ApiResponse<string>(null, "User patched successfully"));
+            var updated = await _userService.GetByIdAsync(id);
+            return Ok(new ApiResponse<UserDto>(updated!, "User patched successfully"));
         }
 
         [HttpDelete("{id}")]
