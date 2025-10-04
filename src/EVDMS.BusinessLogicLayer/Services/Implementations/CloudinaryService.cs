@@ -46,5 +46,40 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             return uploadResult.SecureUrl.ToString();
         }
+
+        public async Task<bool> DeleteVehicleModelImageAsync(string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imageUrl))
+                return false;
+            try
+            {
+                var uri = new Uri(imageUrl);
+                var path = uri.AbsolutePath;
+                var uploadIndex = path.IndexOf("/upload/");
+                if (uploadIndex == -1)
+                    return false;
+                var publicIdWithVersion = path.Substring(uploadIndex + 8);
+                var segments = publicIdWithVersion.Split('/');
+                if (
+                    segments[0].StartsWith('v')
+                    && segments[0].Length > 1
+                    && int.TryParse(segments[0].AsSpan(1), out _)
+                )
+                {
+                    segments = [.. segments.Skip(1)];
+                }
+                var publicIdWithExt = string.Join('/', segments);
+                var lastDot = publicIdWithExt.LastIndexOf('.');
+                var publicId =
+                    lastDot > 0 ? publicIdWithExt.Substring(0, lastDot) : publicIdWithExt;
+                var deletionParams = new DeletionParams(publicId);
+                var result = await _cloudinary.DestroyAsync(deletionParams);
+                return result.Result == "ok";
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

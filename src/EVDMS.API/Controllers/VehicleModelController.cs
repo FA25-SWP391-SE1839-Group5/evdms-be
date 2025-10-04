@@ -135,5 +135,17 @@ namespace EVDMS.API.Controllers
                 )
             );
         }
+
+        [HttpDelete("delete-image")]
+        public async Task<IActionResult> DeleteImage([FromQuery] string imageUrl)
+        {
+            if (string.IsNullOrWhiteSpace(imageUrl))
+                return BadRequest(new ApiResponse<string>("No imageUrl provided."));
+
+            var success = await _cloudinaryService.DeleteVehicleModelImageAsync(imageUrl);
+            if (!success)
+                return StatusCode(500, new ApiResponse<string>("Image deletion failed."));
+            return Ok(new ApiResponse<string>(null, "Image deleted successfully"));
+        }
     }
 }
