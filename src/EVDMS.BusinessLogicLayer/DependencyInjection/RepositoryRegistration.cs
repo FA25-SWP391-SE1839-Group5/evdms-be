@@ -11,6 +11,7 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             services.AddScoped<IAuditLogRepository, AuditLogRepository>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IDealerContractRepository, DealerContractRepository>();
+            services.AddScoped<IDealerOrderRepository, DealerOrderRepository>();
             services.AddScoped<IDealerRepository, DealerRepository>();
             services.AddScoped<IFeedbackRepository, FeedbackRepository>();
             services.AddScoped<IOemInventoryRepository, OemInventoryRepository>();

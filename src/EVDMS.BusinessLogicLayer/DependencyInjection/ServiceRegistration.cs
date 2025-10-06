@@ -13,6 +13,7 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             services.AddScoped<ICloudinaryService, CloudinaryService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<IDealerContractService, DealerContractService>();
+            services.AddScoped<IDealerOrderService, DealerOrderService>();
             services.AddScoped<IDealerService, DealerService>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
