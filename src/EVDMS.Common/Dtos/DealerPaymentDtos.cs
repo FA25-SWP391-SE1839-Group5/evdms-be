@@ -18,14 +18,6 @@ namespace EVDMS.Common.Dtos
     {
         [Required]
         public Guid DealerOrderId { get; set; }
-
-        [Required]
-        [Range(0, double.MaxValue)]
-        public decimal Amount { get; set; }
-
-        [Required]
-        public DealerPaymentStatus Status { get; set; }
-        public string PaymentIntentId { get; set; } = string.Empty;
     }
 
     public class UpdateDealerPaymentDto

@@ -14,6 +14,7 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             services.Configure<CloudinarySettings>(config.GetSection("Cloudinary"));
             services.Configure<EmailSettings>(config.GetSection("Email"));
             services.Configure<JwtSettings>(config.GetSection("Jwt"));
+            services.Configure<StripeSettings>(config.GetSection("Stripe"));
 
             return services;
         }

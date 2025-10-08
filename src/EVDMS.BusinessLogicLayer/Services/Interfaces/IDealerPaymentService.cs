@@ -8,5 +8,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             CreateDealerPaymentDto,
             UpdateDealerPaymentDto,
             PatchDealerPaymentDto
-        > { }
+        >
+    {
+        Task MarkAsPaidAsync(string paymentIntentId);
+        Task MarkAsPendingAsync(string paymentIntentId);
+        Task MarkAsFailedAsync(string paymentIntentId);
+    }
 }
