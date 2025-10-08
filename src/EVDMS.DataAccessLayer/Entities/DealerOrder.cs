@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EVDMS.Common.Enums;
+﻿using EVDMS.Common.Enums;
 
 namespace EVDMS.DataAccessLayer.Entities
 {
@@ -17,6 +12,7 @@ namespace EVDMS.DataAccessLayer.Entities
 
         public Dealer Dealer { get; set; } = null!;
         public VehicleVariant VehicleVariant { get; set; } = null!;
+        public ICollection<DealerPayment> DealerPayments { get; set; } = [];
 
         public static readonly string[] SearchableColumns = ["Quantity", "Color", "Status"];
     }

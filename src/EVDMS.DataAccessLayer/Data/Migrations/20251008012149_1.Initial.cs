@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -518,6 +517,39 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         principalTable: "vehicle_variants",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "dealer_payments",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_order_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    payment_intent_id = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_dealer_payments", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_dealer_payments_dealer_orders_dealer_order_id",
+                        column: x => x.dealer_order_id,
+                        principalTable: "dealer_orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -1106,6 +1138,28 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.InsertData(
+                table: "dealer_payments",
+                columns: new[] { "id", "amount", "dealer_order_id", "payment_intent_id", "status" },
+                values: new object[,]
+                {
+                    {
+                        new Guid("00000000-0000-0000-0000-000000000001"),
+                        233150m,
+                        new Guid("40000000-0000-0000-0000-000000000001"),
+                        "pi_1234567890",
+                        "Pending",
+                    },
+                    {
+                        new Guid("00000000-0000-0000-0000-000000000002"),
+                        114000m,
+                        new Guid("40000000-0000-0000-0000-000000000002"),
+                        "pi_0987654321",
+                        "Paid",
+                    },
+                }
+            );
+
+            migrationBuilder.InsertData(
                 table: "sales_orders",
                 columns: new[]
                 {
@@ -1219,6 +1273,12 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 name: "ix_dealer_orders_variant_id",
                 table: "dealer_orders",
                 column: "variant_id"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_dealer_payments_dealer_order_id",
+                table: "dealer_payments",
+                column: "dealer_order_id"
             );
 
             migrationBuilder.CreateIndex(
@@ -1369,7 +1429,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             migrationBuilder.DropTable(name: "dealer_contracts");
 
-            migrationBuilder.DropTable(name: "dealer_orders");
+            migrationBuilder.DropTable(name: "dealer_payments");
 
             migrationBuilder.DropTable(name: "feedbacks");
 
@@ -1382,6 +1442,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             migrationBuilder.DropTable(name: "refresh_tokens");
 
             migrationBuilder.DropTable(name: "test_drives");
+
+            migrationBuilder.DropTable(name: "dealer_orders");
 
             migrationBuilder.DropTable(name: "sales_orders");
 

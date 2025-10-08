@@ -14,6 +14,7 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
                 cfg.AddProfile<CustomerProfile>();
                 cfg.AddProfile<DealerContractProfile>();
                 cfg.AddProfile<DealerOrderProfile>();
+                cfg.AddProfile<DealerPaymentProfile>();
                 cfg.AddProfile<DealerProfile>();
                 cfg.AddProfile<FeedbackProfile>();
                 cfg.AddProfile<OemInventoryProfile>();

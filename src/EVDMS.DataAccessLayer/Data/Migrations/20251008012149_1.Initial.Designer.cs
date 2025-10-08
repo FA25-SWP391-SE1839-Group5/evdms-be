@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251004084740_1.Initial")]
+    [Migration("20251008012149_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -370,6 +370,74 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Status = "Delivered",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("22222222-2222-2222-2222-222222222201")
+                        });
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("DealerOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_order_id");
+
+                    b.Property<string>("PaymentIntentId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("payment_intent_id");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_dealer_payments");
+
+                    b.HasIndex("DealerOrderId")
+                        .HasDatabaseName("ix_dealer_payments_dealer_order_id");
+
+                    b.ToTable("dealer_payments", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Amount = 233150m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerOrderId = new Guid("40000000-0000-0000-0000-000000000001"),
+                            PaymentIntentId = "pi_1234567890",
+                            Status = "Pending",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                            Amount = 114000m,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerOrderId = new Guid("40000000-0000-0000-0000-000000000002"),
+                            PaymentIntentId = "pi_0987654321",
+                            Status = "Paid",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -1375,6 +1443,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("VehicleVariant");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerPayment", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.DealerOrder", "DealerOrder")
+                        .WithMany("DealerPayments")
+                        .HasForeignKey("DealerOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_payments_dealer_orders_dealer_order_id");
+
+                    b.Navigation("DealerOrder");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
@@ -1625,6 +1705,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Users");
 
                     b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.Navigation("DealerPayments");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Quotation", b =>

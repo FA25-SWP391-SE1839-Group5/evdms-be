@@ -12,6 +12,7 @@ namespace EVDMS.DataAccessLayer.Data
         public DbSet<Dealer> Dealers { get; set; }
         public DbSet<DealerContract> DealerContracts { get; set; }
         public DbSet<DealerOrder> DealerOrders { get; set; }
+        public DbSet<DealerPayment> DealerPayments { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<OemInventory> OemInventories { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -32,6 +33,7 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new DealerConfiguration());
             modelBuilder.ApplyConfiguration(new DealerContractConfiguration());
             modelBuilder.ApplyConfiguration(new DealerOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new DealerPaymentConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackConfiguration());
             modelBuilder.ApplyConfiguration(new OemInventoryConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
