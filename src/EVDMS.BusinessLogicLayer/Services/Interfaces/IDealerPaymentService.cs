@@ -1,4 +1,5 @@
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
@@ -10,8 +11,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             PatchDealerPaymentDto
         >
     {
-        Task MarkAsPaidAsync(string paymentIntentId);
-        Task MarkAsPendingAsync(string paymentIntentId);
-        Task MarkAsFailedAsync(string paymentIntentId);
+        Task MarkPaymentStatusAsync(string paymentIntentId, DealerPaymentStatus status);
     }
 }

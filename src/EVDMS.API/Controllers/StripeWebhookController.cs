@@ -1,4 +1,5 @@
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
+using EVDMS.Common.Enums;
 using EVDMS.Common.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -48,20 +49,29 @@ namespace EVDMS.API.Controllers
                 case "payment_intent.created":
                     if (stripeEvent.Data.Object is PaymentIntent createdIntent)
                     {
-                        await _dealerPaymentService.MarkAsPendingAsync(createdIntent.Id);
+                        await _dealerPaymentService.MarkPaymentStatusAsync(
+                            createdIntent.Id,
+                            DealerPaymentStatus.Pending
+                        );
                     }
                     break;
                 case "payment_intent.canceled":
                 case "payment_intent.payment_failed":
                     if (stripeEvent.Data.Object is PaymentIntent failedIntent)
                     {
-                        await _dealerPaymentService.MarkAsFailedAsync(failedIntent.Id);
+                        await _dealerPaymentService.MarkPaymentStatusAsync(
+                            failedIntent.Id,
+                            DealerPaymentStatus.Failed
+                        );
                     }
                     break;
                 case "payment_intent.succeeded":
                     if (stripeEvent.Data.Object is PaymentIntent succeededIntent)
                     {
-                        await _dealerPaymentService.MarkAsPaidAsync(succeededIntent.Id);
+                        await _dealerPaymentService.MarkPaymentStatusAsync(
+                            succeededIntent.Id,
+                            DealerPaymentStatus.Paid
+                        );
                     }
                     break;
                 default:

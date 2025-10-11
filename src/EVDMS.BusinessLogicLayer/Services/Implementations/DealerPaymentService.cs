@@ -78,43 +78,15 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return _mapper.Map<DealerPaymentDto>(payment);
         }
 
-        public async Task MarkAsPaidAsync(string paymentIntentId)
+        public async Task MarkPaymentStatusAsync(string paymentIntentId, DealerPaymentStatus status)
         {
             var payments = await _repository.FindAsync(p => p.PaymentIntentId == paymentIntentId);
             var payment = payments.FirstOrDefault();
             if (payment == null)
                 return;
-            if (payment.Status == DealerPaymentStatus.Paid)
+            if (payment.Status == status)
                 return;
-            payment.Status = DealerPaymentStatus.Paid;
-            payment.UpdatedAt = DateTime.UtcNow;
-            _repository.Update(payment);
-            await _repository.SaveChangesAsync();
-        }
-
-        public async Task MarkAsPendingAsync(string paymentIntentId)
-        {
-            var payments = await _repository.FindAsync(p => p.PaymentIntentId == paymentIntentId);
-            var payment = payments.FirstOrDefault();
-            if (payment == null)
-                return;
-            if (payment.Status == DealerPaymentStatus.Pending)
-                return;
-            payment.Status = DealerPaymentStatus.Pending;
-            payment.UpdatedAt = DateTime.UtcNow;
-            _repository.Update(payment);
-            await _repository.SaveChangesAsync();
-        }
-
-        public async Task MarkAsFailedAsync(string paymentIntentId)
-        {
-            var payments = await _repository.FindAsync(p => p.PaymentIntentId == paymentIntentId);
-            var payment = payments.FirstOrDefault();
-            if (payment == null)
-                return;
-            if (payment.Status == DealerPaymentStatus.Failed)
-                return;
-            payment.Status = DealerPaymentStatus.Failed;
+            payment.Status = status;
             payment.UpdatedAt = DateTime.UtcNow;
             _repository.Update(payment);
             await _repository.SaveChangesAsync();
