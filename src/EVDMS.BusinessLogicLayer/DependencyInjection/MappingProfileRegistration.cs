@@ -1,14 +1,19 @@
 ﻿using EVDMS.BusinessLogicLayer.MappingProfiles;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EVDMS.BusinessLogicLayer.DependencyInjection
 {
     public static class MappingProfileRegistration
     {
-        public static IServiceCollection AddMappingProfiles(this IServiceCollection services)
+        public static IServiceCollection AddMappingProfiles(
+            this IServiceCollection services,
+            IConfiguration configuration
+        )
         {
             services.AddAutoMapper(cfg =>
             {
+                cfg.LicenseKey = configuration["AutoMapper:LicenseKey"];
                 cfg.AddProfile<AuditLogProfile>();
                 cfg.AddProfile<AuthProfile>();
                 cfg.AddProfile<CustomerProfile>();

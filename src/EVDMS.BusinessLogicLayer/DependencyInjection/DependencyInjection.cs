@@ -10,7 +10,11 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             IConfiguration config
         )
         {
-            services.AddRepositories().AddServices().AddMappingProfiles().AddConfigurations(config);
+            services
+                .AddRepositories()
+                .AddServices()
+                .AddMappingProfiles(config)
+                .AddConfigurations(config);
 
             return services;
         }
