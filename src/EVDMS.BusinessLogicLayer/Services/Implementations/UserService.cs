@@ -60,6 +60,19 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
             }
 
+            // Basic syntax check and MX/A record verification to reduce fake emails
+            if (!EmailVerifier.IsValidFormat(dto.Email))
+                throw new Exception("The provided email address has an invalid format.");
+
+            var domainIsValid = await EmailVerifier.DomainHasMailServerAsync(dto.Email);
+            if (!domainIsValid)
+                throw new Exception(
+                    "The email domain does not appear to accept mail (no MX/A records)."
+                );
+
+            if (EmailVerifier.IsDisposableDomain(dto.Email))
+                throw new Exception("Disposable or temporary email addresses are not allowed.");
+
             if (await _userRepository.ExistsByEmailAsync(dto.Email))
                 throw new Exception($"A user with email '{dto.Email}' already exists.");
 
