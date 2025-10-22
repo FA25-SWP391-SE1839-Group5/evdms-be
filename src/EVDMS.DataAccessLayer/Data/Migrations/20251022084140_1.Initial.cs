@@ -326,54 +326,6 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             );
 
             migrationBuilder.CreateTable(
-                name: "quotations",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    total_amount = table.Column<decimal>(type: "numeric", nullable: false),
-                    status = table.Column<string>(type: "text", nullable: false),
-                    created_at = table.Column<DateTime>(
-                        type: "timestamp with time zone",
-                        nullable: false,
-                        defaultValueSql: "CURRENT_TIMESTAMP"
-                    ),
-                    updated_at = table.Column<DateTime>(
-                        type: "timestamp with time zone",
-                        nullable: false,
-                        defaultValueSql: "CURRENT_TIMESTAMP"
-                    ),
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_quotations", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_quotations_customers_customer_id",
-                        column: x => x.customer_id,
-                        principalTable: "customers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                    table.ForeignKey(
-                        name: "fk_quotations_dealers_dealer_id",
-                        column: x => x.dealer_id,
-                        principalTable: "dealers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                    table.ForeignKey(
-                        name: "fk_quotations_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
-                    );
-                }
-            );
-
-            migrationBuilder.CreateTable(
                 name: "refresh_tokens",
                 columns: table => new
                 {
@@ -477,6 +429,62 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         principalTable: "vehicle_variants",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict
+                    );
+                }
+            );
+
+            migrationBuilder.CreateTable(
+                name: "quotations",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    customer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    variant_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    total_amount = table.Column<decimal>(type: "numeric", nullable: false),
+                    status = table.Column<string>(type: "text", nullable: false),
+                    created_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                    updated_at = table.Column<DateTime>(
+                        type: "timestamp with time zone",
+                        nullable: false,
+                        defaultValueSql: "CURRENT_TIMESTAMP"
+                    ),
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_quotations", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_quotations_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_quotations_dealers_dealer_id",
+                        column: x => x.dealer_id,
+                        principalTable: "dealers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_quotations_users_user_id",
+                        column: x => x.user_id,
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict
+                    );
+                    table.ForeignKey(
+                        name: "fk_quotations_vehicle_variants_variant_id",
+                        column: x => x.variant_id,
+                        principalTable: "vehicle_variants",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -784,7 +792,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     null,
                     "Spring Sale: 10% off all vehicles!",
                     10m,
-                    new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                    new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                     new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                     "Oem",
                 }
@@ -932,7 +940,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     new Guid("30000000-0000-0000-0000-000000000001"),
                     "Year-end Clearance: 15% off selected models!",
                     15m,
-                    new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                    new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                     new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                     "Dealer",
                 }
@@ -1076,6 +1084,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     "status",
                     "total_amount",
                     "user_id",
+                    "variant_id",
                 },
                 values: new object[,]
                 {
@@ -1084,16 +1093,18 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new Guid("10000000-0000-0000-0000-000000000001"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         "Sent",
-                        0m,
+                        46630m,
                         new Guid("20000000-0000-0000-0000-000000000002"),
+                        new Guid("11111111-1111-1111-1111-111111111101"),
                     },
                     {
                         new Guid("70000000-0000-0000-0000-000000000002"),
                         new Guid("10000000-0000-0000-0000-000000000002"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         "Approved",
-                        0m,
+                        57000m,
                         new Guid("20000000-0000-0000-0000-000000000003"),
+                        new Guid("11111111-1111-1111-1111-111111111102"),
                     },
                 }
             );
@@ -1342,6 +1353,12 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 name: "ix_quotations_user_id",
                 table: "quotations",
                 column: "user_id"
+            );
+
+            migrationBuilder.CreateIndex(
+                name: "ix_quotations_variant_id",
+                table: "quotations",
+                column: "variant_id"
             );
 
             migrationBuilder.CreateIndex(

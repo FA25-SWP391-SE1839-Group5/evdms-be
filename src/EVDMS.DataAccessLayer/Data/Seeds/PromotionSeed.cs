@@ -19,7 +19,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         DateTimeKind.Utc
                     ),
                     EndDate = DateTime.SpecifyKind(
-                        DateTime.Parse("2024-03-31", CultureInfo.InvariantCulture),
+                        DateTime.Parse("2026-03-31", CultureInfo.InvariantCulture),
                         DateTimeKind.Utc
                     ),
                 },
@@ -35,7 +35,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         DateTimeKind.Utc
                     ),
                     EndDate = DateTime.SpecifyKind(
-                        DateTime.Parse("2024-12-31", CultureInfo.InvariantCulture),
+                        DateTime.Parse("2026-12-31", CultureInfo.InvariantCulture),
                         DateTimeKind.Utc
                     ),
                 },

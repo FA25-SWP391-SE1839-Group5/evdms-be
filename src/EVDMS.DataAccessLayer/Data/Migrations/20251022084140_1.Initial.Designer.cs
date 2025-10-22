@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251022074212_1.Initial")]
+    [Migration("20251022084140_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -716,7 +716,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Spring Sale: 10% off all vehicles!",
                             DiscountPercent = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Oem",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
@@ -728,7 +728,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Description = "Year-end Clearance: 15% off selected models!",
                             DiscountPercent = 15m,
-                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             StartDate = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Dealer",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
@@ -775,6 +775,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
+
                     b.HasKey("Id")
                         .HasName("pk_quotations");
 
@@ -787,6 +791,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_quotations_user_id");
 
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_quotations_variant_id");
+
                     b.ToTable("quotations", (string)null);
 
                     b.HasData(
@@ -797,9 +804,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Sent",
-                            TotalAmount = 0m,
+                            TotalAmount = 46630m,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = new Guid("20000000-0000-0000-0000-000000000002")
+                            UserId = new Guid("20000000-0000-0000-0000-000000000002"),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
                         },
                         new
                         {
@@ -808,9 +816,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Approved",
-                            TotalAmount = 0m,
+                            TotalAmount = 57000m,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = new Guid("20000000-0000-0000-0000-000000000003")
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
                         });
                 });
 
@@ -1545,11 +1554,20 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_quotations_users_user_id");
 
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "Variant")
+                        .WithMany("Quotations")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_quotations_vehicle_variants_variant_id");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Dealer");
 
                     b.Navigation("User");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
@@ -1761,6 +1779,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("DealerOrders");
 
                     b.Navigation("OemInventories");
+
+                    b.Navigation("Quotations");
 
                     b.Navigation("Vehicles");
                 });
