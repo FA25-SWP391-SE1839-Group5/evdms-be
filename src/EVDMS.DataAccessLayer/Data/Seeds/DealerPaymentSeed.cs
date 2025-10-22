@@ -14,7 +14,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Amount = 233150m,
                     Status = DealerPaymentStatus.Pending,
                     DocumentUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                        "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                    DocumentPublicId = "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                 },
                 new DealerPayment
                 {
@@ -23,7 +24,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Amount = 114000m,
                     Status = DealerPaymentStatus.Paid,
                     DocumentUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                        "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                    DocumentPublicId = "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                 },
             ];
     }

@@ -124,25 +124,24 @@ namespace EVDMS.API.Controllers
                     )
                 );
 
-            var imageUrl = await _cloudinaryService.UploadVehicleModelImageAsync(image);
-            if (string.IsNullOrEmpty(imageUrl))
+            var uploadResult = await _cloudinaryService.UploadVehicleModelImageAsync(image);
+            if (uploadResult == null || string.IsNullOrEmpty(uploadResult.ImageUrl))
                 return StatusCode(500, new ApiResponse<string>("Image upload failed."));
-            var responseDto = new UploadVehicleModelImageResponseDto { ImageUrl = imageUrl };
             return Ok(
                 new ApiResponse<UploadVehicleModelImageResponseDto>(
-                    responseDto,
+                    uploadResult,
                     "Image uploaded successfully"
                 )
             );
         }
 
         [HttpDelete("delete-image")]
-        public async Task<IActionResult> DeleteImage([FromQuery] string imageUrl)
+        public async Task<IActionResult> DeleteImage([FromQuery] Guid id)
         {
-            if (string.IsNullOrWhiteSpace(imageUrl))
-                return BadRequest(new ApiResponse<string>("No imageUrl provided."));
+            if (id == Guid.Empty)
+                return BadRequest(new ApiResponse<string>("No vehicle model id provided."));
 
-            var success = await _cloudinaryService.DeleteVehicleModelImageAsync(imageUrl);
+            var success = await _cloudinaryService.DeleteVehicleModelImageAsync(id);
             if (!success)
                 return StatusCode(500, new ApiResponse<string>("Image deletion failed."));
             return Ok(new ApiResponse<string>(null, "Image deleted successfully"));

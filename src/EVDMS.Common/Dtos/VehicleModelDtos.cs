@@ -9,6 +9,7 @@ namespace EVDMS.Common.Dtos
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
+        public string ImagePublicId { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -23,6 +24,7 @@ namespace EVDMS.Common.Dtos
         [MinLength(1)]
         public required string Description { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
     }
 
     public class UploadVehicleModelImageDto
@@ -34,6 +36,7 @@ namespace EVDMS.Common.Dtos
     public class UploadVehicleModelImageResponseDto
     {
         public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
     }
 
     public class UpdateVehicleModelDto
@@ -46,6 +49,7 @@ namespace EVDMS.Common.Dtos
         [MinLength(1)]
         public required string Description { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
     }
 
     public class PatchVehicleModelDto
@@ -53,5 +57,6 @@ namespace EVDMS.Common.Dtos
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
+        public string? ImagePublicId { get; set; }
     }
 }

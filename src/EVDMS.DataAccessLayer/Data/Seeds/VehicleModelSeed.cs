@@ -13,7 +13,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Description =
                         "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118880/EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes.jpg",
+                    ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes",
                 },
                 new VehicleModel
                 {
@@ -22,7 +23,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Description =
                         "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
                     ImageUrl =
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118847/EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z.jpg",
+                    ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z",
                 },
             ];
     }

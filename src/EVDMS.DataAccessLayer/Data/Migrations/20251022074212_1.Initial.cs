@@ -72,6 +72,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     name = table.Column<string>(type: "text", nullable: false),
                     description = table.Column<string>(type: "text", nullable: false),
                     image_url = table.Column<string>(type: "text", nullable: true),
+                    image_public_id = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -531,6 +532,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     amount = table.Column<decimal>(type: "numeric", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
                     document_url = table.Column<string>(type: "text", nullable: true),
+                    document_public_id = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -831,19 +833,21 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "vehicle_models",
-                columns: new[] { "id", "description", "image_url", "name" },
+                columns: new[] { "id", "description", "image_public_id", "image_url", "name" },
                 values: new object[,]
                 {
                     {
                         new Guid("11111111-1111-1111-1111-111111111111"),
                         "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                        "EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118880/EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes.jpg",
                         "Tesla Model Y",
                     },
                     {
                         new Guid("22222222-2222-2222-2222-222222222222"),
                         "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
+                        "EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118847/EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z.jpg",
                         "Tesla Model 3",
                     },
                 }
@@ -1140,21 +1144,31 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "dealer_payments",
-                columns: new[] { "id", "amount", "dealer_order_id", "document_url", "status" },
+                columns: new[]
+                {
+                    "id",
+                    "amount",
+                    "dealer_order_id",
+                    "document_public_id",
+                    "document_url",
+                    "status",
+                },
                 values: new object[,]
                 {
                     {
                         new Guid("00000000-0000-0000-0000-000000000001"),
                         233150m,
                         new Guid("40000000-0000-0000-0000-000000000001"),
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                        "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                        "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                         "Pending",
                     },
                     {
                         new Guid("00000000-0000-0000-0000-000000000002"),
                         114000m,
                         new Guid("40000000-0000-0000-0000-000000000002"),
-                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                        "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                        "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                         "Paid",
                     },
                 }

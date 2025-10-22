@@ -4,6 +4,7 @@ using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
 using EVDMS.Common.Enums;
 using EVDMS.DataAccessLayer.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -13,10 +14,15 @@ namespace EVDMS.API.Controllers
     public class DealerPaymentController : ControllerBase
     {
         private readonly IDealerPaymentService _dealerPaymentService;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public DealerPaymentController(IDealerPaymentService dealerPaymentService)
+        public DealerPaymentController(
+            IDealerPaymentService dealerPaymentService,
+            ICloudinaryService cloudinaryService
+        )
         {
             _dealerPaymentService = dealerPaymentService;
+            _cloudinaryService = cloudinaryService;
         }
 
         [HttpGet]
@@ -151,6 +157,45 @@ namespace EVDMS.API.Controllers
             {
                 return Conflict(new ApiResponse<string>(ex.Message));
             }
+        }
+
+        [HttpPost("upload-document")]
+        public async Task<IActionResult> UploadDocument(
+            [FromForm] UploadDealerPaymentDocumentDto dto
+        )
+        {
+            var document = dto.Document;
+            if (document == null || document.Length == 0)
+                return BadRequest(new ApiResponse<string>("No document file provided."));
+
+            if (!document.ContentType.ToLower().Equals("application/pdf"))
+                return BadRequest(new ApiResponse<string>("Only PDF files are allowed."));
+
+            var documentUrl = await _cloudinaryService.UploadDealerPaymentDocumentAsync(document);
+            if (string.IsNullOrEmpty(documentUrl))
+                return StatusCode(500, new ApiResponse<string>("Document upload failed."));
+            var responseDto = new UploadDealerPaymentDocumentResponseDto
+            {
+                DocumentUrl = documentUrl,
+            };
+            return Ok(
+                new ApiResponse<UploadDealerPaymentDocumentResponseDto>(
+                    responseDto,
+                    "Document uploaded successfully"
+                )
+            );
+        }
+
+        [HttpDelete("delete-document")]
+        public async Task<IActionResult> DeleteDocument([FromQuery] string documentUrl)
+        {
+            if (string.IsNullOrWhiteSpace(documentUrl))
+                return BadRequest(new ApiResponse<string>("No documentUrl provided."));
+
+            var success = await _cloudinaryService.DeleteDealerPaymentDocumentAsync(documentUrl);
+            if (!success)
+                return StatusCode(500, new ApiResponse<string>("Document deletion failed."));
+            return Ok(new ApiResponse<string>(null, "Document deleted successfully"));
         }
     }
 }

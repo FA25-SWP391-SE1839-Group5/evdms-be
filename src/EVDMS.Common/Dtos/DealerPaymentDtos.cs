@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using EVDMS.Common.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace EVDMS.Common.Dtos
 {
@@ -41,6 +42,17 @@ namespace EVDMS.Common.Dtos
         [Range(0, double.MaxValue)]
         public decimal? Amount { get; set; }
         public DealerPaymentStatus? Status { get; set; }
+        public string? DocumentUrl { get; set; }
+    }
+
+    public class UploadDealerPaymentDocumentDto
+    {
+        [Required]
+        public IFormFile Document { get; set; } = null!;
+    }
+
+    public class UploadDealerPaymentDocumentResponseDto
+    {
         public string? DocumentUrl { get; set; }
     }
 }

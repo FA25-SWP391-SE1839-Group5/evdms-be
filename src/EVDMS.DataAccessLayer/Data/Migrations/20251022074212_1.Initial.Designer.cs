@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251022065159_1.Initial")]
+    [Migration("20251022074212_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -394,6 +394,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("dealer_order_id");
 
+                    b.Property<string>("DocumentPublicId")
+                        .HasColumnType("text")
+                        .HasColumnName("document_public_id");
+
                     b.Property<string>("DocumentUrl")
                         .HasColumnType("text")
                         .HasColumnName("document_url");
@@ -424,7 +428,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Amount = 233150m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerOrderId = new Guid("40000000-0000-0000-0000-000000000001"),
-                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                            DocumentPublicId = "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                             Status = "Pending",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -434,7 +439,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Amount = 114000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerOrderId = new Guid("40000000-0000-0000-0000-000000000002"),
-                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
+                            DocumentPublicId = "EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
+                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/raw/upload/v1761118667/EVDMS/DealerPaymentDocuments/seed-receipt_s7la38.pdf",
                             Status = "Paid",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
@@ -1270,6 +1276,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("text")
                         .HasColumnName("description");
 
+                    b.Property<string>("ImagePublicId")
+                        .HasColumnType("text")
+                        .HasColumnName("image_public_id");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text")
                         .HasColumnName("image_url");
@@ -1296,7 +1306,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                            ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118880/EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes.jpg",
                             Name = "Tesla Model Y",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -1305,7 +1316,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
+                            ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118847/EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z.jpg",
                             Name = "Tesla Model 3",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });

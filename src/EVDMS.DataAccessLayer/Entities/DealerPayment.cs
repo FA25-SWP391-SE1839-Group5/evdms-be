@@ -8,6 +8,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public decimal Amount { get; set; }
         public required DealerPaymentStatus Status { get; set; }
         public string? DocumentUrl { get; set; }
+        public string? DocumentPublicId { get; set; }
 
         public DealerOrder DealerOrder { get; set; } = null!;
 
