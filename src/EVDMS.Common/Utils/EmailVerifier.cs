@@ -46,7 +46,7 @@ namespace EVDMS.Common.Utils
             }
         }
 
-        // Very small built-in disposable / blocked domains list. Extend as needed or use a 3rd party service.
+        // Very small built-in disposable / blocked domains list. Extend as needed.
         // Includes common disposable providers and reserved example domains which should be rejected.
         private static readonly string[] DisposableDomains =
         [
