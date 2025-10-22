@@ -7,7 +7,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid DealerOrderId { get; set; }
         public decimal Amount { get; set; }
         public required DealerPaymentStatus Status { get; set; }
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string? DocumentUrl { get; set; }
 
         public DealerOrder DealerOrder { get; set; } = null!;
 

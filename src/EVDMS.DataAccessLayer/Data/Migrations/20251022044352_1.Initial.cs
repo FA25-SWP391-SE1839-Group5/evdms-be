@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -529,7 +530,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     dealer_order_id = table.Column<Guid>(type: "uuid", nullable: false),
                     amount = table.Column<decimal>(type: "numeric", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
-                    payment_intent_id = table.Column<string>(type: "text", nullable: false),
+                    document_url = table.Column<string>(type: "text", nullable: true),
                     created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
                         nullable: false,
@@ -1139,21 +1140,21 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "dealer_payments",
-                columns: new[] { "id", "amount", "dealer_order_id", "payment_intent_id", "status" },
+                columns: new[] { "id", "amount", "dealer_order_id", "document_url", "status" },
                 values: new object[,]
                 {
                     {
                         new Guid("00000000-0000-0000-0000-000000000001"),
                         233150m,
                         new Guid("40000000-0000-0000-0000-000000000001"),
-                        "pi_1234567890",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                         "Pending",
                     },
                     {
                         new Guid("00000000-0000-0000-0000-000000000002"),
                         114000m,
                         new Guid("40000000-0000-0000-0000-000000000002"),
-                        "pi_0987654321",
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                         "Paid",
                     },
                 }

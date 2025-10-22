@@ -20,14 +20,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IDealerOrderRepository _dealerOrderRepository;
         private readonly IVehicleVariantRepository _vehicleVariantRepository;
         private readonly IPromotionRepository _promotionRepository;
-        private readonly IStripeService _stripeService;
 
         public DealerPaymentService(
             IDealerPaymentRepository dealerPaymentRepository,
             IDealerOrderRepository dealerOrderRepository,
             IVehicleVariantRepository vehicleVariantRepository,
             IPromotionRepository promotionRepository,
-            IStripeService stripeService,
             IMapper mapper
         )
             : base(dealerPaymentRepository, mapper)
@@ -35,7 +33,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _dealerOrderRepository = dealerOrderRepository;
             _vehicleVariantRepository = vehicleVariantRepository;
             _promotionRepository = promotionRepository;
-            _stripeService = stripeService;
         }
 
         public override async Task<DealerPaymentDto> CreateAsync(CreateDealerPaymentDto dto)
@@ -61,14 +58,11 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var discountAmount = totalPrice * (discountPercent / 100m);
             var finalAmount = totalPrice - discountAmount;
 
-            var paymentIntent = await _stripeService.CreatePaymentIntentAsync(finalAmount, "usd");
-
             var payment = new DealerPayment
             {
                 DealerOrderId = dto.DealerOrderId,
                 Amount = finalAmount,
                 Status = DealerPaymentStatus.Pending,
-                PaymentIntentId = paymentIntent.Id,
                 CreatedAt = now,
                 UpdatedAt = now,
             };
@@ -76,20 +70,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _repository.AddAsync(payment);
             await _repository.SaveChangesAsync();
             return _mapper.Map<DealerPaymentDto>(payment);
-        }
-
-        public async Task MarkPaymentStatusAsync(string paymentIntentId, DealerPaymentStatus status)
-        {
-            var payments = await _repository.FindAsync(p => p.PaymentIntentId == paymentIntentId);
-            var payment = payments.FirstOrDefault();
-            if (payment == null)
-                return;
-            if (payment.Status == status)
-                return;
-            payment.Status = status;
-            payment.UpdatedAt = DateTime.UtcNow;
-            _repository.Update(payment);
-            await _repository.SaveChangesAsync();
         }
     }
 }

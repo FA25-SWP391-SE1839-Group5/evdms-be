@@ -24,7 +24,6 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             services.AddScoped<IPromotionService, PromotionService>();
             services.AddScoped<IQuotationService, QuotationService>();
             services.AddScoped<ISalesOrderService, SalesOrderService>();
-            services.AddScoped<IStripeService, StripeService>();
             services.AddScoped<ITestDriveService, TestDriveService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IVehicleModelService, VehicleModelService>();

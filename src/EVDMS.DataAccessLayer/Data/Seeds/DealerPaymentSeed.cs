@@ -13,7 +13,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     DealerOrderId = Guid.Parse("40000000-0000-0000-0000-000000000001"),
                     Amount = 233150m,
                     Status = DealerPaymentStatus.Pending,
-                    PaymentIntentId = "pi_1234567890",
+                    DocumentUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                 },
                 new DealerPayment
                 {
@@ -21,7 +22,8 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     DealerOrderId = Guid.Parse("40000000-0000-0000-0000-000000000002"),
                     Amount = 114000m,
                     Status = DealerPaymentStatus.Paid,
-                    PaymentIntentId = "pi_0987654321",
+                    DocumentUrl =
+                        "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                 },
             ];
     }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251008012149_1.Initial")]
+    [Migration("20251022044352_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -394,10 +394,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("dealer_order_id");
 
-                    b.Property<string>("PaymentIntentId")
-                        .IsRequired()
+                    b.Property<string>("DocumentUrl")
                         .HasColumnType("text")
-                        .HasColumnName("payment_intent_id");
+                        .HasColumnName("document_url");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -425,7 +424,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Amount = 233150m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerOrderId = new Guid("40000000-0000-0000-0000-000000000001"),
-                            PaymentIntentId = "pi_1234567890",
+                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                             Status = "Pending",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -435,7 +434,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Amount = 114000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerOrderId = new Guid("40000000-0000-0000-0000-000000000002"),
-                            PaymentIntentId = "pi_0987654321",
+                            DocumentUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761107830/seed-receipt_sacyig.pdf",
                             Status = "Paid",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
