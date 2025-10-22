@@ -76,13 +76,11 @@ namespace EVDMS.API
                 })
                 .AddJwtBearer(options =>
                 {
-                    var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-                    if (jwtSettings == null)
-                    {
-                        throw new InvalidOperationException(
+                    var jwtSettings =
+                        builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
+                        ?? throw new InvalidOperationException(
                             "JWT settings are not configured properly."
                         );
-                    }
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,

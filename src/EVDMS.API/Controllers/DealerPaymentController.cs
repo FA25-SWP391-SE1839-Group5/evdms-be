@@ -2,6 +2,7 @@ using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,12 +58,23 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateDealerPaymentDto dto)
         {
-            var created = await _dealerPaymentService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<DealerPaymentDto>(created)
-            );
+            try
+            {
+                var created = await _dealerPaymentService.CreateAsync(dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<DealerPaymentDto>(created)
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
@@ -96,6 +108,49 @@ namespace EVDMS.API.Controllers
             if (!success)
                 return NotFound(new ApiResponse<string>("DealerPayment not found"));
             return Ok(new ApiResponse<string>(null, "DealerPayment deleted successfully"));
+        }
+
+        [HttpPost("{id}/mark-paid")]
+        public async Task<IActionResult> MarkPaid(Guid id)
+        {
+            try
+            {
+                await _dealerPaymentService.MarkPaymentPaidAsync(id);
+                return Ok(
+                    new ApiResponse<string>(null, "Payment marked as Paid and dealer debt reduced.")
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+        }
+
+        [HttpPost("{id}/mark-failed")]
+        public async Task<IActionResult> MarkFailed(Guid id)
+        {
+            try
+            {
+                await _dealerPaymentService.MarkPaymentFailedAsync(id);
+                return Ok(
+                    new ApiResponse<string>(
+                        null,
+                        "Payment marked as Failed, order canceled, inventory restored, and dealer debt reduced."
+                    )
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
     }
 }

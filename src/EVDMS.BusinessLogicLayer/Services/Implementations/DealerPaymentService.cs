@@ -20,12 +20,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IDealerOrderRepository _dealerOrderRepository;
         private readonly IVehicleVariantRepository _vehicleVariantRepository;
         private readonly IPromotionRepository _promotionRepository;
+        private readonly IOemInventoryRepository _oemInventoryRepository;
+        private readonly IDealerContractRepository _dealerContractRepository;
+
+        private static DateTime Now => DateTime.UtcNow;
 
         public DealerPaymentService(
             IDealerPaymentRepository dealerPaymentRepository,
             IDealerOrderRepository dealerOrderRepository,
             IVehicleVariantRepository vehicleVariantRepository,
             IPromotionRepository promotionRepository,
+            IOemInventoryRepository oemInventoryRepository,
+            IDealerContractRepository dealerContractRepository,
             IMapper mapper
         )
             : base(dealerPaymentRepository, mapper)
@@ -33,23 +39,33 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _dealerOrderRepository = dealerOrderRepository;
             _vehicleVariantRepository = vehicleVariantRepository;
             _promotionRepository = promotionRepository;
+            _oemInventoryRepository = oemInventoryRepository;
+            _dealerContractRepository = dealerContractRepository;
         }
 
         public override async Task<DealerPaymentDto> CreateAsync(CreateDealerPaymentDto dto)
         {
             var dealerOrder =
                 await _dealerOrderRepository.GetByIdAsync(dto.DealerOrderId)
-                ?? throw new Exception("DealerOrder not found");
+                ?? throw new KeyNotFoundException(
+                    $"DealerOrder with ID {dto.DealerOrderId} does not exist."
+                );
 
             var variant =
                 await _vehicleVariantRepository.GetByIdAsync(dealerOrder.VariantId)
-                ?? throw new Exception("VehicleVariant not found");
+                ?? throw new KeyNotFoundException(
+                    $"VehicleVariant with ID {dealerOrder.VariantId} does not exist."
+                );
+
+            dealerOrder.Status = DealerOrderStatus.Confirmed;
+            _dealerOrderRepository.Update(dealerOrder);
+
             var basePrice = variant.BasePrice;
             var quantity = dealerOrder.Quantity;
-            var now = DateTime.UtcNow;
 
+            // Apply OEM promotions
             var promotions = await _promotionRepository.FindAsync(p =>
-                p.Type == PromotionType.Oem && p.StartDate <= now && p.EndDate >= now
+                p.Type == PromotionType.Oem && p.StartDate <= Now && p.EndDate >= Now
             );
 
             decimal discountPercent = promotions.Any() ? promotions.Max(p => p.DiscountPercent) : 0;
@@ -58,18 +74,131 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var discountAmount = totalPrice * (discountPercent / 100m);
             var finalAmount = totalPrice - discountAmount;
 
-            var payment = new DealerPayment
-            {
-                DealerOrderId = dto.DealerOrderId,
-                Amount = finalAmount,
-                Status = DealerPaymentStatus.Pending,
-                CreatedAt = now,
-                UpdatedAt = now,
-            };
+            // Reduce OEM inventory
+            var oemInventory =
+                (
+                    await _oemInventoryRepository.FindAsync(i => i.VariantId == variant.Id)
+                ).FirstOrDefault()
+                ?? throw new KeyNotFoundException(
+                    $"OEM Inventory for Variant ID {variant.Id} does not exist."
+                );
+            if (oemInventory.Quantity < quantity)
+                throw new InvalidOperationException("Not enough inventory for this variant.");
+            oemInventory.Quantity -= quantity;
+            oemInventory.UpdatedAt = Now;
+            _oemInventoryRepository.Update(oemInventory);
+
+            // Increase dealer's outstanding debt
+            var contract =
+                (
+                    await _dealerContractRepository.FindAsync(c =>
+                        c.DealerId == dealerOrder.DealerId && c.StartDate <= Now && c.EndDate >= Now
+                    )
+                ).FirstOrDefault()
+                ?? throw new KeyNotFoundException(
+                    $"No active contracts found for dealer with ID: {dealerOrder.DealerId}."
+                );
+            contract.OutstandingDebt += finalAmount;
+            contract.UpdatedAt = Now;
+            _dealerContractRepository.Update(contract);
+
+            var payment = _mapper.Map<DealerPayment>(dto);
+            payment.Amount = finalAmount;
+            payment.Status = DealerPaymentStatus.Pending;
 
             await _repository.AddAsync(payment);
             await _repository.SaveChangesAsync();
             return _mapper.Map<DealerPaymentDto>(payment);
+        }
+
+        public async Task MarkPaymentPaidAsync(Guid paymentId)
+        {
+            // Update DealerPayment status to Paid
+            var payment =
+                await _repository.GetByIdAsync(paymentId)
+                ?? throw new KeyNotFoundException(
+                    $"DealerPayment with ID {paymentId} does not exist."
+                );
+            if (payment.Status != DealerPaymentStatus.Pending)
+                throw new InvalidOperationException("DealerPayment's Status is not Pending.");
+            payment.Status = DealerPaymentStatus.Paid;
+            _repository.Update(payment);
+            await _repository.SaveChangesAsync();
+
+            // Reduce dealer's outstanding debt on the active contract only
+            var dealerOrder =
+                await _dealerOrderRepository.GetByIdAsync(payment.DealerOrderId)
+                ?? throw new KeyNotFoundException(
+                    $"DealerOrder with ID {payment.DealerOrderId} does not exist."
+                );
+            var contract =
+                (
+                    await _dealerContractRepository.FindAsync(c =>
+                        c.DealerId == dealerOrder.DealerId && c.StartDate <= Now && c.EndDate >= Now
+                    )
+                ).FirstOrDefault()
+                ?? throw new KeyNotFoundException(
+                    $"No active contracts found for dealer with ID: {dealerOrder.DealerId}."
+                );
+            contract.OutstandingDebt -= payment.Amount;
+            _dealerContractRepository.Update(contract);
+            await _dealerContractRepository.SaveChangesAsync();
+        }
+
+        public async Task MarkPaymentFailedAsync(Guid paymentId)
+        {
+            // Update DealerPayment status to Failed
+            var payment =
+                await _repository.GetByIdAsync(paymentId)
+                ?? throw new KeyNotFoundException(
+                    $"DealerPayment with ID {paymentId} does not exist."
+                );
+            if (payment.Status != DealerPaymentStatus.Pending)
+                throw new InvalidOperationException("DealerPayment's Status is not Pending.");
+            payment.Status = DealerPaymentStatus.Failed;
+            _repository.Update(payment);
+            await _repository.SaveChangesAsync();
+
+            // Set order status to Canceled
+            var dealerOrder =
+                await _dealerOrderRepository.GetByIdAsync(payment.DealerOrderId)
+                ?? throw new KeyNotFoundException(
+                    $"DealerOrder with ID {payment.DealerOrderId} does not exist."
+                );
+            dealerOrder.Status = DealerOrderStatus.Canceled;
+            _dealerOrderRepository.Update(dealerOrder);
+            await _dealerOrderRepository.SaveChangesAsync();
+
+            // Increase variant quantity in OEM inventory
+            var variant =
+                await _vehicleVariantRepository.GetByIdAsync(dealerOrder.VariantId)
+                ?? throw new KeyNotFoundException(
+                    $"VehicleVariant with ID {dealerOrder.VariantId} does not exist."
+                );
+            var oemInventory =
+                (
+                    await _oemInventoryRepository.FindAsync(i => i.VariantId == variant.Id)
+                ).FirstOrDefault()
+                ?? throw new KeyNotFoundException(
+                    $"OEM Inventory for Variant ID {variant.Id} does not exist."
+                );
+            oemInventory.Quantity += dealerOrder.Quantity;
+            _oemInventoryRepository.Update(oemInventory);
+            await _oemInventoryRepository.SaveChangesAsync();
+
+            // Reduce dealer's outstanding debt
+            var contract =
+                (
+                    await _dealerContractRepository.FindAsync(c =>
+                        c.DealerId == dealerOrder.DealerId && c.StartDate <= Now && c.EndDate >= Now
+                    )
+                ).FirstOrDefault()
+                ?? throw new KeyNotFoundException(
+                    $"No active contracts found for dealer with ID: {dealerOrder.DealerId}."
+                );
+            contract.OutstandingDebt -= payment.Amount;
+            _dealerContractRepository.Update(contract);
+            await _dealerContractRepository.SaveChangesAsync();
         }
     }
 }

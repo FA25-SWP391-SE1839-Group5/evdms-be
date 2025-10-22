@@ -1221,7 +1221,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Type = "Sale",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
-                            Vin = "5YJYGDEE8LF000001"
+                            Vin = "5YJDC63C5XSA000001"
                         },
                         new
                         {
@@ -1233,7 +1233,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Type = "Display",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
-                            Vin = "5YJYGDEE8LF000002"
+                            Vin = "5YJDC5AEAXSA000001"
                         },
                         new
                         {
@@ -1245,7 +1245,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Type = "Demo",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
-                            Vin = "5YJ3E1EA7LF000003"
+                            Vin = "5YJDCDA05XSA000001"
                         });
                 });
 

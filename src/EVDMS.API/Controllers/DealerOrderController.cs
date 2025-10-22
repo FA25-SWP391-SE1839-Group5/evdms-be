@@ -112,5 +112,28 @@ namespace EVDMS.API.Controllers
                 return NotFound(new ApiResponse<string>("DealerOrder not found"));
             return Ok(new ApiResponse<string>(null, "DealerOrder deleted successfully"));
         }
+
+        [HttpPost("{id}/deliver")]
+        public async Task<IActionResult> DeliverOrder(Guid id)
+        {
+            try
+            {
+                await _dealerOrderService.DeliverOrderAsync(id);
+                return Ok(
+                    new ApiResponse<string>(
+                        null,
+                        "Dealer order delivered and vehicles created successfully."
+                    )
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+        }
     }
 }

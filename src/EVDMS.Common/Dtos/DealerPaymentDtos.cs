@@ -9,7 +9,7 @@ namespace EVDMS.Common.Dtos
         public Guid DealerOrderId { get; set; }
         public decimal Amount { get; set; }
         public DealerPaymentStatus Status { get; set; }
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string? DocumentUrl { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -31,7 +31,7 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public DealerPaymentStatus Status { get; set; }
-        public string PaymentIntentId { get; set; } = string.Empty;
+        public string? DocumentUrl { get; set; }
     }
 
     public class PatchDealerPaymentDto
@@ -41,6 +41,6 @@ namespace EVDMS.Common.Dtos
         [Range(0, double.MaxValue)]
         public decimal? Amount { get; set; }
         public DealerPaymentStatus? Status { get; set; }
-        public string? PaymentIntentId { get; set; }
+        public string? DocumentUrl { get; set; }
     }
 }

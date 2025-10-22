@@ -1115,7 +1115,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Available",
                         "Sale",
                         new Guid("11111111-1111-1111-1111-111111111101"),
-                        "5YJYGDEE8LF000001",
+                        "5YJDC63C5XSA000001",
                     },
                     {
                         new Guid("80000000-0000-0000-0000-000000000002"),
@@ -1124,7 +1124,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Reserved",
                         "Display",
                         new Guid("11111111-1111-1111-1111-111111111102"),
-                        "5YJYGDEE8LF000002",
+                        "5YJDC5AEAXSA000001",
                     },
                     {
                         new Guid("80000000-0000-0000-0000-000000000003"),
@@ -1133,7 +1133,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Reserved",
                         "Demo",
                         new Guid("22222222-2222-2222-2222-222222222201"),
-                        "5YJ3E1EA7LF000003",
+                        "5YJDCDA05XSA000001",
                     },
                 }
             );
