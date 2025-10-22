@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -56,12 +58,26 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateDealerOrderDto dto)
         {
-            var created = await _dealerOrderService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<DealerOrderDto>(created)
-            );
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+            if (dealerId == null)
+            {
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing dealer ID in token.")
+                );
+            }
+            try
+            {
+                var created = await _dealerOrderService.CreateAsync(dealerId.Value, dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<DealerOrderDto>(created)
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]

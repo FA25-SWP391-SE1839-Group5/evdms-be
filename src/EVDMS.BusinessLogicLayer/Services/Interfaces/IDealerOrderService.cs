@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using EVDMS.Common.Dtos;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
@@ -8,5 +9,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             CreateDealerOrderDto,
             UpdateDealerOrderDto,
             PatchDealerOrderDto
-        > { }
+        >
+    {
+        Task<DealerOrderDto> CreateAsync(Guid dealerId, CreateDealerOrderDto dto);
+    }
 }

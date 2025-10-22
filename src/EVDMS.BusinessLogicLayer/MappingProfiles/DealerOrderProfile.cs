@@ -10,7 +10,8 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
         {
             CreateMap<DealerOrder, DealerOrderDto>();
 
-            CreateMap<CreateDealerOrderDto, DealerOrder>(MemberList.Source);
+            CreateMap<CreateDealerOrderDto, DealerOrder>(MemberList.Source)
+                .ForMember(dest => dest.DealerId, opt => opt.Ignore());
             CreateMap<UpdateDealerOrderDto, DealerOrder>(MemberList.Source);
             CreateMap<PatchDealerOrderDto, DealerOrder>(MemberList.Source)
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));

@@ -18,20 +18,14 @@ namespace EVDMS.Common.Dtos
     public class CreateDealerOrderDto
     {
         [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
         public required Guid VariantId { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, 500)]
         public required int Quantity { get; set; }
 
         [Required]
         public required VehicleColor Color { get; set; }
-
-        [Required]
-        public required DealerOrderStatus Status { get; set; }
     }
 
     public class UpdateDealerOrderDto
@@ -43,7 +37,7 @@ namespace EVDMS.Common.Dtos
         public required Guid VariantId { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, 500)]
         public required int Quantity { get; set; }
 
         [Required]
