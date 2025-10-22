@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251022084140_1.Initial")]
+    [Migration("20251022090501_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -742,6 +742,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<int>("Color")
+                        .HasColumnType("integer")
+                        .HasColumnName("color");
+
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -800,6 +804,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000001"),
+                            Color = 3,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
@@ -812,6 +817,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000002"),
+                            Color = 2,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),

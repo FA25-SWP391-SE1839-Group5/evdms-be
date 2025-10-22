@@ -8,6 +8,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid UserId { get; set; }
         public Guid CustomerId { get; set; }
         public Guid VariantId { get; set; }
+        public VehicleColor Color { get; set; }
         public decimal TotalAmount { get; set; }
         public QuotationStatus Status { get; set; }
 

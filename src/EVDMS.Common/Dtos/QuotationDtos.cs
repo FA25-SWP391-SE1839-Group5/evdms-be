@@ -9,6 +9,8 @@ namespace EVDMS.Common.Dtos
         public Guid DealerId { get; set; }
         public Guid UserId { get; set; }
         public Guid CustomerId { get; set; }
+        public Guid VariantId { get; set; }
+        public VehicleColor Color { get; set; }
         public decimal TotalAmount { get; set; }
         public QuotationStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -18,19 +20,13 @@ namespace EVDMS.Common.Dtos
     public class CreateQuotationDto
     {
         [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
-        public required Guid UserId { get; set; }
-
-        [Required]
         public required Guid CustomerId { get; set; }
 
         [Required]
-        public required decimal TotalAmount { get; set; }
+        public required Guid VariantId { get; set; }
 
         [Required]
-        public required QuotationStatus Status { get; set; }
+        public required VehicleColor Color { get; set; }
     }
 
     public class UpdateQuotationDto
@@ -43,6 +39,12 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public required Guid CustomerId { get; set; }
+
+        [Required]
+        public required Guid VariantId { get; set; }
+
+        [Required]
+        public required VehicleColor Color { get; set; }
 
         [Required]
         public required decimal TotalAmount { get; set; }
@@ -58,7 +60,8 @@ namespace EVDMS.Common.Dtos
         public Guid? UserId { get; set; }
 
         public Guid? CustomerId { get; set; }
-
+        public Guid? VariantId { get; set; }
+        public VehicleColor? Color { get; set; }
         public decimal? TotalAmount { get; set; }
 
         public QuotationStatus? Status { get; set; }

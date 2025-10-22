@@ -1,7 +1,10 @@
 using System.Text.Json;
 using EVDMS.API.Middlewares;
+using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
+using EVDMS.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -56,12 +59,39 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateQuotationDto dto)
         {
-            var created = await _quotationService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<QuotationDto>(created)
-            );
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+            var userId = JwtUtils.GetUserIdFromClaims(User);
+
+            if (dealerId == null)
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing dealer ID in token.")
+                );
+            if (userId == null)
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing user ID in token.")
+                );
+
+            try
+            {
+                var created = await _quotationService.CreateAsync(
+                    dto,
+                    dealerId.Value,
+                    userId.Value
+                );
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<QuotationDto>(created)
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
