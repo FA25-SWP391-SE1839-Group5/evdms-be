@@ -14,10 +14,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
     {
         private readonly Cloudinary _cloudinary;
         private readonly IVehicleModelRepository _vehicleModelRepository;
+        private readonly IDealerPaymentRepository _dealerPaymentRepository;
 
         public CloudinaryService(
             IOptions<CloudinarySettings> cloudinarySettings,
-            IVehicleModelRepository vehicleModelRepository
+            IVehicleModelRepository vehicleModelRepository,
+            IDealerPaymentRepository dealerPaymentRepository
         )
         {
             var settings = cloudinarySettings.Value;
@@ -25,6 +27,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 new Account(settings.CloudName, settings.ApiKey, settings.ApiSecret)
             );
             _vehicleModelRepository = vehicleModelRepository;
+            _dealerPaymentRepository = dealerPaymentRepository;
         }
 
         public async Task<UploadVehicleModelImageResponseDto?> UploadVehicleModelImageAsync(
@@ -63,8 +66,12 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<bool> DeleteVehicleModelImageAsync(Guid vehicleModelId)
         {
-            var vehicleModel = await _vehicleModelRepository.GetByIdAsync(vehicleModelId);
-            if (vehicleModel == null || string.IsNullOrEmpty(vehicleModel.ImagePublicId))
+            var vehicleModel =
+                await _vehicleModelRepository.GetByIdAsync(vehicleModelId)
+                ?? throw new KeyNotFoundException(
+                    $"VehicleModel with ID {vehicleModelId} does not exist."
+                );
+            if (string.IsNullOrEmpty(vehicleModel.ImagePublicId))
                 return false;
             var deletionParams = new DeletionParams(vehicleModel.ImagePublicId)
             {
@@ -83,11 +90,18 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return false;
         }
 
-        public async Task<string?> UploadDealerPaymentDocumentAsync(IFormFile document)
+        public async Task<UploadDealerPaymentDocumentResponseDto?> UploadDealerPaymentDocumentAsync(
+            Guid dealerPaymentId,
+            IFormFile document
+        )
         {
             if (document == null || document.Length == 0)
                 return null;
             if (!document.ContentType.Equals("application/pdf", StringComparison.OrdinalIgnoreCase))
+                return null;
+
+            var dealerPayment = await _dealerPaymentRepository.GetByIdAsync(dealerPaymentId);
+            if (dealerPayment == null)
                 return null;
 
             await using var stream = document.OpenReadStream();
@@ -105,19 +119,42 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
                 return null;
 
-            return uploadResult.SecureUrl.ToString();
+            dealerPayment.DocumentUrl = uploadResult.SecureUrl?.ToString();
+            dealerPayment.DocumentPublicId = uploadResult.PublicId;
+            _dealerPaymentRepository.Update(dealerPayment);
+            await _dealerPaymentRepository.SaveChangesAsync();
+
+            return new UploadDealerPaymentDocumentResponseDto
+            {
+                DocumentUrl = dealerPayment.DocumentUrl,
+                PublicDocumentId = dealerPayment.DocumentPublicId,
+            };
         }
 
-        public async Task<bool> DeleteDealerPaymentDocumentAsync(string publicId)
+        public async Task<bool> DeleteDealerPaymentDocumentAsync(Guid dealerPaymentId)
         {
-            var deletionParams = new DeletionParams(publicId)
+            var dealerPayment =
+                await _dealerPaymentRepository.GetByIdAsync(dealerPaymentId)
+                ?? throw new KeyNotFoundException(
+                    $"DealerPayment with ID {dealerPaymentId} does not exist."
+                );
+            if (string.IsNullOrEmpty(dealerPayment.DocumentPublicId))
+                return false;
+            var deletionParams = new DeletionParams(dealerPayment.DocumentPublicId)
             {
                 ResourceType = ResourceType.Raw,
                 Type = "upload",
             };
-
             var result = await _cloudinary.DestroyAsync(deletionParams);
-            return result.Result == "ok";
+            if (result.Result == "ok")
+            {
+                dealerPayment.DocumentUrl = null;
+                dealerPayment.DocumentPublicId = null;
+                _dealerPaymentRepository.Update(dealerPayment);
+                await _dealerPaymentRepository.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

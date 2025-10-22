@@ -7,7 +7,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
     {
         Task<UploadVehicleModelImageResponseDto?> UploadVehicleModelImageAsync(IFormFile image);
         Task<bool> DeleteVehicleModelImageAsync(Guid vehicleModelId);
-        Task<string?> UploadDealerPaymentDocumentAsync(IFormFile document);
-        Task<bool> DeleteDealerPaymentDocumentAsync(string documentUrl);
+        Task<UploadDealerPaymentDocumentResponseDto?> UploadDealerPaymentDocumentAsync(
+            Guid dealerPaymentId,
+            IFormFile document
+        );
+        Task<bool> DeleteDealerPaymentDocumentAsync(Guid dealerPaymentId);
     }
 }

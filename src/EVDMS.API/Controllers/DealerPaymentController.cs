@@ -159,8 +159,9 @@ namespace EVDMS.API.Controllers
             }
         }
 
-        [HttpPost("upload-document")]
+        [HttpPost("{id}/upload-document")]
         public async Task<IActionResult> UploadDocument(
+            Guid id,
             [FromForm] UploadDealerPaymentDocumentDto dto
         )
         {
@@ -171,31 +172,36 @@ namespace EVDMS.API.Controllers
             if (!document.ContentType.ToLower().Equals("application/pdf"))
                 return BadRequest(new ApiResponse<string>("Only PDF files are allowed."));
 
-            var documentUrl = await _cloudinaryService.UploadDealerPaymentDocumentAsync(document);
-            if (string.IsNullOrEmpty(documentUrl))
+            var uploadResult = await _cloudinaryService.UploadDealerPaymentDocumentAsync(
+                id,
+                document
+            );
+            if (uploadResult == null || string.IsNullOrEmpty(uploadResult.DocumentUrl))
                 return StatusCode(500, new ApiResponse<string>("Document upload failed."));
-            var responseDto = new UploadDealerPaymentDocumentResponseDto
-            {
-                DocumentUrl = documentUrl,
-            };
             return Ok(
                 new ApiResponse<UploadDealerPaymentDocumentResponseDto>(
-                    responseDto,
+                    uploadResult,
                     "Document uploaded successfully"
                 )
             );
         }
 
-        [HttpDelete("delete-document")]
-        public async Task<IActionResult> DeleteDocument([FromQuery] string documentUrl)
+        [HttpDelete("{id}/delete-document")]
+        public async Task<IActionResult> DeleteDocument(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(documentUrl))
-                return BadRequest(new ApiResponse<string>("No documentUrl provided."));
-
-            var success = await _cloudinaryService.DeleteDealerPaymentDocumentAsync(documentUrl);
-            if (!success)
-                return StatusCode(500, new ApiResponse<string>("Document deletion failed."));
-            return Ok(new ApiResponse<string>(null, "Document deleted successfully"));
+            try
+            {
+                var success = await _cloudinaryService.DeleteDealerPaymentDocumentAsync(id);
+                if (!success)
+                    return NotFound(
+                        new ApiResponse<string>("No document to delete for this dealer payment.")
+                    );
+                return Ok(new ApiResponse<string>(null, "Document deleted successfully"));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
         }
     }
 }

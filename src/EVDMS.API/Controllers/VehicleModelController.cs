@@ -140,11 +140,19 @@ namespace EVDMS.API.Controllers
         {
             if (id == Guid.Empty)
                 return BadRequest(new ApiResponse<string>("No vehicle model id provided."));
-
-            var success = await _cloudinaryService.DeleteVehicleModelImageAsync(id);
-            if (!success)
-                return StatusCode(500, new ApiResponse<string>("Image deletion failed."));
-            return Ok(new ApiResponse<string>(null, "Image deleted successfully"));
+            try
+            {
+                var success = await _cloudinaryService.DeleteVehicleModelImageAsync(id);
+                if (!success)
+                    return NotFound(
+                        new ApiResponse<string>("No image to delete for this vehicle model.")
+                    );
+                return Ok(new ApiResponse<string>(null, "Image deleted successfully"));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
         }
     }
 }
