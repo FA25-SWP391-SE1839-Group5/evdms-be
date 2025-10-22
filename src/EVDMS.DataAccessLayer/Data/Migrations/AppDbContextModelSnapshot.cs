@@ -634,20 +634,20 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("a0000000-0000-0000-0000-000000000001"),
-                            Amount = 500000m,
+                            Amount = 46630m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Method = "BankTransfer",
+                            Method = "Upfront",
                             SalesOrderId = new Guid("90000000-0000-0000-0000-000000000001"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("a0000000-0000-0000-0000-000000000002"),
-                            Amount = 750000m,
+                            Amount = 10000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Method = "Cash",
+                            Method = "Installment",
                             SalesOrderId = new Guid("90000000-0000-0000-0000-000000000002"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });

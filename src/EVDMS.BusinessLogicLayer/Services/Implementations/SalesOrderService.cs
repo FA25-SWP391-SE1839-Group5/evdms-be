@@ -22,17 +22,20 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
     {
         private readonly IQuotationRepository _quotationRepository;
         private readonly IVehicleRepository _vehicleRepository;
+        private readonly IPaymentRepository _paymentRepository;
 
         public SalesOrderService(
             ISalesOrderRepository salesOrderRepository,
             IQuotationRepository quotationRepository,
             IVehicleRepository vehicleRepository,
+            IPaymentRepository paymentRepository,
             IMapper mapper
         )
             : base(salesOrderRepository, mapper)
         {
             _quotationRepository = quotationRepository;
             _vehicleRepository = vehicleRepository;
+            _paymentRepository = paymentRepository;
         }
 
         public async Task<SalesOrderDto> CreateAsync(CreateSalesOrderDto dto, Guid userId)
@@ -78,6 +81,59 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _repository.SaveChangesAsync();
 
             return _mapper.Map<SalesOrderDto>(salesOrder);
+        }
+
+        public async Task DeliverAsync(Guid salesOrderId)
+        {
+            var salesOrder =
+                await _repository.GetByIdAsync(salesOrderId)
+                ?? throw new KeyNotFoundException(
+                    $"SalesOrder with ID {salesOrderId} does not exist."
+                );
+
+            if (salesOrder.Status == SalesOrderStatus.Delivered)
+                throw new InvalidOperationException("SalesOrder is already delivered.");
+
+            var vehicle =
+                await _vehicleRepository.GetByIdAsync(salesOrder.VehicleId)
+                ?? throw new KeyNotFoundException(
+                    $"Vehicle with ID {salesOrder.VehicleId} does not exist."
+                );
+
+            salesOrder.Status = SalesOrderStatus.Delivered;
+            _repository.Update(salesOrder);
+
+            vehicle.Status = VehicleStatus.Sold;
+            _vehicleRepository.Update(vehicle);
+
+            await _repository.SaveChangesAsync();
+            await _vehicleRepository.SaveChangesAsync();
+        }
+
+        public async Task<SalesOrderSummaryDto> GetSummaryAsync(Guid salesOrderId)
+        {
+            var salesOrder =
+                await _repository.GetByIdAsync(salesOrderId)
+                ?? throw new KeyNotFoundException("SalesOrder not found");
+
+            var quotation =
+                await _quotationRepository.GetByIdAsync(salesOrder.QuotationId)
+                ?? throw new KeyNotFoundException("Quotation not found");
+
+            var payments = await _paymentRepository.FindAsync(p => p.SalesOrderId == salesOrderId);
+            decimal paidAmount = payments.Sum(p => p.Amount);
+            decimal totalAmount = quotation.TotalAmount;
+            decimal outstandingBalance = totalAmount - paidAmount;
+            bool isFullyPaid = outstandingBalance <= 0;
+
+            return new SalesOrderSummaryDto
+            {
+                SalesOrderId = salesOrderId,
+                TotalAmount = totalAmount,
+                PaidAmount = paidAmount,
+                OutstandingBalance = outstandingBalance,
+                IsFullyPaid = isFullyPaid,
+            };
         }
     }
 }

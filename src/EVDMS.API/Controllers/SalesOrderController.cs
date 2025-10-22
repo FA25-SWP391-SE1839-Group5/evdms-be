@@ -1,8 +1,12 @@
+using System.Linq;
 using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using EVDMS.Common.Utils;
+using EVDMS.DataAccessLayer.Entities;
+using EVDMS.DataAccessLayer.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -113,6 +117,51 @@ namespace EVDMS.API.Controllers
             if (!success)
                 return NotFound(new ApiResponse<string>("SalesOrder not found"));
             return Ok(new ApiResponse<string>(null, "SalesOrder deleted successfully"));
+        }
+
+        [HttpPost("{id}/deliver")]
+        public async Task<IActionResult> Deliver(Guid id)
+        {
+            try
+            {
+                await _salesOrderService.DeliverAsync(id);
+                return Ok(
+                    new ApiResponse<string>(
+                        null,
+                        "Sales order delivered and vehicle marked as sold."
+                    )
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+        }
+
+        [HttpGet("{id}/summary")]
+        public async Task<IActionResult> GetSummary(Guid id)
+        {
+            try
+            {
+                var summary = await _salesOrderService.GetSummaryAsync(id);
+                return Ok(new ApiResponse<SalesOrderSummaryDto>(summary));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
     }
 }

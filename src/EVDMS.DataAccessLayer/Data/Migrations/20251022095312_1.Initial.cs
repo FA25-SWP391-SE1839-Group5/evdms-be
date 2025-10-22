@@ -1266,16 +1266,16 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     {
                         new Guid("a0000000-0000-0000-0000-000000000001"),
-                        500000m,
+                        46630m,
                         new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                        "BankTransfer",
+                        "Upfront",
                         new Guid("90000000-0000-0000-0000-000000000001"),
                     },
                     {
                         new Guid("a0000000-0000-0000-0000-000000000002"),
-                        750000m,
+                        10000m,
                         new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                        "Cash",
+                        "Installment",
                         new Guid("90000000-0000-0000-0000-000000000002"),
                     },
                 }

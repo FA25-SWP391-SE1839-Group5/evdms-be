@@ -23,9 +23,6 @@ namespace EVDMS.Common.Dtos
         public required decimal Amount { get; set; }
 
         [Required]
-        public required DateTime Date { get; set; }
-
-        [Required]
         public required PaymentMethod Method { get; set; }
     }
 
