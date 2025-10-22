@@ -2,6 +2,7 @@ using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -56,12 +57,33 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateSalesOrderDto dto)
         {
-            var created = await _salesOrderService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<SalesOrderDto>(created)
-            );
+            var userId = JwtUtils.GetUserIdFromClaims(User);
+            if (userId == null)
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing user ID in token.")
+                );
+
+            try
+            {
+                var created = await _salesOrderService.CreateAsync(dto, userId.Value);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<SalesOrderDto>(created)
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]

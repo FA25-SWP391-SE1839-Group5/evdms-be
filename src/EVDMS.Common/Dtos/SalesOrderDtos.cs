@@ -21,24 +21,6 @@ namespace EVDMS.Common.Dtos
     {
         [Required]
         public required Guid QuotationId { get; set; }
-
-        [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
-        public required Guid UserId { get; set; }
-
-        [Required]
-        public required Guid CustomerId { get; set; }
-
-        [Required]
-        public required Guid VehicleId { get; set; }
-
-        [Required]
-        public required DateTime Date { get; set; }
-
-        [Required]
-        public required SalesOrderStatus Status { get; set; }
     }
 
     public class UpdateSalesOrderDto
