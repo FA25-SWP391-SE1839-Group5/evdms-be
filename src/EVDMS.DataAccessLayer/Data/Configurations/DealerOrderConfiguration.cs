@@ -11,6 +11,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         {
             builder.ConfigureTimestamps();
 
+            builder.Property(d => d.Color).HasConversion<string>();
             builder.Property(d => d.Status).HasConversion<string>();
 
             builder

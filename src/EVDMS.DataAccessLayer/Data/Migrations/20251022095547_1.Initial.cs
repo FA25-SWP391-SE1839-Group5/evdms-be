@@ -369,7 +369,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     dealer_id = table.Column<Guid>(type: "uuid", nullable: false),
                     variant_id = table.Column<Guid>(type: "uuid", nullable: false),
                     quantity = table.Column<int>(type: "integer", nullable: false),
-                    color = table.Column<int>(type: "integer", nullable: false),
+                    color = table.Column<string>(type: "text", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(
                         type: "timestamp with time zone",
@@ -442,7 +442,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     user_id = table.Column<Guid>(type: "uuid", nullable: false),
                     customer_id = table.Column<Guid>(type: "uuid", nullable: false),
                     variant_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    color = table.Column<int>(type: "integer", nullable: false),
+                    color = table.Column<string>(type: "text", nullable: false),
                     total_amount = table.Column<decimal>(type: "numeric", nullable: false),
                     status = table.Column<string>(type: "text", nullable: false),
                     created_at = table.Column<DateTime>(
@@ -1027,7 +1027,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     {
                         new Guid("40000000-0000-0000-0000-000000000001"),
-                        3,
+                        "White",
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         5,
                         "Pending",
@@ -1035,7 +1035,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     },
                     {
                         new Guid("40000000-0000-0000-0000-000000000002"),
-                        2,
+                        "Black",
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         2,
                         "Confirmed",
@@ -1043,7 +1043,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     },
                     {
                         new Guid("40000000-0000-0000-0000-000000000003"),
-                        0,
+                        "Red",
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         1,
                         "Delivered",
@@ -1092,7 +1092,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     {
                         new Guid("70000000-0000-0000-0000-000000000001"),
-                        3,
+                        "White",
                         new Guid("10000000-0000-0000-0000-000000000001"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         "Sent",
@@ -1102,7 +1102,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     },
                     {
                         new Guid("70000000-0000-0000-0000-000000000002"),
-                        2,
+                        "Black",
                         new Guid("10000000-0000-0000-0000-000000000002"),
                         new Guid("30000000-0000-0000-0000-000000000001"),
                         "Approved",

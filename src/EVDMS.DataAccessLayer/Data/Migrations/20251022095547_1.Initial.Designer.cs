@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251022095312_1.Initial")]
+    [Migration("20251022095547_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -293,8 +293,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("Color")
-                        .HasColumnType("integer")
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAt")
@@ -341,7 +342,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("40000000-0000-0000-0000-000000000001"),
-                            Color = 3,
+                            Color = "White",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Quantity = 5,
@@ -352,7 +353,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("40000000-0000-0000-0000-000000000002"),
-                            Color = 2,
+                            Color = "Black",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Quantity = 2,
@@ -363,7 +364,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("40000000-0000-0000-0000-000000000003"),
-                            Color = 0,
+                            Color = "Red",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Quantity = 1,
@@ -742,8 +743,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("Color")
-                        .HasColumnType("integer")
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAt")
@@ -804,7 +806,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000001"),
-                            Color = 3,
+                            Color = "White",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
@@ -817,7 +819,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000002"),
-                            Color = 2,
+                            Color = "Black",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
