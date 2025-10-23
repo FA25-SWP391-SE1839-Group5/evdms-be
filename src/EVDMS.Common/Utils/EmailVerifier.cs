@@ -20,22 +20,25 @@ namespace EVDMS.Common.Utils
             }
         }
 
-        public static async Task<bool> DomainHasMailServerAsync(string email)
+        public static async Task<bool> DomainHasMailServerAsync(string email, int timeoutMs = 2000)
         {
             try
             {
                 var domain = email.Split('@').Last();
-                var result = await _lookup.QueryAsync(domain, QueryType.MX);
-                if (result.Answers.MxRecords().Any())
+                var mxTask = _lookup.QueryAsync(domain, QueryType.MX);
+                var mxCompleted = await Task.WhenAny(mxTask, Task.Delay(timeoutMs));
+                if (mxCompleted == mxTask && mxTask.Result.Answers.MxRecords().Any())
                     return true;
 
                 // fallback to A/AAAA records
-                var aResult = await _lookup.QueryAsync(domain, QueryType.A);
-                if (aResult.Answers.ARecords().Any())
+                var aTask = _lookup.QueryAsync(domain, QueryType.A);
+                var aCompleted = await Task.WhenAny(aTask, Task.Delay(timeoutMs));
+                if (aCompleted == aTask && aTask.Result.Answers.ARecords().Any())
                     return true;
 
-                var aaaaResult = await _lookup.QueryAsync(domain, QueryType.AAAA);
-                if (aaaaResult.Answers.AaaaRecords().Any())
+                var aaaaTask = _lookup.QueryAsync(domain, QueryType.AAAA);
+                var aaaaCompleted = await Task.WhenAny(aaaaTask, Task.Delay(timeoutMs));
+                if (aaaaCompleted == aaaaTask && aaaaTask.Result.Answers.AaaaRecords().Any())
                     return true;
 
                 return false;
