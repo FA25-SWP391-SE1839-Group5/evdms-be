@@ -19,15 +19,6 @@ namespace EVDMS.DataAccessLayer.Entities
         public Vehicle Vehicle { get; set; } = null!;
         public ICollection<Payment> Payments { get; set; } = [];
 
-        public static readonly string[] SearchableColumns =
-        [
-            "QuotationId",
-            "DealerId",
-            "UserId",
-            "CustomerId",
-            "VehicleId",
-            "Date",
-            "Status",
-        ];
+        public static readonly string[] SearchableColumns = ["Date", "Status"];
     }
 }

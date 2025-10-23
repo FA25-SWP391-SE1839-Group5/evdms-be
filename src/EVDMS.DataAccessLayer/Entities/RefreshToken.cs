@@ -9,12 +9,6 @@
 
         public User User { get; set; } = null!;
 
-        public static readonly string[] SearchableColumns =
-        [
-            "UserId",
-            "TokenHash",
-            "ExpiresAt",
-            "IsRevoked",
-        ];
+        public static readonly string[] SearchableColumns = ["TokenHash", "ExpiresAt", "IsRevoked"];
     }
 }
