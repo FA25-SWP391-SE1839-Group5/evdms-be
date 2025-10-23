@@ -26,6 +26,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IVehicleVariantRepository _vehicleVariantRepository;
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IVehicleModelRepository _vehicleModelRepository;
+        private readonly IAuditLogService _auditLogService;
 
         private static DateTime Now => DateTime.UtcNow;
 
@@ -35,7 +36,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             IVehicleVariantRepository vehicleVariantRepository,
             IVehicleRepository vehicleRepository,
             IVehicleModelRepository vehicleModelRepository,
-            IMapper mapper
+            IMapper mapper,
+            IAuditLogService auditLogService
         )
             : base(dealerOrderRepository, mapper)
         {
@@ -44,6 +46,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _vehicleVariantRepository = vehicleVariantRepository;
             _vehicleRepository = vehicleRepository;
             _vehicleModelRepository = vehicleModelRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<DealerOrderDto> CreateAsync(Guid dealerId, CreateDealerOrderDto dto)
@@ -69,6 +72,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             entity.Status = DealerOrderStatus.Pending;
             await _dealerOrderRepository.AddAsync(entity);
             await _dealerOrderRepository.SaveChangesAsync();
+
+            // Log CreateDealerOrder event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = dealerId,
+                    Action = AuditLogAction.CreateDealerOrder,
+                    Description = $"Dealer order {entity.Id} created for dealer {dealerId}.",
+                }
+            );
+
             return _mapper.Map<DealerOrderDto>(entity);
         }
 
@@ -156,6 +170,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             order.Status = DealerOrderStatus.Delivered;
             _dealerOrderRepository.Update(order);
             await _dealerOrderRepository.SaveChangesAsync();
+
+            // Log DeliverSalesOrder event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = order.DealerId,
+                    Action = AuditLogAction.DeliverSalesOrder,
+                    Description = $"Dealer order {order.Id} delivered for dealer {order.DealerId}.",
+                }
+            );
         }
     }
 }

@@ -23,19 +23,22 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IQuotationRepository _quotationRepository;
         private readonly IVehicleRepository _vehicleRepository;
         private readonly IPaymentRepository _paymentRepository;
+        private readonly IAuditLogService _auditLogService;
 
         public SalesOrderService(
             ISalesOrderRepository salesOrderRepository,
             IQuotationRepository quotationRepository,
             IVehicleRepository vehicleRepository,
             IPaymentRepository paymentRepository,
-            IMapper mapper
+            IMapper mapper,
+            IAuditLogService auditLogService
         )
             : base(salesOrderRepository, mapper)
         {
             _quotationRepository = quotationRepository;
             _vehicleRepository = vehicleRepository;
             _paymentRepository = paymentRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<SalesOrderDto> CreateAsync(CreateSalesOrderDto dto, Guid userId)
@@ -80,6 +83,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _repository.AddAsync(salesOrder);
             await _repository.SaveChangesAsync();
 
+            // Log CreateSalesOrder event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = userId,
+                    Action = AuditLogAction.CreateSalesOrder,
+                    Description = $"Sales order {salesOrder.Id} created by user {userId}.",
+                }
+            );
+
             return _mapper.Map<SalesOrderDto>(salesOrder);
         }
 
@@ -108,6 +121,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             await _repository.SaveChangesAsync();
             await _vehicleRepository.SaveChangesAsync();
+
+            // Log DeliverSalesOrder event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = salesOrder.UserId,
+                    Action = AuditLogAction.DeliverSalesOrder,
+                    Description =
+                        $"Sales order {salesOrder.Id} delivered by user {salesOrder.UserId}.",
+                }
+            );
         }
 
         public async Task<SalesOrderSummaryDto> GetSummaryAsync(Guid salesOrderId)

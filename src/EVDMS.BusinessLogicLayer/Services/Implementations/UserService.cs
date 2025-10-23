@@ -17,18 +17,21 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IDealerRepository _dealerRepository;
         private readonly IEmailService _emailService;
+        private readonly IAuditLogService _auditLogService;
 
         public UserService(
             IUserRepository userRepository,
             IDealerRepository dealerRepository,
             IMapper mapper,
-            IEmailService emailService
+            IEmailService emailService,
+            IAuditLogService auditLogService
         )
             : base(userRepository, mapper)
         {
             _userRepository = userRepository;
             _dealerRepository = dealerRepository;
             _emailService = emailService;
+            _auditLogService = auditLogService;
         }
 
         public async Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole)
@@ -85,6 +88,16 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
 
+            // Log account creation
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.AccountCreation,
+                    Description = $"User {user.Email} account created.",
+                }
+            );
+
             var subject = "Your Account Has Been Created";
             var templatePath = Path.Combine(
                 AppContext.BaseDirectory,
@@ -134,6 +147,26 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (user == null)
                 return null;
             return _mapper.Map<UserDto>(user);
+        }
+
+        public override async Task<bool> DeleteAsync(Guid id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return false;
+            await base.DeleteAsync(id);
+
+            // Log account deletion
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.AccountDeletion,
+                    Description = $"User {user.Email} account deleted.",
+                }
+            );
+
+            return true;
         }
     }
 }

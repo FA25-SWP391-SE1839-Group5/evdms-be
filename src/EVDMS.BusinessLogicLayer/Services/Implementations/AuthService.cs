@@ -2,6 +2,7 @@ using System.IO;
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using EVDMS.Common.Settings;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
@@ -20,6 +21,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly IAuditLogService _auditLogService;
 
         public AuthService(
             IUserRepository userRepository,
@@ -28,7 +30,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             IOptions<JwtSettings> jwtOptions,
             IRefreshTokenRepository refreshTokenRepository,
             IEmailService emailService,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IAuditLogService auditLogService
         )
         {
             _userRepository = userRepository;
@@ -38,6 +41,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _refreshTokenRepository = refreshTokenRepository;
             _emailService = emailService;
             _configuration = configuration;
+            _auditLogService = auditLogService;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto)
@@ -69,6 +73,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _refreshTokenRepository.AddAsync(refreshTokenEntity);
             await _refreshTokenRepository.SaveChangesAsync();
             response.RefreshToken = refreshToken;
+
+            // Log the login event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.Login,
+                    Description = $"User {user.Email} logged in.",
+                }
+            );
+
             return response;
         }
 
@@ -115,6 +130,20 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (storedToken == null || storedToken.IsRevoked)
                 return false;
             await _refreshTokenRepository.RevokeAsync(refreshTokenHash);
+
+            // Log the logout event
+            if (storedToken.User != null)
+            {
+                await _auditLogService.CreateAsync(
+                    new CreateAuditLogDto
+                    {
+                        UserId = storedToken.User.Id,
+                        Action = AuditLogAction.Logout,
+                        Description = $"User {storedToken.User.Email} logged out.",
+                    }
+                );
+            }
+
             return true;
         }
 
@@ -183,6 +212,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             user.PasswordResetTokenExpiresAt = null;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
+
+            // Log the password reset event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.PasswordReset,
+                    Description = $"User {user.Email} reset their password.",
+                }
+            );
+
             return true;
         }
     }

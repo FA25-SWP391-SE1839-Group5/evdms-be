@@ -21,6 +21,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly ICustomerRepository _customerRepository;
         private readonly IVehicleVariantRepository _vehicleVariantRepository;
         private readonly IPromotionRepository _promotionRepository;
+        private readonly IAuditLogService _auditLogService;
         private static DateTime Now => DateTime.UtcNow;
 
         public QuotationService(
@@ -28,13 +29,15 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             ICustomerRepository customerRepository,
             IVehicleVariantRepository vehicleVariantRepository,
             IPromotionRepository promotionRepository,
-            IMapper mapper
+            IMapper mapper,
+            IAuditLogService auditLogService
         )
             : base(quotationRepository, mapper)
         {
             _customerRepository = customerRepository;
             _vehicleVariantRepository = vehicleVariantRepository;
             _promotionRepository = promotionRepository;
+            _auditLogService = auditLogService;
         }
 
         public async Task<QuotationDto> CreateAsync(
@@ -74,6 +77,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             await _repository.AddAsync(quotation);
             await _repository.SaveChangesAsync();
+
+            // Log CreateQuotation event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = userId,
+                    Action = AuditLogAction.CreateQuotation,
+                    Description = $"Quotation {quotation.Id} created by user {userId}.",
+                }
+            );
+
             return _mapper.Map<QuotationDto>(quotation);
         }
     }
