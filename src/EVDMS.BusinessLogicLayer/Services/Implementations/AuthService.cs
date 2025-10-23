@@ -1,4 +1,3 @@
-using System.IO;
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;

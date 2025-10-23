@@ -1,10 +1,8 @@
 using System.Text.Json;
 using EVDMS.API.Middlewares;
-using EVDMS.BusinessLogicLayer.Services.Implementations;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
 using EVDMS.Common.Utils;
-using EVDMS.DataAccessLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers

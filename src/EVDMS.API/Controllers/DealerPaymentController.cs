@@ -2,9 +2,7 @@ using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
-using EVDMS.Common.Enums;
 using EVDMS.DataAccessLayer.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
