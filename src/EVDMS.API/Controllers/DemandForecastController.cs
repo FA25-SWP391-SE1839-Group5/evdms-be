@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EVDMS.API.Controllers
 {
     [ApiController]
-    [Route("api/forcast")]
+    [Route("api/forecast")]
     public class DemandForecastController : ControllerBase
     {
         private readonly IDemandForecastService _demandForecastService;
