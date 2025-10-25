@@ -45,7 +45,7 @@ namespace EVDMS.API.Controllers
                     modelInfo = new
                     {
                         version = forecast.ModelInfo.Version,
-                        trainedOn = forecast.ModelInfo.TrainedOn.ToString("yyyy-MM-dd"),
+                        trainedOn = forecast.ModelInfo.TrainedOn.ToString("o"),
                         algorithm = forecast.ModelInfo.Algorithm,
                     },
                 }

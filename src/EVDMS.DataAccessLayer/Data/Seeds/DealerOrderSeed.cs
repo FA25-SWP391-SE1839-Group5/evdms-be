@@ -25,32 +25,45 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 var colors = (VehicleColor[])Enum.GetValues(typeof(VehicleColor));
                 var orders = new List<DealerOrder>();
                 var rand = new Random(42);
-                var startDate = DateTime.UtcNow.AddYears(-2);
+                var startDate = DateTime.UtcNow.AddYears(-4);
                 int orderId = 1;
-                for (int i = 0; i < 500; i++)
+                int totalDays = 1460; // 4 years
+
+                for (int i = 0; i < totalDays; i++)
                 {
-                    var dealer = dealers[rand.Next(dealers.Length)];
-                    var variant = variants[rand.Next(variants.Length)];
-                    var color = colors[rand.Next(colors.Length)];
-                    var quantity = rand.Next(1, 200);
-                    var daysOffset = rand.Next(0, 730);
-                    var secondsOffset = rand.Next(0, 86400);
-                    var createdAt = startDate.AddDays(daysOffset).AddSeconds(secondsOffset);
-                    orders.Add(
-                        new DealerOrder
-                        {
-                            Id = Guid.Parse(
-                                $"40000000-0000-0000-0000-{orderId.ToString().PadLeft(12, '0')}"
-                            ),
-                            DealerId = dealer,
-                            VariantId = variant,
-                            Quantity = quantity,
-                            Color = color,
-                            Status = DealerOrderStatus.Delivered,
-                            CreatedAt = createdAt,
-                        }
-                    );
-                    orderId++;
+                    foreach (var variant in variants)
+                    {
+                        // Simulate a trend (e.g., demand increases over time)
+                        double trend = 10 + (i * 0.01);
+
+                        // Simulate seasonality (e.g., yearly cycle)
+                        double seasonality = 10 * Math.Sin(2 * Math.PI * i / 365);
+
+                        // Add some random noise
+                        double noise = rand.NextDouble() * 4 - 2; // -2 to +2
+
+                        int quantity = (int)Math.Max(1, Math.Round(trend + seasonality + noise));
+
+                        var dealer = dealers[rand.Next(dealers.Length)];
+                        var color = colors[rand.Next(colors.Length)];
+                        var createdAt = startDate.AddDays(i).AddSeconds(rand.Next(0, 86400));
+
+                        orders.Add(
+                            new DealerOrder
+                            {
+                                Id = Guid.Parse(
+                                    $"40000000-0000-0000-0000-{orderId.ToString().PadLeft(12, '0')}"
+                                ),
+                                DealerId = dealer,
+                                VariantId = variant,
+                                Quantity = quantity,
+                                Color = color,
+                                Status = DealerOrderStatus.Delivered,
+                                CreatedAt = createdAt,
+                            }
+                        );
+                        orderId++;
+                    }
                 }
                 return orders;
             }
