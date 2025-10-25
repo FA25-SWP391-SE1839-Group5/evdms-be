@@ -177,5 +177,111 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 }
             );
         }
+
+        public async Task<PaginatedResult<VariantOrderRateDto>> GetDeliveredOrdersByVariantAsync(
+            int page = 1,
+            int pageSize = 10,
+            string? sortBy = null,
+            string? sortOrder = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var deliveredOrders = await _dealerOrderRepository.FindAsync(o =>
+                o.Status == DealerOrderStatus.Delivered
+                && (!startDate.HasValue || o.UpdatedAt >= startDate.Value)
+                && (!endDate.HasValue || o.UpdatedAt <= endDate.Value)
+            );
+            var totalQuantity = deliveredOrders.Sum(o => o.Quantity);
+            if (totalQuantity == 0)
+                return new PaginatedResult<VariantOrderRateDto>
+                {
+                    Items = [],
+                    TotalResults = 0,
+                    Page = page,
+                    PageSize = pageSize,
+                };
+
+            // Group by VariantId
+            var grouped = deliveredOrders.GroupBy(o => o.VariantId).ToList();
+
+            // Load variant names
+            var variantIds = grouped.Select(g => g.Key).ToList();
+            var variants = (
+                await _vehicleVariantRepository.FindAsync(v => variantIds.Contains(v.Id))
+            ).ToDictionary(v => v.Id, v => v.Name);
+
+            var result = grouped
+                .Select(g =>
+                {
+                    var firstOrder = g.First();
+                    var dto = _mapper.Map<VariantOrderRateDto>(firstOrder);
+                    dto.OrderCount = g.Sum(o => o.Quantity);
+                    dto.Percentage = Math.Round((double)dto.OrderCount / totalQuantity * 100, 2);
+                    dto.VariantName = variants.TryGetValue(g.Key, out var name)
+                        ? name
+                        : string.Empty;
+                    return dto;
+                })
+                .ToList();
+
+            // Sorting
+            sortBy = sortBy?.ToLowerInvariant();
+            sortOrder = sortOrder?.ToLowerInvariant() ?? "asc";
+            result = sortBy switch
+            {
+                "ordercount" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.OrderCount)]
+                    : [.. result.OrderBy(x => x.OrderCount)],
+                "percentage" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.Percentage)]
+                    : [.. result.OrderBy(x => x.Percentage)],
+                "variantname" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.VariantName)]
+                    : [.. result.OrderBy(x => x.VariantName)],
+                _ => [.. result.OrderBy(x => x.VariantName)],
+            };
+
+            // Pagination
+            var totalResults = result.Count;
+            var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PaginatedResult<VariantOrderRateDto>
+            {
+                Items = paged,
+                TotalResults = totalResults,
+                Page = page,
+                PageSize = pageSize,
+            };
+        }
+
+        public async Task<CsvExportResult> ExportDeliveredOrdersByVariantToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var result = await GetDeliveredOrdersByVariantAsync(
+                1,
+                int.MaxValue,
+                null,
+                null,
+                startDate,
+                endDate
+            );
+            var csv =
+                "VariantId,VariantName,OrderCount,Percentage\n"
+                + string.Join(
+                    "\n",
+                    result.Items.Select(x =>
+                        $"{x.VariantId},{CsvUtils.EscapeCsv(x.VariantName)},{x.OrderCount},{x.Percentage}"
+                    )
+                );
+            var fileName = CsvUtils.BuildCsvFileName(
+                "evdms_variant_order_rates",
+                startDate,
+                endDate
+            );
+            return new CsvExportResult { FileName = fileName, CsvContent = csv };
+        }
     }
 }

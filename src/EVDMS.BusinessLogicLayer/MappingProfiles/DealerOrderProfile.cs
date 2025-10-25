@@ -22,6 +22,13 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                             && !(srcMember is DateTime dt && dt == default)
                     )
                 );
+
+            CreateMap<DealerOrder, VariantOrderRateDto>()
+                .ForMember(dest => dest.VariantId, opt => opt.MapFrom(src => src.VariantId))
+                .ForMember(
+                    dest => dest.VariantName,
+                    opt => opt.MapFrom(src => src.VehicleVariant.Name)
+                );
         }
     }
 }

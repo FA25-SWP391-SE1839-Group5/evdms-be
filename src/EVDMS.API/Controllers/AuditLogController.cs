@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -94,11 +95,14 @@ namespace EVDMS.API.Controllers
         }
 
         [HttpGet("export")]
-        public async Task<IActionResult> ExportToCsv()
+        public async Task<IActionResult> ExportToCsv(
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
         {
-            var csv = await _auditLogService.ExportToCsvAsync();
-            var bytes = System.Text.Encoding.UTF8.GetBytes(csv);
-            return File(bytes, "text/csv", $"audit_logs_{DateTime.UtcNow:yyyyMMddHHmmss}.csv");
+            var result = await _auditLogService.ExportToCsvAsync(startDate, endDate);
+            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            return File(bytes, "text/csv", result.FileName);
         }
     }
 }

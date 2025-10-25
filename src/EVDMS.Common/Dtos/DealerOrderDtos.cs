@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using EVDMS.Common.Enums;
 
 namespace EVDMS.Common.Dtos
@@ -54,5 +54,13 @@ namespace EVDMS.Common.Dtos
         public int? Quantity { get; set; }
         public VehicleColor? Color { get; set; }
         public DealerOrderStatus? Status { get; set; }
+    }
+
+    public class VariantOrderRateDto
+    {
+        public Guid VariantId { get; set; }
+        public string VariantName { get; set; } = string.Empty;
+        public int OrderCount { get; set; }
+        public double Percentage { get; set; }
     }
 }

@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
     public interface IAuditLogService
         : IBaseService<AuditLogDto, CreateAuditLogDto, UpdateAuditLogDto, PatchAuditLogDto>
     {
-        Task<string> ExportToCsvAsync();
+        Task<CsvExportResult> ExportToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
     }
 }
