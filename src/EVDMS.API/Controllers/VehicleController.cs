@@ -56,12 +56,19 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateVehicleDto dto)
         {
-            var created = await _vehicleService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<VehicleDto>(created)
-            );
+            try
+            {
+                var created = await _vehicleService.CreateAsync(dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<VehicleDto>(created)
+                );
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]

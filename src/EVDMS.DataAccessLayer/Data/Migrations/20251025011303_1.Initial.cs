@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -1133,7 +1134,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Available",
                         "Sale",
                         new Guid("11111111-1111-1111-1111-111111111101"),
-                        "5YJDC63C5XSA000001",
+                        "5YJDC63CXSA000001",
                     },
                     {
                         new Guid("80000000-0000-0000-0000-000000000002"),
@@ -1142,7 +1143,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Reserved",
                         "Display",
                         new Guid("11111111-1111-1111-1111-111111111102"),
-                        "5YJDC5AEAXSA000001",
+                        "5YJDC5AEXSA000001",
                     },
                     {
                         new Guid("80000000-0000-0000-0000-000000000003"),
@@ -1151,7 +1152,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         "Reserved",
                         "Demo",
                         new Guid("22222222-2222-2222-2222-222222222201"),
-                        "5YJDCDA05XSA000001",
+                        "5YJDCDA0XSA000001",
                     },
                 }
             );
@@ -1325,7 +1326,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "ix_oem_inventories_variant_id",
                 table: "oem_inventories",
-                column: "variant_id"
+                column: "variant_id",
+                unique: true
             );
 
             migrationBuilder.CreateIndex(

@@ -11,6 +11,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
         >
     {
         Task<DealerOrderDto> CreateAsync(Guid dealerId, CreateDealerOrderDto dto);
-        Task DeliverOrderAsync(Guid orderId);
+        Task DeliverOrderAsync(Guid orderId, Guid userId);
     }
 }

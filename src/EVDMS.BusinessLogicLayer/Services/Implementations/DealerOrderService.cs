@@ -83,7 +83,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return _mapper.Map<DealerOrderDto>(entity);
         }
 
-        public async Task DeliverOrderAsync(Guid orderId)
+        public async Task DeliverOrderAsync(Guid orderId, Guid userId)
         {
             var order =
                 await _dealerOrderRepository.GetByIdAsync(orderId)
@@ -172,7 +172,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _auditLogService.CreateAsync(
                 new CreateAuditLogDto
                 {
-                    UserId = order.DealerId,
+                    UserId = userId,
                     Action = AuditLogAction.DeliverSalesOrder,
                     Description = $"Dealer order {order.Id} delivered for dealer {order.DealerId}.",
                 }

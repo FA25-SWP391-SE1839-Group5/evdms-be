@@ -3,6 +3,7 @@ using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
 using EVDMS.Common.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -113,11 +114,17 @@ namespace EVDMS.API.Controllers
         }
 
         [HttpPost("{id}/deliver")]
+        [Authorize(Roles = "EvmStaff")]
         public async Task<IActionResult> DeliverOrder(Guid id)
         {
+            var userId = JwtUtils.GetUserIdFromClaims(User);
+            if (userId == null)
+                return Unauthorized(
+                    new ApiResponse<string>("Invalid or missing user ID in token.")
+                );
             try
             {
-                await _dealerOrderService.DeliverOrderAsync(id);
+                await _dealerOrderService.DeliverOrderAsync(id, userId.Value);
                 return Ok(
                     new ApiResponse<string>(
                         null,
@@ -131,7 +138,7 @@ namespace EVDMS.API.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(new ApiResponse<string>(ex.Message));
+                return Conflict(new ApiResponse<string>(ex.Message));
             }
         }
     }
