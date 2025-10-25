@@ -63,9 +63,12 @@ namespace EVDMS.API.Controllers
                     403,
                     new ApiResponse<string>("You are not allowed to create promotions.")
                 );
+
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+
             try
             {
-                var created = await _promotionService.CreateAsync(dto, userRole.Value);
+                var created = await _promotionService.CreateAsync(dto, userRole.Value, dealerId);
                 return CreatedAtAction(
                     nameof(GetById),
                     new { id = created.Id },

@@ -18,11 +18,6 @@ namespace EVDMS.Common.Dtos
 
     public class CreatePromotionDto
     {
-        public Guid? DealerId { get; set; }
-
-        [Required]
-        public required PromotionType Type { get; set; }
-
         [Required]
         [MinLength(1)]
         public required string Description { get; set; }

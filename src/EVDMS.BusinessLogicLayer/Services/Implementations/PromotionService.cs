@@ -31,26 +31,28 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _dealerRepository = dealerRepository;
         }
 
-        public async Task<PromotionDto> CreateAsync(CreatePromotionDto dto, UserRole userRole)
+        public async Task<PromotionDto> CreateAsync(
+            CreatePromotionDto dto,
+            UserRole userRole,
+            Guid? dealerId = null
+        )
         {
+            // Set type based on dealerId
+            var type = dealerId.HasValue ? PromotionType.Dealer : PromotionType.Oem;
+
             // Role-based creation
-            if (dto.Type == PromotionType.Oem && userRole != UserRole.EvmStaff)
+            if (type == PromotionType.Oem && userRole != UserRole.EvmStaff)
                 throw new UnauthorizedAccessException("Only EvmStaff can create Oem promotions.");
-            if (dto.Type == PromotionType.Dealer && userRole != UserRole.DealerManager)
+            if (type == PromotionType.Dealer && userRole != UserRole.DealerManager)
                 throw new UnauthorizedAccessException(
                     "Only DealerManager can create Dealer promotions."
                 );
 
             // DealerId/Type logic
-            if (dto.DealerId.HasValue && dto.Type != PromotionType.Dealer)
-                throw new InvalidOperationException("If DealerId is present, Type must be Dealer.");
-            if (!dto.DealerId.HasValue && dto.Type != PromotionType.Oem)
-                throw new InvalidOperationException("If DealerId is null, Type must be Oem.");
-
-            if (dto.DealerId.HasValue)
+            if (dealerId.HasValue)
             {
                 var dealer =
-                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
+                    await _dealerRepository.GetByIdAsync(dealerId.Value)
                     ?? throw new InvalidOperationException("Dealer not found.");
             }
 
@@ -59,8 +61,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 throw new InvalidOperationException("EndDate must be after StartDate.");
 
             var overlapping = await _promotionRepository.FindAsync(p =>
-                p.Type == dto.Type
-                && (dto.Type != PromotionType.Dealer || p.DealerId == dto.DealerId)
+                p.Type == type
+                && (type != PromotionType.Dealer || p.DealerId == dealerId)
                 && dto.StartDate <= p.EndDate
                 && dto.EndDate >= p.StartDate
             );
@@ -70,6 +72,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 );
 
             var entity = _mapper.Map<Promotion>(dto);
+            entity.DealerId = dealerId;
+            entity.Type = type;
             await _promotionRepository.AddAsync(entity);
             await _promotionRepository.SaveChangesAsync();
             return _mapper.Map<PromotionDto>(entity);
