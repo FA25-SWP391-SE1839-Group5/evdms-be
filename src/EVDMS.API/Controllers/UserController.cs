@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -72,6 +75,22 @@ namespace EVDMS.API.Controllers
                     new { id = created.Id },
                     new ApiResponse<UserDto>(created)
                 );
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
             }
             catch (Exception ex)
             {

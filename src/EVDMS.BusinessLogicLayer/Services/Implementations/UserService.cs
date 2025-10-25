@@ -40,44 +40,52 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             else if (currentUserRole == UserRole.DealerManager)
             {
                 if (dto.Role != UserRole.DealerStaff)
-                    throw new Exception("Dealer managers can only create Dealer Staff users.");
+                    throw new UnauthorizedAccessException(
+                        "Dealer managers can only create Dealer Staff users."
+                    );
             }
             else
             {
-                throw new Exception("You are not allowed to create users.");
+                throw new UnauthorizedAccessException("You are not allowed to create users.");
             }
 
             if (dto.DealerId != null)
             {
-                _ =
-                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
-                    ?? throw new Exception("Dealer not found.");
+                var dealer = await _dealerRepository.GetByIdAsync(dto.DealerId.Value);
+                if (dealer == null)
+                    throw new KeyNotFoundException("Dealer not found.");
                 if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
-                    throw new Exception(
+                    throw new InvalidOperationException(
                         "If DealerId is provided, role must be DealerStaff or DealerManager."
                     );
             }
             else
             {
                 if (dto.Role != UserRole.EvmStaff && dto.Role != UserRole.Admin)
-                    throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
+                    throw new InvalidOperationException(
+                        "If DealerId is null, role must be EvmStaff or Admin."
+                    );
             }
 
             // Basic syntax check and MX/A record verification to reduce fake emails
             if (!EmailVerifier.IsValidFormat(dto.Email))
-                throw new Exception("The provided email address has an invalid format.");
+                throw new ArgumentException("The provided email address has an invalid format.");
 
             var domainIsValid = await EmailVerifier.DomainHasMailServerAsync(dto.Email);
             if (!domainIsValid)
-                throw new Exception(
+                throw new ArgumentException(
                     "The email domain does not appear to accept mail (no MX/A records)."
                 );
 
             if (EmailVerifier.IsDisposableDomain(dto.Email))
-                throw new Exception("Disposable or temporary email addresses are not allowed.");
+                throw new ArgumentException(
+                    "Disposable or temporary email addresses are not allowed."
+                );
 
             if (await _userRepository.ExistsByEmailAsync(dto.Email))
-                throw new Exception($"A user with email '{dto.Email}' already exists.");
+                throw new InvalidOperationException(
+                    $"A user with email '{dto.Email}' already exists."
+                );
 
             var tempPassword = GenerateTemporaryPassword();
             var passwordHash = PasswordHasher.HashPassword(tempPassword);
