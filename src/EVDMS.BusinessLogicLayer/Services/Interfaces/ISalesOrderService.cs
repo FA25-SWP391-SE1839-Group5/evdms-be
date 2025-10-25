@@ -1,4 +1,5 @@
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 
 namespace EVDMS.BusinessLogicLayer.Services.Interfaces
 {
@@ -8,5 +9,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
         Task<SalesOrderDto> CreateAsync(CreateSalesOrderDto dto, Guid userId);
         Task DeliverAsync(Guid salesOrderId);
         Task<SalesOrderSummaryDto> GetSummaryAsync(Guid salesOrderId);
+        Task<PaginatedResult<DealerStaffSalesReportDto>> GetDealerStaffSalesReportAsync(
+            int page = 1,
+            int pageSize = 10,
+            string? sortBy = null,
+            string? sortOrder = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
+        Task<CsvExportResult> ExportDealerStaffSalesReportToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
     }
 }

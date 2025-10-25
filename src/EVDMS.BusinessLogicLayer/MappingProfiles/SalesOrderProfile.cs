@@ -20,6 +20,11 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                             && !(srcMember is DateTime dt && dt == default)
                     )
                 );
+
+            CreateMap<SalesOrder, SalesOrderSummaryDto>();
+            CreateMap<SalesOrder, DealerStaffSalesReportDto>()
+                .ForMember(dest => dest.StaffId, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.StaffName, opt => opt.MapFrom(src => src.User.FullName));
         }
     }
 }

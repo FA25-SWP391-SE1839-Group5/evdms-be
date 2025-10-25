@@ -63,4 +63,21 @@ namespace EVDMS.Common.Dtos
 
         public SalesOrderStatus? Status { get; set; }
     }
+
+    public class SalesOrderSummaryDto
+    {
+        public Guid SalesOrderId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal OutstandingBalance { get; set; }
+        public bool IsFullyPaid { get; set; }
+    }
+
+    public class DealerStaffSalesReportDto
+    {
+        public Guid StaffId { get; set; }
+        public string StaffName { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
 }
