@@ -76,6 +76,18 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                                 var filterValue = Expression.Constant(enumValue);
                                 equals = Expression.Equal(propertyAccess, filterValue);
                             }
+                            else if (
+                                property.PropertyType == typeof(Guid)
+                                || property.PropertyType == typeof(Guid?)
+                            )
+                            {
+                                var guidValue = Guid.Parse(filter.Value);
+                                var filterValue = Expression.Constant(
+                                    guidValue,
+                                    property.PropertyType
+                                );
+                                equals = Expression.Equal(propertyAccess, filterValue);
+                            }
                             else
                             {
                                 var filterValue = Expression.Constant(
