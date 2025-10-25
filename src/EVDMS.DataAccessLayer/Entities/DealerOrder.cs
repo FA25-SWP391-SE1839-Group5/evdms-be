@@ -14,6 +14,13 @@ namespace EVDMS.DataAccessLayer.Entities
         public VehicleVariant VehicleVariant { get; set; } = null!;
         public ICollection<DealerPayment> DealerPayments { get; set; } = [];
 
-        public static readonly string[] SearchableColumns = ["Quantity", "Color", "Status"];
+        public static readonly string[] SearchableColumns =
+        [
+            "DealerId",
+            "VariantId",
+            "Quantity",
+            "Color",
+            "Status",
+        ];
     }
 }

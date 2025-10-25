@@ -48,6 +48,7 @@ namespace EVDMS.DataAccessLayer.Entities
 
         public static readonly string[] SearchableColumns =
         [
+            "ModelId",
             "Name",
             "BasePrice",
             "Specs",
