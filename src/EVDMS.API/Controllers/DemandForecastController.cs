@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,6 +51,20 @@ namespace EVDMS.API.Controllers
                     },
                 }
             );
+        }
+
+        [HttpPost("{variantId}/retrain")]
+        public async Task<IActionResult> RetrainVariantModel(
+            Guid variantId,
+            [FromQuery] int horizon
+        )
+        {
+            var result = await _demandForecastService.RetrainVariantModelAsync(variantId, horizon);
+            if (!result)
+                return BadRequest(
+                    new { message = "Not enough data to retrain model for this variant." }
+                );
+            return Accepted(new { message = "Model retraining started for this variant." });
         }
     }
 }

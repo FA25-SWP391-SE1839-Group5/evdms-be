@@ -25,24 +25,33 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                 var colors = (VehicleColor[])Enum.GetValues(typeof(VehicleColor));
                 var orders = new List<DealerOrder>();
                 var rand = new Random(42);
-                var startDate = DateTime.UtcNow.AddYears(-4);
+                var startDate = DateTime.UtcNow.AddYears(-2);
                 int orderId = 1;
-                int totalDays = 1460; // 4 years
+                int totalDays = 730; // 2 years
 
                 for (int i = 0; i < totalDays; i++)
                 {
                     foreach (var variant in variants)
                     {
                         // Simulate a trend (e.g., demand increases over time)
-                        double trend = 10 + (i * 0.01);
+                        double trend = 10 + (i * 0.05);
 
                         // Simulate seasonality (e.g., yearly cycle)
-                        double seasonality = 10 * Math.Sin(2 * Math.PI * i / 365);
+                        double seasonality = 20 * Math.Sin(2 * Math.PI * i / 365);
 
                         // Add some random noise
-                        double noise = rand.NextDouble() * 4 - 2; // -2 to +2
+                        double noise = rand.NextDouble() * 10 - 5; // -2 to +2
 
-                        int quantity = (int)Math.Max(1, Math.Round(trend + seasonality + noise));
+                        // Add random spikes and dips
+                        double spikeOrDip = 0;
+                        double chance = rand.NextDouble();
+                        if (chance < 0.01) // 1% chance for a spike
+                            spikeOrDip = rand.Next(10, 21); // spike: +10 to +20
+                        else if (chance > 0.99) // 1% chance for a dip
+                            spikeOrDip = -rand.Next(10, 21); // dip: -10 to -20
+
+                        int quantity = (int)
+                            Math.Max(1, Math.Round(trend + seasonality + noise + spikeOrDip));
 
                         var dealer = dealers[rand.Next(dealers.Length)];
                         var color = colors[rand.Next(colors.Length)];
