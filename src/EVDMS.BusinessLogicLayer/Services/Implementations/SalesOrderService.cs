@@ -23,6 +23,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IPaymentRepository _paymentRepository;
         private readonly IAuditLogService _auditLogService;
         private readonly IUserRepository _userRepository;
+        private readonly IDealerRepository _dealerRepository;
 
         public SalesOrderService(
             ISalesOrderRepository salesOrderRepository,
@@ -30,6 +31,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             IVehicleRepository vehicleRepository,
             IPaymentRepository paymentRepository,
             IUserRepository userRepository,
+            IDealerRepository dealerRepository,
             IMapper mapper,
             IAuditLogService auditLogService
         )
@@ -39,6 +41,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _vehicleRepository = vehicleRepository;
             _paymentRepository = paymentRepository;
             _userRepository = userRepository;
+            _dealerRepository = dealerRepository;
             _auditLogService = auditLogService;
         }
 
@@ -254,6 +257,109 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 );
             var fileName = CsvUtils.BuildCsvFileName(
                 "evdms_dealer_staff_sales_report",
+                startDate,
+                endDate
+            );
+            return new CsvExportResult { FileName = fileName, CsvContent = csv };
+        }
+
+        public async Task<
+            PaginatedResult<DealerTotalSalesReportDto>
+        > GetDealerTotalSalesReportAsync(
+            int page = 1,
+            int pageSize = 10,
+            string? sortBy = null,
+            string? sortOrder = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var orders = await _repository.FindAsync(o =>
+                (o.Status == SalesOrderStatus.Confirmed || o.Status == SalesOrderStatus.Delivered)
+                && (!startDate.HasValue || o.Date >= startDate.Value)
+                && (!endDate.HasValue || o.Date <= endDate.Value)
+            );
+
+            var grouped = orders.GroupBy(o => o.DealerId).ToList();
+            var dealerIds = grouped.Select(g => g.Key).ToList();
+
+            var dealers = await _dealerRepository.FindAsync(d => dealerIds.Contains(d.Id));
+            var dealerNames = dealers.ToDictionary(d => d.Id, d => d.Name);
+
+            var result = grouped
+                .Select(g =>
+                {
+                    var firstOrder = g.First();
+                    var dto = _mapper.Map<DealerTotalSalesReportDto>(firstOrder);
+                    dto.DealerId = g.Key;
+                    dto.DealerName = dealerNames.TryGetValue(g.Key, out var name)
+                        ? name
+                        : string.Empty;
+                    dto.Region = dealers.FirstOrDefault(d => d.Id == g.Key)?.Region ?? string.Empty;
+                    dto.TotalOrders = g.Count();
+                    dto.TotalAmount = g.Sum(o =>
+                    {
+                        var quotation = _quotationRepository.GetByIdAsync(o.QuotationId).Result;
+                        return quotation?.TotalAmount ?? 0;
+                    });
+                    return dto;
+                })
+                .ToList();
+
+            sortBy = sortBy?.ToLowerInvariant();
+            sortOrder = sortOrder?.ToLowerInvariant() ?? "asc";
+            result = sortBy switch
+            {
+                "totalorders" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.TotalOrders)]
+                    : [.. result.OrderBy(x => x.TotalOrders)],
+                "totalamount" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.TotalAmount)]
+                    : [.. result.OrderBy(x => x.TotalAmount)],
+                "dealername" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.DealerName)]
+                    : [.. result.OrderBy(x => x.DealerName)],
+                "region" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.Region)]
+                    : [.. result.OrderBy(x => x.Region)],
+                _ => [.. result.OrderBy(x => x.DealerName)],
+            };
+
+            var totalResults = result.Count;
+            var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            return new PaginatedResult<DealerTotalSalesReportDto>
+            {
+                Items = paged,
+                TotalResults = totalResults,
+                Page = page,
+                PageSize = pageSize,
+            };
+        }
+
+        public async Task<CsvExportResult> ExportDealerTotalSalesReportToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var result = await GetDealerTotalSalesReportAsync(
+                1,
+                int.MaxValue,
+                null,
+                null,
+                startDate,
+                endDate
+            );
+            var csv =
+                "DealerId,DealerName,Region,TotalOrders,TotalAmount\n"
+                + string.Join(
+                    "\n",
+                    result.Items.Select(x =>
+                        $"{x.DealerId},{CsvUtils.EscapeCsv(x.DealerName)},{CsvUtils.EscapeCsv(x.Region)},{x.TotalOrders},{x.TotalAmount}"
+                    )
+                );
+            var fileName = CsvUtils.BuildCsvFileName(
+                "evdms_dealer_total_sales_report",
                 startDate,
                 endDate
             );

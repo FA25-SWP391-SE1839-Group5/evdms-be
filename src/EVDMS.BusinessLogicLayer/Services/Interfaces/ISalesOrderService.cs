@@ -21,5 +21,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             DateTime? startDate = null,
             DateTime? endDate = null
         );
+        Task<PaginatedResult<DealerTotalSalesReportDto>> GetDealerTotalSalesReportAsync(
+            int page = 1,
+            int pageSize = 10,
+            string? sortBy = null,
+            string? sortOrder = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
+        Task<CsvExportResult> ExportDealerTotalSalesReportToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        );
     }
 }

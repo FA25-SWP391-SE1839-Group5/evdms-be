@@ -91,5 +91,40 @@ namespace EVDMS.API.Controllers
             var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
             return File(bytes, "text/csv", result.FileName);
         }
+
+        [HttpGet("dealer-total-sales")]
+        public async Task<IActionResult> GetDealerTotalSalesReport(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var result = await _salesOrderService.GetDealerTotalSalesReportAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                startDate,
+                endDate
+            );
+            return Ok(new ApiResponse<PaginatedResult<DealerTotalSalesReportDto>>(result));
+        }
+
+        [HttpGet("dealer-total-sales/export")]
+        public async Task<IActionResult> ExportDealerTotalSalesReport(
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var result = await _salesOrderService.ExportDealerTotalSalesReportToCsvAsync(
+                startDate,
+                endDate
+            );
+            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            return File(bytes, "text/csv", result.FileName);
+        }
     }
 }

@@ -25,6 +25,10 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<SalesOrder, DealerStaffSalesReportDto>()
                 .ForMember(dest => dest.StaffId, opt => opt.MapFrom(src => src.UserId))
                 .ForMember(dest => dest.StaffName, opt => opt.MapFrom(src => src.User.FullName));
+            CreateMap<SalesOrder, DealerTotalSalesReportDto>()
+                .ForMember(dest => dest.DealerId, opt => opt.MapFrom(src => src.DealerId))
+                .ForMember(dest => dest.DealerName, opt => opt.MapFrom(src => src.Dealer.Name))
+                .ForMember(dest => dest.Region, opt => opt.MapFrom(src => src.Dealer.Region));
         }
     }
 }

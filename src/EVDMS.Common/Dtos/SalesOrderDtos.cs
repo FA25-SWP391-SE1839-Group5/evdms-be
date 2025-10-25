@@ -80,4 +80,13 @@ namespace EVDMS.Common.Dtos
         public int TotalOrders { get; set; }
         public decimal TotalAmount { get; set; }
     }
+
+    public class DealerTotalSalesReportDto
+    {
+        public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
+        public string Region { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
 }
