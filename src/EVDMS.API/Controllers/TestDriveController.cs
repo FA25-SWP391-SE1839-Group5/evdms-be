@@ -2,6 +2,8 @@ using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
+using EVDMS.Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -56,12 +58,42 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTestDriveDto dto)
         {
-            var created = await _testDriveService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<TestDriveDto>(created)
-            );
+            var userRole = JwtUtils.GetUserRoleFromClaims(User);
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+            if (userRole != UserRole.DealerStaff && userRole != UserRole.DealerManager)
+                return StatusCode(
+                    403,
+                    new ApiResponse<string>(
+                        "Only DealerStaff and DealerManager can create test drives."
+                    )
+                );
+            if (dealerId == null)
+                return BadRequest(new ApiResponse<string>("DealerId is missing in token."));
+            try
+            {
+                var created = await _testDriveService.CreateAsync(dto, dealerId.Value);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<TestDriveDto>(created)
+                );
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]

@@ -21,16 +21,10 @@ namespace EVDMS.Common.Dtos
         public required Guid CustomerId { get; set; }
 
         [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
         public required Guid VehicleId { get; set; }
 
         [Required]
         public required DateTime ScheduledAt { get; set; }
-
-        [Required]
-        public required TestDriveStatus Status { get; set; }
     }
 
     public class UpdateTestDriveDto
