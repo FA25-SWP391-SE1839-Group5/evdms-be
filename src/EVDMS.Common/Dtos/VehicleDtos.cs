@@ -25,10 +25,6 @@ namespace EVDMS.Common.Dtos
         public required Guid DealerId { get; set; }
 
         [Required]
-        [MinLength(11)]
-        public required string Vin { get; set; }
-
-        [Required]
         public required VehicleColor Color { get; set; }
 
         [Required]
@@ -47,10 +43,6 @@ namespace EVDMS.Common.Dtos
         public required Guid DealerId { get; set; }
 
         [Required]
-        [MinLength(11)]
-        public required string Vin { get; set; }
-
-        [Required]
         public required VehicleColor Color { get; set; }
 
         [Required]
@@ -65,8 +57,6 @@ namespace EVDMS.Common.Dtos
         public Guid? VariantId { get; set; }
 
         public Guid? DealerId { get; set; }
-
-        public string? Vin { get; set; }
 
         public VehicleColor? Color { get; set; }
 

@@ -151,7 +151,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
                 batchVins.Add(vin); // Add to batch set
 
-                var createVehicleDto = new CreateVehicleDto
+                var vehicle = new Vehicle
                 {
                     VariantId = variant.Id,
                     DealerId = order.DealerId,
@@ -160,7 +160,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     Type = VehicleType.Display,
                     Status = VehicleStatus.Available,
                 };
-                var vehicle = _mapper.Map<Vehicle>(createVehicleDto);
                 await _vehicleRepository.AddAsync(vehicle);
             }
 
