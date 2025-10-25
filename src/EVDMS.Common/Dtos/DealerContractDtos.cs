@@ -27,9 +27,6 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public required decimal SalesTarget { get; set; }
-
-        [Required]
-        public required decimal OutstandingDebt { get; set; }
     }
 
     public class UpdateDealerContractDto
