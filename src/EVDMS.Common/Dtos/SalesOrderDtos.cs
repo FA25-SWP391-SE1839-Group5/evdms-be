@@ -89,4 +89,11 @@ namespace EVDMS.Common.Dtos
         public int TotalOrders { get; set; }
         public decimal TotalAmount { get; set; }
     }
+
+    public class RegionSalesReportDto
+    {
+        public string Region { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
 }

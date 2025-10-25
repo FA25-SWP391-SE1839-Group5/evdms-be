@@ -126,5 +126,40 @@ namespace EVDMS.API.Controllers
             var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
             return File(bytes, "text/csv", result.FileName);
         }
+
+        [HttpGet("region-sales")]
+        public async Task<IActionResult> GetRegionSalesReport(
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10,
+            [FromQuery] string? sortBy = null,
+            [FromQuery] string? sortOrder = null,
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var result = await _salesOrderService.GetRegionSalesReportAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                startDate,
+                endDate
+            );
+            return Ok(new ApiResponse<PaginatedResult<RegionSalesReportDto>>(result));
+        }
+
+        [HttpGet("region-sales/export")]
+        public async Task<IActionResult> ExportRegionSalesReport(
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var result = await _salesOrderService.ExportRegionSalesReportToCsvAsync(
+                startDate,
+                endDate
+            );
+            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            return File(bytes, "text/csv", result.FileName);
+        }
     }
 }

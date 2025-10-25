@@ -248,7 +248,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 endDate
             );
             var csv =
-                "StaffId,StaffName,TotalOrders,TotalAmount\n"
+                "StaffId,StaffName,TotalOrders,TotalAmount (USD)\n"
                 + string.Join(
                     "\n",
                     result.Items.Select(x =>
@@ -351,7 +351,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 endDate
             );
             var csv =
-                "DealerId,DealerName,Region,TotalOrders,TotalAmount\n"
+                "DealerId,DealerName,Region,TotalOrders,TotalAmount (USD)\n"
                 + string.Join(
                     "\n",
                     result.Items.Select(x =>
@@ -360,6 +360,95 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 );
             var fileName = CsvUtils.BuildCsvFileName(
                 "evdms_dealer_total_sales_report",
+                startDate,
+                endDate
+            );
+            return new CsvExportResult { FileName = fileName, CsvContent = csv };
+        }
+
+        public async Task<PaginatedResult<RegionSalesReportDto>> GetRegionSalesReportAsync(
+            int page = 1,
+            int pageSize = 10,
+            string? sortBy = null,
+            string? sortOrder = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var orders = await _repository.FindAsync(o =>
+                (o.Status == SalesOrderStatus.Confirmed || o.Status == SalesOrderStatus.Delivered)
+                && (!startDate.HasValue || o.Date >= startDate.Value)
+                && (!endDate.HasValue || o.Date <= endDate.Value)
+            );
+            var dealerIds = orders.Select(o => o.DealerId).Distinct().ToList();
+            var dealers = await _dealerRepository.FindAsync(d => dealerIds.Contains(d.Id));
+            var dealerRegions = dealers.ToDictionary(d => d.Id, d => d.Region);
+            var grouped = orders
+                .GroupBy(o =>
+                    dealerRegions.TryGetValue(o.DealerId, out var region) ? region : string.Empty
+                )
+                .ToList();
+            var result = grouped
+                .Select(g => new RegionSalesReportDto
+                {
+                    Region = g.Key,
+                    TotalOrders = g.Count(),
+                    TotalAmount = g.Sum(o =>
+                    {
+                        var quotation = _quotationRepository.GetByIdAsync(o.QuotationId).Result;
+                        return quotation?.TotalAmount ?? 0;
+                    }),
+                })
+                .ToList();
+            sortBy = sortBy?.ToLowerInvariant();
+            sortOrder = sortOrder?.ToLowerInvariant() ?? "asc";
+            result = sortBy switch
+            {
+                "totalorders" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.TotalOrders)]
+                    : [.. result.OrderBy(x => x.TotalOrders)],
+                "totalamount" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.TotalAmount)]
+                    : [.. result.OrderBy(x => x.TotalAmount)],
+                "region" => sortOrder == "desc"
+                    ? [.. result.OrderByDescending(x => x.Region)]
+                    : [.. result.OrderBy(x => x.Region)],
+                _ => [.. result.OrderBy(x => x.Region)],
+            };
+            var totalResults = result.Count;
+            var paged = result.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return new PaginatedResult<RegionSalesReportDto>
+            {
+                Items = paged,
+                TotalResults = totalResults,
+                Page = page,
+                PageSize = pageSize,
+            };
+        }
+
+        public async Task<CsvExportResult> ExportRegionSalesReportToCsvAsync(
+            DateTime? startDate = null,
+            DateTime? endDate = null
+        )
+        {
+            var result = await GetRegionSalesReportAsync(
+                1,
+                int.MaxValue,
+                null,
+                null,
+                startDate,
+                endDate
+            );
+            var csv =
+                "Region,TotalOrders,TotalAmount (USD)\n"
+                + string.Join(
+                    "\n",
+                    result.Items.Select(x =>
+                        $"{CsvUtils.EscapeCsv(x.Region)},{x.TotalOrders},{x.TotalAmount}"
+                    )
+                );
+            var fileName = CsvUtils.BuildCsvFileName(
+                "evdms_region_sales_report",
                 startDate,
                 endDate
             );
