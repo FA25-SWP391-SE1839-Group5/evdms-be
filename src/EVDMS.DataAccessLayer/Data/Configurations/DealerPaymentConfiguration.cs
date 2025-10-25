@@ -1,4 +1,3 @@
-using EVDMS.DataAccessLayer.Data.Seeds;
 using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -19,7 +18,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasForeignKey(dp => dp.DealerOrderId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasData(DealerPaymentSeed.DealerPayments);
+            //builder.HasData(DealerPaymentSeed.DealerPayments);
         }
     }
 }

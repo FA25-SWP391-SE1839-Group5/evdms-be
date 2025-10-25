@@ -29,6 +29,7 @@ namespace EVDMS.BusinessLogicLayer.DependencyInjection
             services.AddScoped<IVehicleModelService, VehicleModelService>();
             services.AddScoped<IVehicleService, VehicleService>();
             services.AddScoped<IVehicleVariantService, VehicleVariantService>();
+            services.AddScoped<IDemandForecastService, DemandForecastService>();
 
             return services;
         }

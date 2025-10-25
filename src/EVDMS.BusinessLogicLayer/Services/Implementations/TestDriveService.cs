@@ -4,7 +4,6 @@ using EVDMS.Common.Dtos;
 using EVDMS.Common.Enums;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {

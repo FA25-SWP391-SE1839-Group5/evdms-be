@@ -1,5 +1,4 @@
-﻿using EVDMS.DataAccessLayer.Data.Seeds;
-using EVDMS.DataAccessLayer.Entities;
+﻿using EVDMS.DataAccessLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,7 +25,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasForeignKey(d => d.VariantId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasData(DealerOrderSeed.DealerOrders);
+            //builder.HasData(DealerOrderSeed.DealerOrders);
         }
     }
 }
