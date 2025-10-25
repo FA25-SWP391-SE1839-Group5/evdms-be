@@ -92,5 +92,13 @@ namespace EVDMS.API.Controllers
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<string>(null, "AuditLog deleted successfully"));
         }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportToCsv()
+        {
+            var csv = await _auditLogService.ExportToCsvAsync();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(csv);
+            return File(bytes, "text/csv", $"audit_logs_{DateTime.UtcNow:yyyyMMddHHmmss}.csv");
+        }
     }
 }
