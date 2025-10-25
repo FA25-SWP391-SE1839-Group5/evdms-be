@@ -12,7 +12,14 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<CreateDealerPaymentDto, DealerPayment>(MemberList.Source);
             CreateMap<UpdateDealerPaymentDto, DealerPayment>(MemberList.Source);
             CreateMap<PatchDealerPaymentDto, DealerPayment>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }

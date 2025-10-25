@@ -12,7 +12,14 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<CreateVehicleDto, Vehicle>(MemberList.Source);
             CreateMap<UpdateVehicleDto, Vehicle>(MemberList.Source);
             CreateMap<PatchVehicleDto, Vehicle>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }

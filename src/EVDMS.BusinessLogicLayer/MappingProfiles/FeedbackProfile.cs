@@ -12,7 +12,14 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<CreateFeedbackDto, Feedback>(MemberList.Source);
             CreateMap<UpdateFeedbackDto, Feedback>(MemberList.Source);
             CreateMap<PatchFeedbackDto, Feedback>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }

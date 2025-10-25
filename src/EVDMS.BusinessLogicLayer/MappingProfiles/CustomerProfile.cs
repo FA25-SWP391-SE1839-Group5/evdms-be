@@ -13,7 +13,14 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<CreateCustomerDto, Customer>(MemberList.Source);
             CreateMap<UpdateCustomerDto, Customer>(MemberList.Source);
             CreateMap<PatchCustomerDto, Customer>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }

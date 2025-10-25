@@ -13,11 +13,17 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<CreateUserDto, User>(MemberList.Source)
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true));
 
-            CreateMap<UpdateUserDto, User>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+            CreateMap<UpdateUserDto, User>(MemberList.Source);
 
             CreateMap<PatchUserDto, User>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }
