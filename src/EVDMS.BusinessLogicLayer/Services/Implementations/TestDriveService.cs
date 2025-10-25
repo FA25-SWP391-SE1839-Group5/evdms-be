@@ -71,5 +71,35 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _vehicleRepository.SaveChangesAsync();
             return _mapper.Map<TestDriveDto>(entity);
         }
+
+        public override async Task<bool> PatchAsync(Guid id, PatchTestDriveDto dto)
+        {
+            var entity = await _testDriveRepository.GetByIdAsync(id);
+            if (entity == null)
+                return false;
+            _ = entity.Status;
+            _mapper.Map(dto, entity);
+            _testDriveRepository.Update(entity);
+            await _testDriveRepository.SaveChangesAsync();
+
+            if (
+                dto.Status.HasValue
+                && (
+                    dto.Status == TestDriveStatus.Completed
+                    || dto.Status == TestDriveStatus.Canceled
+                    || dto.Status == TestDriveStatus.NoShow
+                )
+            )
+            {
+                var vehicle = await _vehicleRepository.GetByIdAsync(entity.VehicleId);
+                if (vehicle != null)
+                {
+                    vehicle.Status = VehicleStatus.Available;
+                    _vehicleRepository.Update(vehicle);
+                    await _vehicleRepository.SaveChangesAsync();
+                }
+            }
+            return true;
+        }
     }
 }
