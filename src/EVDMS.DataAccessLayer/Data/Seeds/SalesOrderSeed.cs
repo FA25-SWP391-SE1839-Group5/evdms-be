@@ -20,7 +20,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         DateTime.Parse("2024-04-01", CultureInfo.InvariantCulture),
                         DateTimeKind.Utc
                     ),
-                    Status = SalesOrderStatus.Pending,
+                    Status = SalesOrderStatus.Confirmed,
                 },
                 new SalesOrder
                 {
@@ -34,7 +34,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         DateTime.Parse("2024-05-01", CultureInfo.InvariantCulture),
                         DateTimeKind.Utc
                     ),
-                    Status = SalesOrderStatus.Confirmed,
+                    Status = SalesOrderStatus.Delivered,
                 },
             ];
     }

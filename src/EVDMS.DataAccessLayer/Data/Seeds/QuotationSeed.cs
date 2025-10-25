@@ -7,6 +7,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
     {
         public static List<Quotation> Quotations =>
             [
+                // EV Motors Saigon
                 new Quotation
                 {
                     Id = Guid.Parse("70000000-0000-0000-0000-000000000001"),
@@ -26,8 +27,20 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     CustomerId = Guid.Parse("10000000-0000-0000-0000-000000000002"),
                     VariantId = Guid.Parse("11111111-1111-1111-1111-111111111102"),
                     Color = VehicleColor.Black,
-                    TotalAmount = 57000m,
+                    TotalAmount = 51300m,
                     Status = QuotationStatus.Approved,
+                },
+                // Hanoi EV Center
+                new Quotation
+                {
+                    Id = Guid.Parse("70000000-0000-0000-0000-000000000003"),
+                    DealerId = Guid.Parse("30000000-0000-0000-0000-000000000003"),
+                    UserId = Guid.Parse("20000000-0000-0000-0000-000000000010"),
+                    CustomerId = Guid.Parse("10000000-0000-0000-0000-000000000003"),
+                    VariantId = Guid.Parse("11111111-1111-1111-1111-111111111102"),
+                    Color = VehicleColor.Gray,
+                    TotalAmount = 50730m,
+                    Status = QuotationStatus.Rejected,
                 },
             ];
     }
