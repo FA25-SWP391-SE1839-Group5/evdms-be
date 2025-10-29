@@ -176,5 +176,53 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             return true;
         }
+
+        public async Task<CsvExportResult> ExportToCsvAsync()
+        {
+            var allUsers = await _userRepository.FindAsync(_ => true);
+            var dealerIds = allUsers
+                .Where(u => u.DealerId != null)
+                .Select(u => u.DealerId!.Value)
+                .Distinct()
+                .ToList();
+            var dealerNames = new Dictionary<Guid, string>();
+            foreach (var dealerId in dealerIds)
+            {
+                var dealer = await _dealerRepository.GetByIdAsync(dealerId);
+                dealerNames[dealerId] = dealer?.Name ?? "N/A";
+            }
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,DealerName,FullName,Email,Role,LastLoginAt,IsActive");
+            foreach (var u in allUsers)
+            {
+                string dealerName = "N/A";
+                if (u.DealerId != null && dealerNames.TryGetValue(u.DealerId.Value, out var name))
+                    dealerName = name;
+                sb.AppendLine(
+                    $"{u.Id},{CsvUtils.EscapeCsv(dealerName)},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
+                );
+            }
+            var fileName = CsvUtils.BuildCsvFileName("evdms_users", null, null);
+            return new CsvExportResult { FileName = fileName, CsvContent = sb.ToString() };
+        }
+
+        public async Task<CsvExportResult> ExportByDealerToCsvAsync(Guid dealerId)
+        {
+            var dealer = await _dealerRepository.GetByIdAsync(dealerId);
+            var dealerName = dealer?.Name ?? "N/A";
+            var safeDealerName = string.Concat(dealerName.Split(Path.GetInvalidFileNameChars()));
+            var users = await _userRepository.FindAsync(u => u.DealerId == dealerId);
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,FullName,Email,Role,LastLoginAt,IsActive");
+            foreach (var u in users)
+            {
+                sb.AppendLine(
+                    $"{u.Id},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
+                );
+            }
+            var fileName =
+                $"evdms_users_dealer_{safeDealerName}_{DateTime.UtcNow:yyyyMMddHHmmss}.csv";
+            return new CsvExportResult { FileName = fileName, CsvContent = sb.ToString() };
+        }
     }
 }

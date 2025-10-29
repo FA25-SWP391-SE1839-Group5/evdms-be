@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -137,6 +138,33 @@ namespace EVDMS.API.Controllers
             if (user == null)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<UserDto>(user));
+        }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportToCsv()
+        {
+            var result = await _userService.ExportToCsvAsync();
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
+        }
+
+        [HttpGet("export-by-dealer")]
+        public async Task<IActionResult> ExportByDealerToCsv()
+        {
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+            if (dealerId == null)
+                return Unauthorized(new ApiResponse<string>("DealerId not found in token."));
+            var result = await _userService.ExportByDealerToCsvAsync(dealerId.Value);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
     }
 }
