@@ -26,178 +26,63 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             IEnumerable<string>? allowedColumns = null
         )
         {
+            // Start with include for VehicleVariant
             var query = _dbSet.Include(x => x.VehicleVariant).AsQueryable();
 
-            // Apply filters
-            if (filters != null && allowedColumns != null)
+            // Custom search for VariantName (VehicleVariant.Name)
+            if (
+                !string.IsNullOrWhiteSpace(search)
+                && allowedColumns != null
+                && allowedColumns.Contains("VariantName")
+            )
             {
-                foreach (var filter in filters)
-                {
-                    var allowedCol = allowedColumns.FirstOrDefault(c =>
-                        string.Equals(c, filter.Key, StringComparison.OrdinalIgnoreCase)
-                    );
-                    if (allowedCol != null)
-                    {
-                        var property = typeof(OemInventory).GetProperty(allowedCol);
-                        if (property != null)
-                        {
-                            var parameter = Expression.Parameter(typeof(OemInventory), "e");
-                            var propertyAccess = Expression.Property(parameter, property);
-                            Expression equals;
-                            if (property.PropertyType == typeof(string))
-                            {
-                                var toLowerMethod = typeof(string).GetMethod(
-                                    "ToLower",
-                                    Type.EmptyTypes
-                                );
-                                var propertyToLower = Expression.Call(
-                                    propertyAccess,
-                                    toLowerMethod!
-                                );
-                                var filterValue = Expression.Constant(
-                                    filter.Value.ToLower(),
-                                    typeof(string)
-                                );
-                                equals = Expression.Equal(propertyToLower, filterValue);
-                            }
-                            else if (property.PropertyType.IsEnum)
-                            {
-                                var enumValue = Enum.Parse(
-                                    property.PropertyType,
-                                    filter.Value,
-                                    true
-                                );
-                                var filterValue = Expression.Constant(enumValue);
-                                equals = Expression.Equal(propertyAccess, filterValue);
-                            }
-                            else if (
-                                property.PropertyType == typeof(Guid)
-                                || property.PropertyType == typeof(Guid?)
-                            )
-                            {
-                                var guidValue = Guid.Parse(filter.Value);
-                                var filterValue = Expression.Constant(
-                                    guidValue,
-                                    property.PropertyType
-                                );
-                                equals = Expression.Equal(propertyAccess, filterValue);
-                            }
-                            else
-                            {
-                                var filterValue = Expression.Constant(
-                                    Convert.ChangeType(filter.Value, property.PropertyType)
-                                );
-                                equals = Expression.Equal(propertyAccess, filterValue);
-                            }
-                            var lambda = Expression.Lambda<Func<OemInventory, bool>>(
-                                equals,
-                                parameter
-                            );
-                            query = query.Where(lambda);
-                        }
-                    }
-                }
-            }
-
-            // Apply search
-            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
-            {
-                System.Linq.Expressions.Expression? searchExpression = null;
                 var parameter = Expression.Parameter(typeof(OemInventory), "e");
-                var toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
-                var searchValue = Expression.Constant(search.ToLower());
-                foreach (var col in allowedColumns)
+                var vehicleVariantAccess = Expression.Property(
+                    parameter,
+                    nameof(OemInventory.VehicleVariant)
+                );
+                var nameProperty = typeof(VehicleVariant).GetProperty("Name");
+                if (nameProperty != null)
                 {
-                    var property = typeof(OemInventory).GetProperty(col);
-                    if (property != null && property.PropertyType == typeof(string))
-                    {
-                        var propertyAccess = Expression.Property(parameter, property);
-                        var propertyToLower = Expression.Call(propertyAccess, toLowerMethod!);
-                        var containsMethod = typeof(string).GetMethod(
-                            "Contains",
-                            new[] { typeof(string) }
-                        );
-                        var contains = Expression.Call(
-                            propertyToLower,
-                            containsMethod!,
-                            searchValue
-                        );
-                        searchExpression =
-                            searchExpression == null
-                                ? contains
-                                : System.Linq.Expressions.Expression.OrElse(
-                                    searchExpression,
-                                    contains
-                                );
-                    }
-                }
-                // Add search for VariantName (VehicleVariant.Name)
-                var variantNameProperty = typeof(OemInventory).GetProperty("VehicleVariant");
-                if (variantNameProperty != null)
-                {
-                    var vehicleVariantAccess = Expression.Property(parameter, variantNameProperty);
-                    var nameProperty = typeof(VehicleVariant).GetProperty("Name");
-                    if (nameProperty != null)
-                    {
-                        var nameAccess = Expression.Property(vehicleVariantAccess, nameProperty);
-                        var nameToLower = Expression.Call(nameAccess, toLowerMethod!);
-                        var containsMethod = typeof(string).GetMethod(
-                            "Contains",
-                            new[] { typeof(string) }
-                        );
-                        var contains = Expression.Call(nameToLower, containsMethod!, searchValue);
-                        searchExpression =
-                            searchExpression == null
-                                ? contains
-                                : System.Linq.Expressions.Expression.OrElse(
-                                    searchExpression,
-                                    contains
-                                );
-                    }
-                }
-                if (searchExpression != null)
-                {
-                    var lambda = Expression.Lambda<Func<OemInventory, bool>>(
-                        searchExpression,
-                        parameter
+                    var nameAccess = Expression.Property(vehicleVariantAccess, nameProperty);
+                    var toLowerMethod = typeof(string).GetMethod("ToLower", Type.EmptyTypes);
+                    var nameToLower = Expression.Call(nameAccess, toLowerMethod!);
+                    var searchValue = Expression.Constant(search.ToLower());
+                    var containsMethod = typeof(string).GetMethod(
+                        "Contains",
+                        new[] { typeof(string) }
                     );
+                    var contains = Expression.Call(nameToLower, containsMethod!, searchValue);
+                    var lambda = Expression.Lambda<Func<OemInventory, bool>>(contains, parameter);
                     query = query.Where(lambda);
                 }
             }
 
-            // Sorting
-            if (!string.IsNullOrEmpty(sortBy))
+            // Custom sort for VariantName
+            if (
+                !string.IsNullOrEmpty(sortBy)
+                && string.Equals(sortBy, "VariantName", StringComparison.OrdinalIgnoreCase)
+            )
             {
-                if (string.Equals(sortBy, "VariantName", StringComparison.OrdinalIgnoreCase))
-                {
-                    if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
-                        query = query.OrderByDescending(e => e.VehicleVariant.Name);
-                    else
-                        query = query.OrderBy(e => e.VehicleVariant.Name);
-                }
+                if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
+                    query = query.OrderByDescending(e => e.VehicleVariant.Name);
                 else
-                {
-                    var prop = typeof(OemInventory)
-                        .GetProperties()
-                        .FirstOrDefault(p =>
-                            string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase)
-                        );
-                    if (prop != null)
-                    {
-                        var actualSortBy = prop.Name;
-                        if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
-                            query = query.OrderByDescending(e =>
-                                EF.Property<object>(e, actualSortBy)
-                            );
-                        else
-                            query = query.OrderBy(e => EF.Property<object>(e, actualSortBy));
-                    }
-                }
+                    query = query.OrderBy(e => e.VehicleVariant.Name);
             }
             else
             {
-                query = query.OrderBy(e => EF.Property<object>(e, "Id"));
+                // Use base repository's filtering, searching, and sorting logic
+                query = ApplyFilters(query, filters, allowedColumns);
+                query = ApplySearch(
+                    query,
+                    search,
+                    allowedColumns?.Where(c =>
+                        !string.Equals(c, "VariantName", StringComparison.OrdinalIgnoreCase)
+                    )
+                );
+                query = ApplySorting(query, sortBy, sortOrder);
             }
+
             var totalCount = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return (items, totalCount);
