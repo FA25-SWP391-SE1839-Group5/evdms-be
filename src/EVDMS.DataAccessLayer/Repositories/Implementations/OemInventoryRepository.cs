@@ -131,6 +131,30 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                                 );
                     }
                 }
+                // Add search for VariantName (VehicleVariant.Name)
+                var variantNameProperty = typeof(OemInventory).GetProperty("VehicleVariant");
+                if (variantNameProperty != null)
+                {
+                    var vehicleVariantAccess = Expression.Property(parameter, variantNameProperty);
+                    var nameProperty = typeof(VehicleVariant).GetProperty("Name");
+                    if (nameProperty != null)
+                    {
+                        var nameAccess = Expression.Property(vehicleVariantAccess, nameProperty);
+                        var nameToLower = Expression.Call(nameAccess, toLowerMethod!);
+                        var containsMethod = typeof(string).GetMethod(
+                            "Contains",
+                            new[] { typeof(string) }
+                        );
+                        var contains = Expression.Call(nameToLower, containsMethod!, searchValue);
+                        searchExpression =
+                            searchExpression == null
+                                ? contains
+                                : System.Linq.Expressions.Expression.OrElse(
+                                    searchExpression,
+                                    contains
+                                );
+                    }
+                }
                 if (searchExpression != null)
                 {
                     var lambda = Expression.Lambda<Func<OemInventory, bool>>(
@@ -144,18 +168,30 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             // Sorting
             if (!string.IsNullOrEmpty(sortBy))
             {
-                var prop = typeof(OemInventory)
-                    .GetProperties()
-                    .FirstOrDefault(p =>
-                        string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase)
-                    );
-                if (prop != null)
+                if (string.Equals(sortBy, "VariantName", StringComparison.OrdinalIgnoreCase))
                 {
-                    var actualSortBy = prop.Name;
                     if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
-                        query = query.OrderByDescending(e => EF.Property<object>(e, actualSortBy));
+                        query = query.OrderByDescending(e => e.VehicleVariant.Name);
                     else
-                        query = query.OrderBy(e => EF.Property<object>(e, actualSortBy));
+                        query = query.OrderBy(e => e.VehicleVariant.Name);
+                }
+                else
+                {
+                    var prop = typeof(OemInventory)
+                        .GetProperties()
+                        .FirstOrDefault(p =>
+                            string.Equals(p.Name, sortBy, StringComparison.OrdinalIgnoreCase)
+                        );
+                    if (prop != null)
+                    {
+                        var actualSortBy = prop.Name;
+                        if (string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase))
+                            query = query.OrderByDescending(e =>
+                                EF.Property<object>(e, actualSortBy)
+                            );
+                        else
+                            query = query.OrderBy(e => EF.Property<object>(e, actualSortBy));
+                    }
                 }
             }
             else
