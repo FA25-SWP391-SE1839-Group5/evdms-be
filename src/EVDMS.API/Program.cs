@@ -108,7 +108,8 @@ namespace EVDMS.API
                             .WithOrigins("http://localhost:5173", "http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
-                            .AllowCredentials();
+                            .AllowCredentials()
+                            .WithExposedHeaders("Content-Disposition", "content-disposition");
                     }
                 );
             });
