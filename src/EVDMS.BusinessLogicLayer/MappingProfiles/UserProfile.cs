@@ -8,7 +8,11 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public UserProfile()
         {
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(
+                    dest => dest.DealerName,
+                    opt => opt.MapFrom(src => src.Dealer != null ? src.Dealer.Name : null)
+                );
 
             CreateMap<CreateUserDto, User>(MemberList.Source)
                 .ForMember(dest => dest.IsActive, opt => opt.MapFrom(src => true));

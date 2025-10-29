@@ -177,29 +177,54 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return true;
         }
 
+        public override async Task<PaginatedResult<UserDto>> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
+        )
+        {
+            var (entities, totalCount) = await _userRepository.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filters,
+                allowedColumns
+            );
+            var userDtos = _mapper.Map<List<UserDto>>(entities);
+
+            return new PaginatedResult<UserDto>
+            {
+                Items = userDtos,
+                TotalResults = totalCount,
+                Page = page,
+                PageSize = pageSize,
+            };
+        }
+
+        public override async Task<UserDto?> GetByIdAsync(Guid id)
+        {
+            var entity = await _userRepository.GetByIdAsync(id);
+            if (entity == null)
+                return null;
+            var dto = _mapper.Map<UserDto>(entity);
+            return dto;
+        }
+
         public async Task<CsvExportResult> ExportToCsvAsync()
         {
             var allUsers = await _userRepository.FindAsync(_ => true);
-            var dealerIds = allUsers
-                .Where(u => u.DealerId != null)
-                .Select(u => u.DealerId!.Value)
-                .Distinct()
-                .ToList();
-            var dealerNames = new Dictionary<Guid, string>();
-            foreach (var dealerId in dealerIds)
-            {
-                var dealer = await _dealerRepository.GetByIdAsync(dealerId);
-                dealerNames[dealerId] = dealer?.Name ?? "N/A";
-            }
             var sb = new StringBuilder();
             sb.AppendLine("Id,DealerName,FullName,Email,Role,LastLoginAt,IsActive");
             foreach (var u in allUsers)
             {
-                string dealerName = "N/A";
-                if (u.DealerId != null && dealerNames.TryGetValue(u.DealerId.Value, out var name))
-                    dealerName = name;
                 sb.AppendLine(
-                    $"{u.Id},{CsvUtils.EscapeCsv(dealerName)},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
+                    $"{u.Id},{CsvUtils.EscapeCsv(u.Dealer?.Name ?? "N/A")},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
                 );
             }
             var fileName = CsvUtils.BuildCsvFileName("evdms_users", null, null);
