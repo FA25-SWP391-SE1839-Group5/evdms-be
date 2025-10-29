@@ -8,7 +8,8 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public DealerContractProfile()
         {
-            CreateMap<DealerContract, DealerContractDto>();
+            CreateMap<DealerContract, DealerContractDto>()
+                .ForMember(dest => dest.DealerName, opt => opt.MapFrom(src => src.Dealer.Name));
             CreateMap<CreateDealerContractDto, DealerContract>(MemberList.Source)
                 .ForMember(dest => dest.OutstandingDebt, opt => opt.MapFrom(src => 0m));
             CreateMap<UpdateDealerContractDto, DealerContract>(MemberList.Source);

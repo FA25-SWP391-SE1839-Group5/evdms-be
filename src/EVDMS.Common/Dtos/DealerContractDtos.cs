@@ -6,6 +6,7 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal SalesTarget { get; set; }
