@@ -8,7 +8,11 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public OemInventoryProfile()
         {
-            CreateMap<OemInventory, OemInventoryDto>();
+            CreateMap<OemInventory, OemInventoryDto>()
+                .ForMember(
+                    dest => dest.VariantName,
+                    opt => opt.MapFrom(src => src.VehicleVariant.Name)
+                );
             CreateMap<CreateOemInventoryDto, OemInventory>(MemberList.Source);
             CreateMap<UpdateOemInventoryDto, OemInventory>(MemberList.Source);
             CreateMap<PatchOemInventoryDto, OemInventory>(MemberList.Source)
