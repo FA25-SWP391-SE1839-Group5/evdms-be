@@ -53,8 +53,12 @@ namespace EVDMS.API.Controllers
                 startDate,
                 endDate
             );
-            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
-            return File(bytes, "text/csv", result.FileName);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
 
         [HttpGet("dealer-staff-sales")]
@@ -88,8 +92,12 @@ namespace EVDMS.API.Controllers
                 startDate,
                 endDate
             );
-            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
-            return File(bytes, "text/csv", result.FileName);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
 
         [HttpGet("dealer-total-sales")]
@@ -123,8 +131,12 @@ namespace EVDMS.API.Controllers
                 startDate,
                 endDate
             );
-            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
-            return File(bytes, "text/csv", result.FileName);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
 
         [HttpGet("region-sales")]
@@ -158,8 +170,12 @@ namespace EVDMS.API.Controllers
                 startDate,
                 endDate
             );
-            var bytes = Encoding.UTF8.GetBytes(result.CsvContent);
-            return File(bytes, "text/csv", result.FileName);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
     }
 }
