@@ -162,7 +162,6 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var user = await _userRepository.GetByIdAsync(id);
             if (user == null)
                 return false;
-            await base.DeleteAsync(id);
 
             // Log account deletion
             await _auditLogService.CreateAsync(
@@ -174,6 +173,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 }
             );
 
+            await base.DeleteAsync(id);
             return true;
         }
 
