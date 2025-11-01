@@ -28,6 +28,8 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public UserRole Role { get; set; }
+
+        public bool? IsActive { get; set; }
     }
 
     public class UpdateUserDto
