@@ -46,13 +46,6 @@ namespace EVDMS.DataAccessLayer.Entities
             set => Features = JsonSerializer.Serialize(value, IgnoreNullOptions);
         }
 
-        public static readonly string[] SearchableColumns =
-        [
-            "ModelId",
-            "Name",
-            "BasePrice",
-            "Specs",
-            "Features",
-        ];
+        public static readonly string[] SearchableColumns = ["ModelId", "Name", "BasePrice"];
     }
 }
