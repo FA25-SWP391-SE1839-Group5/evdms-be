@@ -93,11 +93,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 {
                     var filterLower = dealerNameFilter.ToLower();
                     query = query.Where(e =>
-                        e.Dealer != null
-                        && e.Dealer.Name.Contains(
-                            filterLower,
-                            StringComparison.CurrentCultureIgnoreCase
-                        )
+                        e.Dealer != null && e.Dealer.Name.ToLower().Contains(filterLower)
                     );
                 }
             }

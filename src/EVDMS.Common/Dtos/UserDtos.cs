@@ -8,6 +8,7 @@ namespace EVDMS.Common.Dtos
         public Guid Id { get; set; }
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
+        public Guid? DealerId { get; set; }
         public string? DealerName { get; set; }
         public UserRole Role { get; set; }
         public DateTime LastLoginAt { get; set; }
