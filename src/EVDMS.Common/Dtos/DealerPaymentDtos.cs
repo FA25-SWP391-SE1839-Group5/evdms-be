@@ -8,6 +8,8 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid DealerOrderId { get; set; }
+        public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public decimal Amount { get; set; }
         public DealerPaymentStatus Status { get; set; }
         public string? DocumentUrl { get; set; }

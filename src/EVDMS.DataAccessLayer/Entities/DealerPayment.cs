@@ -12,6 +12,12 @@ namespace EVDMS.DataAccessLayer.Entities
 
         public DealerOrder DealerOrder { get; set; } = null!;
 
-        public static readonly string[] SearchableColumns = ["DealerOrderId", "Amount", "Status"];
+        public static readonly string[] SearchableColumns =
+        [
+            "DealerOrderId",
+            "Amount",
+            "Status",
+            "DealerName",
+        ];
     }
 }
