@@ -75,12 +75,18 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 query = ApplySorting(query, sortBy, sortOrder);
             }
 
-            // Custom filter for DealerId and DealerName
+            // Custom filter for DealerId and DealerName (case-insensitive)
             if (filters != null && allowedColumns != null)
             {
+                var filtersCI = filters.ToDictionary(
+                    kv => kv.Key.ToLowerInvariant(),
+                    kv => kv.Value
+                );
                 if (
-                    filters.TryGetValue("DealerId", out var dealerIdFilter)
-                    && allowedColumns.Contains("DealerId")
+                    filtersCI.TryGetValue("dealerid", out var dealerIdFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerId", StringComparison.OrdinalIgnoreCase)
+                    )
                 )
                 {
                     var filterLower = dealerIdFilter.ToLower();
@@ -90,8 +96,10 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     );
                 }
                 if (
-                    filters.TryGetValue("DealerName", out var dealerNameFilter)
-                    && allowedColumns.Contains("DealerName")
+                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
                 )
                 {
                     var filterLower = dealerNameFilter.ToLower();
@@ -108,14 +116,20 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             query = ApplyFilters(
                 query,
                 filters,
-                allowedColumns?.Where(c => c != "DealerId" && c != "DealerName")
+                allowedColumns?.Where(c =>
+                    !string.Equals(c, "DealerId", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                )
             );
             if (!searchedDealerId && !searchedDealerName)
             {
                 query = ApplySearch(
                     query,
                     search,
-                    allowedColumns?.Where(c => c != "DealerId" && c != "DealerName")
+                    allowedColumns?.Where(c =>
+                        !string.Equals(c, "DealerId", StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
                 );
             }
 

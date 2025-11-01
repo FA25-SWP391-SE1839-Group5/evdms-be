@@ -17,6 +17,7 @@ namespace EVDMS.DataAccessLayer.Entities
             "DealerOrderId",
             "Amount",
             "Status",
+            "DealerId",
             "DealerName",
         ];
     }
