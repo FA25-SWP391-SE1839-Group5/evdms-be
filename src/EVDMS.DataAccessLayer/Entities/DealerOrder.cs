@@ -21,6 +21,8 @@ namespace EVDMS.DataAccessLayer.Entities
             "Quantity",
             "Color",
             "Status",
+            "DealerName",
+            "VariantName",
         ];
     }
 }

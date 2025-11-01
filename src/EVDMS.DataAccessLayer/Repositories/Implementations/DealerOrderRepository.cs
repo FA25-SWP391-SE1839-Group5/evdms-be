@@ -1,6 +1,8 @@
+using System.Linq.Expressions;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace EVDMS.DataAccessLayer.Repositories.Implementations
 {
@@ -8,5 +10,118 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
     {
         public DealerOrderRepository(AppDbContext context)
             : base(context) { }
+
+        public override async Task<(IEnumerable<DealerOrder> Items, int TotalCount)> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
+        )
+        {
+            var query = _dbSet.Include(x => x.Dealer).Include(x => x.VehicleVariant).AsQueryable();
+
+            // Custom search for DealerName and VariantName
+            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
+            {
+                var searchLower = search.ToLower();
+                bool dealerName = allowedColumns.Contains("DealerName");
+                bool variantName = allowedColumns.Contains("VariantName");
+                if (dealerName || variantName)
+                {
+                    query = query.Where(e =>
+                        (
+                            dealerName
+                            && e.Dealer.Name.Contains(
+                                searchLower,
+                                StringComparison.CurrentCultureIgnoreCase
+                            )
+                        )
+                        || (
+                            variantName
+                            && e.VehicleVariant.Name.Contains(
+                                searchLower,
+                                StringComparison.CurrentCultureIgnoreCase
+                            )
+                        )
+                    );
+                }
+            }
+
+            // Custom sort for DealerName and VariantName
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (string.Equals(sortBy, "DealerName", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase)
+                        ? query.OrderByDescending(e => e.Dealer.Name)
+                        : query.OrderBy(e => e.Dealer.Name);
+                }
+                else if (string.Equals(sortBy, "VariantName", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase)
+                        ? query.OrderByDescending(e => e.VehicleVariant.Name)
+                        : query.OrderBy(e => e.VehicleVariant.Name);
+                }
+                else
+                {
+                    // Use base repository's sorting for other columns
+                    query = ApplySorting(query, sortBy, sortOrder);
+                }
+            }
+            else
+            {
+                query = ApplySorting(query, sortBy, sortOrder);
+            }
+
+            // Custom filter for DealerName and VariantName
+            if (filters != null && allowedColumns != null)
+            {
+                if (
+                    filters.TryGetValue("DealerName", out var dealerNameFilter)
+                    && allowedColumns.Contains("DealerName")
+                )
+                {
+                    var filterLower = dealerNameFilter.ToLower();
+                    query = query.Where(e =>
+                        e.Dealer.Name.Contains(
+                            filterLower,
+                            StringComparison.CurrentCultureIgnoreCase
+                        )
+                    );
+                }
+                if (
+                    filters.TryGetValue("VariantName", out var variantNameFilter)
+                    && allowedColumns.Contains("VariantName")
+                )
+                {
+                    var filterLower = variantNameFilter.ToLower();
+                    query = query.Where(e =>
+                        e.VehicleVariant.Name.Contains(
+                            filterLower,
+                            StringComparison.CurrentCultureIgnoreCase
+                        )
+                    );
+                }
+            }
+
+            // Use base repository's filtering and searching for other columns
+            query = ApplyFilters(
+                query,
+                filters,
+                allowedColumns?.Where(c => c != "DealerName" && c != "VariantName")
+            );
+            query = ApplySearch(
+                query,
+                search,
+                allowedColumns?.Where(c => c != "DealerName" && c != "VariantName")
+            );
+
+            var totalCount = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return (items, totalCount);
+        }
     }
 }

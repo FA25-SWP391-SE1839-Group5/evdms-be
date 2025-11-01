@@ -8,7 +8,12 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public DealerOrderProfile()
         {
-            CreateMap<DealerOrder, DealerOrderDto>();
+            CreateMap<DealerOrder, DealerOrderDto>()
+                .ForMember(dest => dest.DealerName, opt => opt.MapFrom(src => src.Dealer.Name))
+                .ForMember(
+                    dest => dest.VariantName,
+                    opt => opt.MapFrom(src => src.VehicleVariant.Name)
+                );
 
             CreateMap<CreateDealerOrderDto, DealerOrder>(MemberList.Source)
                 .ForMember(dest => dest.DealerId, opt => opt.Ignore());
