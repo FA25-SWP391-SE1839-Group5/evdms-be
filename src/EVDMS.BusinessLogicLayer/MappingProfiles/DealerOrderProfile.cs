@@ -22,9 +22,13 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                 .ForAllMembers(opts =>
                     opts.Condition(
                         (src, dest, srcMember, context) =>
-                            srcMember != null
-                            && !(srcMember is Guid guid && guid == Guid.Empty)
-                            && !(srcMember is DateTime dt && dt == default)
+                            opts.DestinationMember.Name == nameof(DealerOrder.Color)
+                                ? (src.Color.HasValue)
+                            : opts.DestinationMember.Name == nameof(DealerOrder.Quantity)
+                                ? (src.Quantity.HasValue)
+                            : srcMember != null
+                                && !(srcMember is Guid guid && guid == Guid.Empty)
+                                && !(srcMember is DateTime dt && dt == default)
                     )
                 );
 
