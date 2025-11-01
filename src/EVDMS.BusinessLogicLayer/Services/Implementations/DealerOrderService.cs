@@ -71,14 +71,14 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _dealerOrderRepository.SaveChangesAsync();
 
             // Log CreateDealerOrder event
-            await _auditLogService.CreateAsync(
-                new CreateAuditLogDto
-                {
-                    UserId = dealerId,
-                    Action = AuditLogAction.CreateDealerOrder,
-                    Description = $"Dealer order {entity.Id} created for dealer {dealerId}.",
-                }
-            );
+            //await _auditLogService.CreateAsync(
+            //    new CreateAuditLogDto
+            //    {
+            //        UserId = dealerId,
+            //        Action = AuditLogAction.CreateDealerOrder,
+            //        Description = $"Dealer order {entity.Id} created for dealer {dealerId}.",
+            //    }
+            //);
 
             return _mapper.Map<DealerOrderDto>(entity);
         }
