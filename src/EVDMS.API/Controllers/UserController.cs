@@ -99,21 +99,67 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
         {
-            var success = await _userService.UpdateAsync(id, dto);
-            if (!success)
-                return NotFound(new ApiResponse<string>("User not found"));
-            var updated = await _userService.GetByIdAsync(id);
-            return Ok(new ApiResponse<UserDto>(updated!, "User updated successfully"));
+            try
+            {
+                var success = await _userService.UpdateAsync(id, dto);
+                if (!success)
+                    return NotFound(new ApiResponse<string>("User not found"));
+                var updated = await _userService.GetByIdAsync(id);
+                return Ok(new ApiResponse<UserDto>(updated!, "User updated successfully"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchUserDto dto)
         {
-            var success = await _userService.PatchAsync(id, dto);
-            if (!success)
-                return NotFound(new ApiResponse<string>("User not found"));
-            var updated = await _userService.GetByIdAsync(id);
-            return Ok(new ApiResponse<UserDto>(updated!, "User patched successfully"));
+            try
+            {
+                var success = await _userService.PatchAsync(id, dto);
+                if (!success)
+                    return NotFound(new ApiResponse<string>("User not found"));
+                var updated = await _userService.GetByIdAsync(id);
+                return Ok(new ApiResponse<UserDto>(updated!, "User patched successfully"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpDelete("{id}")]

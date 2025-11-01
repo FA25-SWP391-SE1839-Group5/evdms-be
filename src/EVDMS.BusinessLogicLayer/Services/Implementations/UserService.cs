@@ -269,5 +269,75 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 $"evdms_users_dealer_{safeDealerName}_{DateTime.UtcNow:yyyyMMddHHmmss}.csv";
             return new CsvExportResult { FileName = fileName, CsvContent = sb.ToString() };
         }
+
+        public override async Task<bool> UpdateAsync(Guid id, UpdateUserDto dto)
+        {
+            // Validation logic for DealerId and Role
+            if (dto.DealerId != null)
+            {
+                var dealer = await _dealerRepository.GetByIdAsync(dto.DealerId.Value);
+                if (dealer == null)
+                    throw new KeyNotFoundException("Dealer not found.");
+                if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
+                    throw new InvalidOperationException(
+                        "If DealerId is provided, role must be DealerStaff or DealerManager."
+                    );
+            }
+            else
+            {
+                if (dto.Role != UserRole.EvmStaff && dto.Role != UserRole.Admin)
+                    throw new InvalidOperationException(
+                        "If DealerId is null, role must be EvmStaff or Admin."
+                    );
+            }
+
+            return await base.UpdateAsync(id, dto);
+        }
+
+        public override async Task<bool> PatchAsync(Guid id, PatchUserDto dto)
+        {
+            // Fetch the current user entity
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return false;
+
+            // Map only provided fields
+            _mapper.Map(dto, user);
+
+            // If role is being set to Admin or EvmStaff, clear DealerId BEFORE validation
+            if (dto.Role == UserRole.Admin || dto.Role == UserRole.EvmStaff)
+            {
+                user.DealerId = null;
+            }
+
+            // Now validate the new state
+            var newRole = dto.Role ?? user.Role;
+            var newDealerId = user.DealerId;
+
+            if (dto.Role != null || dto.DealerId != null)
+            {
+                if (newDealerId != null)
+                {
+                    var dealer = await _dealerRepository.GetByIdAsync(newDealerId.Value);
+                    if (dealer == null)
+                        throw new KeyNotFoundException("Dealer not found.");
+                    if (newRole != UserRole.DealerStaff && newRole != UserRole.DealerManager)
+                        throw new InvalidOperationException(
+                            "If DealerId is provided, role must be DealerStaff or DealerManager."
+                        );
+                }
+                else
+                {
+                    if (newRole != UserRole.EvmStaff && newRole != UserRole.Admin)
+                        throw new InvalidOperationException(
+                            "If DealerId is null, role must be EvmStaff or Admin."
+                        );
+                }
+            }
+
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

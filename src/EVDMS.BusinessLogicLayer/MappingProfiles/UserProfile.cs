@@ -20,13 +20,16 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
             CreateMap<UpdateUserDto, User>(MemberList.Source);
 
             CreateMap<PatchUserDto, User>(MemberList.Source)
-                .ForAllMembers(opts =>
-                    opts.Condition(
-                        (src, dest, srcMember, context) =>
-                            srcMember != null
-                            && !(srcMember is Guid guid && guid == Guid.Empty)
-                            && !(srcMember is DateTime dt && dt == default)
-                    )
+                .ForAllMembers(
+                    (opts) =>
+                        opts.Condition(
+                            (src, dest, srcMember, context) =>
+                                opts.DestinationMember.Name == nameof(User.Role)
+                                    ? src.Role.HasValue
+                                    : srcMember != null
+                                        && !(srcMember is Guid guid && guid == Guid.Empty)
+                                        && !(srcMember is DateTime dt && dt == default)
+                        )
                 );
         }
     }
