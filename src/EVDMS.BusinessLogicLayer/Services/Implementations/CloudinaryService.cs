@@ -126,7 +126,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             return new UploadDealerPaymentDocumentResponseDto
             {
                 DocumentUrl = dealerPayment.DocumentUrl,
-                PublicDocumentId = dealerPayment.DocumentPublicId,
+                DocumentPublicId = dealerPayment.DocumentPublicId,
             };
         }
 

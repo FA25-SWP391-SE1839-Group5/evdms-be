@@ -13,7 +13,7 @@ namespace EVDMS.Common.Dtos
         public decimal Amount { get; set; }
         public DealerPaymentStatus Status { get; set; }
         public string? DocumentUrl { get; set; }
-        public string? PublicDocumentId { get; set; }
+        public string? DocumentPublicId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -36,7 +36,7 @@ namespace EVDMS.Common.Dtos
         [Required]
         public DealerPaymentStatus Status { get; set; }
         public string? DocumentUrl { get; set; }
-        public string? PublicDocumentId { get; set; }
+        public string? DocumentPublicId { get; set; }
     }
 
     public class PatchDealerPaymentDto
@@ -47,7 +47,7 @@ namespace EVDMS.Common.Dtos
         public decimal? Amount { get; set; }
         public DealerPaymentStatus? Status { get; set; }
         public string? DocumentUrl { get; set; }
-        public string? PublicDocumentId { get; set; }
+        public string? DocumentPublicId { get; set; }
     }
 
     public class UploadDealerPaymentDocumentDto
@@ -59,6 +59,6 @@ namespace EVDMS.Common.Dtos
     public class UploadDealerPaymentDocumentResponseDto
     {
         public string? DocumentUrl { get; set; }
-        public string? PublicDocumentId { get; set; }
+        public string? DocumentPublicId { get; set; }
     }
 }
