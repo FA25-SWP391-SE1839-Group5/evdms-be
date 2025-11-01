@@ -39,9 +39,87 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
         )
         {
             var query = _context.Users.Include(u => u.Dealer).AsQueryable();
-            query = ApplyFilters(query, filters, allowedColumns);
-            query = ApplySearch(query, search, allowedColumns);
-            query = ApplySorting(query, sortBy, sortOrder);
+
+            // Custom search for DealerName only
+            bool searchedDealerName = false;
+            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
+            {
+                var searchLower = search.ToLower();
+                searchedDealerName = allowedColumns.Contains("DealerName");
+                if (searchedDealerName)
+                {
+                    query = query.Where(e =>
+                        e.Dealer != null
+                        && e.Dealer.Name.Contains(
+                            searchLower,
+                            StringComparison.CurrentCultureIgnoreCase
+                        )
+                    );
+                }
+            }
+
+            // Custom sort for DealerName only
+            if (!string.IsNullOrEmpty(sortBy))
+            {
+                if (string.Equals(sortBy, "DealerName", StringComparison.OrdinalIgnoreCase))
+                {
+                    query = string.Equals(sortOrder, "desc", StringComparison.OrdinalIgnoreCase)
+                        ? query.OrderByDescending(e => e.Dealer != null ? e.Dealer.Name : null)
+                        : query.OrderBy(e => e.Dealer != null ? e.Dealer.Name : null);
+                }
+                else
+                {
+                    query = ApplySorting(query, sortBy, sortOrder);
+                }
+            }
+            else
+            {
+                query = ApplySorting(query, sortBy, sortOrder);
+            }
+
+            // Custom filter for DealerName (case-insensitive)
+            if (filters != null && allowedColumns != null)
+            {
+                var filtersCI = filters.ToDictionary(
+                    kv => kv.Key.ToLowerInvariant(),
+                    kv => kv.Value
+                );
+                if (
+                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterLower = dealerNameFilter.ToLower();
+                    query = query.Where(e =>
+                        e.Dealer != null
+                        && e.Dealer.Name.Contains(
+                            filterLower,
+                            StringComparison.CurrentCultureIgnoreCase
+                        )
+                    );
+                }
+            }
+
+            // Use base repository's filtering and searching for other columns (excluding DealerName for search)
+            query = ApplyFilters(
+                query,
+                filters,
+                allowedColumns?.Where(c =>
+                    !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                )
+            );
+            if (!searchedDealerName)
+            {
+                query = ApplySearch(
+                    query,
+                    search,
+                    allowedColumns?.Where(c =>
+                        !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
+                );
+            }
 
             var totalCount = await query.CountAsync();
             var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
