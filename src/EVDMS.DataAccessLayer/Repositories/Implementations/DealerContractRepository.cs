@@ -45,6 +45,27 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 }
             }
 
+            // Custom filter for DealerName (case-insensitive)
+            if (filters != null && allowedColumns != null)
+            {
+                var filtersCI = filters.ToDictionary(
+                    kv => kv.Key.ToLowerInvariant(),
+                    kv => kv.Value
+                );
+                if (
+                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterLower = dealerNameFilter.ToLower();
+                    query = query.Where(dc =>
+                        dc.Dealer != null && dc.Dealer.Name.ToLower().Contains(filterLower)
+                    );
+                }
+            }
+
             // Custom sort for DealerName
             if (
                 !string.IsNullOrEmpty(sortBy)

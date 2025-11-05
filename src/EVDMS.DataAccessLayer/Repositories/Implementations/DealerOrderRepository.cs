@@ -32,20 +32,8 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 if (dealerName || variantName)
                 {
                     query = query.Where(e =>
-                        (
-                            dealerName
-                            && e.Dealer.Name.Contains(
-                                searchLower,
-                                StringComparison.CurrentCultureIgnoreCase
-                            )
-                        )
-                        || (
-                            variantName
-                            && e.VehicleVariant.Name.Contains(
-                                searchLower,
-                                StringComparison.CurrentCultureIgnoreCase
-                            )
-                        )
+                        (dealerName && e.Dealer.Name.ToLower().Contains(searchLower))
+                        || (variantName && e.VehicleVariant.Name.ToLower().Contains(searchLower))
                     );
                 }
             }
@@ -76,34 +64,32 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 query = ApplySorting(query, sortBy, sortOrder);
             }
 
-            // Custom filter for DealerName and VariantName
+            // Custom filter for DealerName and VariantName (case-insensitive key)
             if (filters != null && allowedColumns != null)
             {
+                var filtersCI = filters.ToDictionary(
+                    kv => kv.Key.ToLowerInvariant(),
+                    kv => kv.Value
+                );
                 if (
-                    filters.TryGetValue("DealerName", out var dealerNameFilter)
-                    && allowedColumns.Contains("DealerName")
+                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
                 )
                 {
                     var filterLower = dealerNameFilter.ToLower();
-                    query = query.Where(e =>
-                        e.Dealer.Name.Contains(
-                            filterLower,
-                            StringComparison.CurrentCultureIgnoreCase
-                        )
-                    );
+                    query = query.Where(e => e.Dealer.Name.ToLower().Contains(filterLower));
                 }
                 if (
-                    filters.TryGetValue("VariantName", out var variantNameFilter)
-                    && allowedColumns.Contains("VariantName")
+                    filtersCI.TryGetValue("variantname", out var variantNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("VariantName", StringComparison.OrdinalIgnoreCase)
+                    )
                 )
                 {
                     var filterLower = variantNameFilter.ToLower();
-                    query = query.Where(e =>
-                        e.VehicleVariant.Name.Contains(
-                            filterLower,
-                            StringComparison.CurrentCultureIgnoreCase
-                        )
-                    );
+                    query = query.Where(e => e.VehicleVariant.Name.ToLower().Contains(filterLower));
                 }
             }
 

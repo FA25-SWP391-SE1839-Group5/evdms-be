@@ -36,15 +36,11 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     query = query.Where(e =>
                         (
                             searchedDealerId
-                            && e.DealerOrder.DealerId.ToString()
-                                .Contains(searchLower, StringComparison.CurrentCultureIgnoreCase)
+                            && e.DealerOrder.DealerId.ToString().ToLower().Contains(searchLower)
                         )
                         || (
                             searchedDealerName
-                            && e.DealerOrder.Dealer.Name.Contains(
-                                searchLower,
-                                StringComparison.CurrentCultureIgnoreCase
-                            )
+                            && e.DealerOrder.Dealer.Name.ToLower().Contains(searchLower)
                         )
                     );
                 }
@@ -91,8 +87,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 {
                     var filterLower = dealerIdFilter.ToLower();
                     query = query.Where(e =>
-                        e.DealerOrder.DealerId.ToString()
-                            .Contains(filterLower, StringComparison.CurrentCultureIgnoreCase)
+                        e.DealerOrder.DealerId.ToString().ToLower().Contains(filterLower)
                     );
                 }
                 if (
@@ -104,10 +99,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 {
                     var filterLower = dealerNameFilter.ToLower();
                     query = query.Where(e =>
-                        e.DealerOrder.Dealer.Name.Contains(
-                            filterLower,
-                            StringComparison.CurrentCultureIgnoreCase
-                        )
+                        e.DealerOrder.Dealer.Name.ToLower().Contains(filterLower)
                     );
                 }
             }
