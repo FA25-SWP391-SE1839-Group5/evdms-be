@@ -54,6 +54,14 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     $"Quotation with ID {dto.QuotationId} does not exist."
                 );
 
+            if (
+                quotation.Status != QuotationStatus.Sent
+                && quotation.Status != QuotationStatus.Approved
+            )
+                throw new InvalidOperationException(
+                    "Sales order can only be created for quotations with status Sent or Approved."
+                );
+
             // Find available vehicle for sale
             var vehicles = await _vehicleRepository.FindAsync(v =>
                 v.VariantId == quotation.VariantId
