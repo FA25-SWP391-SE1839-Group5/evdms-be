@@ -34,6 +34,11 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     $"SalesOrder with ID {dto.SalesOrderId} does not exist."
                 );
 
+            if (salesOrder.Status != SalesOrderStatus.Pending)
+                throw new InvalidOperationException(
+                    "Payments can only be created for sales orders with status Pending."
+                );
+
             var quotation =
                 await _quotationRepository.GetByIdAsync(salesOrder.QuotationId)
                 ?? throw new KeyNotFoundException(
