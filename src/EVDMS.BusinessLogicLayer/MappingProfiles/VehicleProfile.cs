@@ -15,9 +15,15 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
                 .ForAllMembers(opts =>
                     opts.Condition(
                         (src, dest, srcMember, context) =>
-                            srcMember != null
-                            && !(srcMember is Guid guid && guid == Guid.Empty)
-                            && !(srcMember is DateTime dt && dt == default)
+                            opts.DestinationMember.Name == nameof(Vehicle.Status)
+                                ? src.Status.HasValue
+                            : opts.DestinationMember.Name == nameof(Vehicle.Type)
+                                ? src.Type.HasValue
+                            : opts.DestinationMember.Name == nameof(Vehicle.Color)
+                                ? src.Color.HasValue
+                            : srcMember != null
+                                && !(srcMember is Guid guid && guid == Guid.Empty)
+                                && !(srcMember is DateTime dt && dt == default)
                     )
                 );
         }
