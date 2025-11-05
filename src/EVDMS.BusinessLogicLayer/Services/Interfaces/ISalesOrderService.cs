@@ -15,7 +15,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Interfaces
             string? sortBy = null,
             string? sortOrder = null,
             DateTime? startDate = null,
-            DateTime? endDate = null
+            DateTime? endDate = null,
+            Guid? dealerId = null
         );
         Task<CsvExportResult> ExportDealerStaffSalesReportToCsvAsync(
             DateTime? startDate = null,

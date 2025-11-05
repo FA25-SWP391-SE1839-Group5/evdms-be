@@ -68,7 +68,8 @@ namespace EVDMS.API.Controllers
             [FromQuery] string? sortBy = null,
             [FromQuery] string? sortOrder = null,
             [FromQuery] DateTime? startDate = null,
-            [FromQuery] DateTime? endDate = null
+            [FromQuery] DateTime? endDate = null,
+            [FromQuery] Guid? dealerId = null
         )
         {
             var result = await _salesOrderService.GetDealerStaffSalesReportAsync(
@@ -77,7 +78,8 @@ namespace EVDMS.API.Controllers
                 sortBy,
                 sortOrder,
                 startDate,
-                endDate
+                endDate,
+                dealerId
             );
             return Ok(new ApiResponse<PaginatedResult<DealerStaffSalesReportDto>>(result));
         }

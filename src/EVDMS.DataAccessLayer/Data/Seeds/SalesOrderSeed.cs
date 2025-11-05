@@ -13,7 +13,7 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                     Id = Guid.Parse("90000000-0000-0000-0000-000000000001"),
                     QuotationId = Guid.Parse("70000000-0000-0000-0000-000000000001"),
                     DealerId = Guid.Parse("30000000-0000-0000-0000-000000000001"),
-                    UserId = Guid.Parse("20000000-0000-0000-0000-000000000002"),
+                    UserId = Guid.Parse("20000000-0000-0000-0000-000000000003"),
                     CustomerId = Guid.Parse("10000000-0000-0000-0000-000000000001"),
                     VehicleId = Guid.Parse("80000000-0000-0000-0000-000000000001"),
                     Date = DateTime.SpecifyKind(

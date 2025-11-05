@@ -79,6 +79,8 @@ namespace EVDMS.Common.Dtos
 
     public class DealerStaffSalesReportDto
     {
+        public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public Guid StaffId { get; set; }
         public string StaffName { get; set; } = string.Empty;
         public int TotalOrders { get; set; }

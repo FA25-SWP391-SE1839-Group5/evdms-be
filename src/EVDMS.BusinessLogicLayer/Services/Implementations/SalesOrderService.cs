@@ -172,22 +172,33 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             string? sortBy = null,
             string? sortOrder = null,
             DateTime? startDate = null,
-            DateTime? endDate = null
+            DateTime? endDate = null,
+            Guid? dealerId = null
         )
         {
             var orders = await _repository.FindAsync(o =>
                 (o.Status == SalesOrderStatus.Confirmed || o.Status == SalesOrderStatus.Delivered)
                 && (!startDate.HasValue || o.Date >= startDate.Value)
                 && (!endDate.HasValue || o.Date <= endDate.Value)
+                && (!dealerId.HasValue || o.DealerId == dealerId.Value)
             );
 
             var grouped = orders.GroupBy(o => o.UserId).ToList();
             var userIds = grouped.Select(g => g.Key).ToList();
 
-            var users = await _userRepository.FindAsync(u => userIds.Contains(u.Id));
+            // Only include users with DealerStaff role
+            var users = await _userRepository.FindAsync(u =>
+                userIds.Contains(u.Id) && u.Role == UserRole.DealerStaff
+            );
             var staffNames = users.ToDictionary(u => u.Id, u => u.FullName);
+            var staffIds = users.Select(u => u.Id).ToHashSet();
+
+            var dealerIds = grouped.SelectMany(g => g.Select(o => o.DealerId)).Distinct().ToList();
+            var dealers = await _dealerRepository.FindAsync(d => dealerIds.Contains(d.Id));
+            var dealerNames = dealers.ToDictionary(d => d.Id, d => d.Name);
 
             var result = grouped
+                .Where(g => staffIds.Contains(g.Key))
                 .Select(g =>
                 {
                     var firstOrder = g.First();
@@ -195,6 +206,10 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                     dto.StaffId = g.Key;
                     dto.StaffName = staffNames.TryGetValue(g.Key, out var name)
                         ? name
+                        : string.Empty;
+                    dto.DealerId = firstOrder.DealerId;
+                    dto.DealerName = dealerNames.TryGetValue(firstOrder.DealerId, out var dname)
+                        ? dname
                         : string.Empty;
                     dto.TotalOrders = g.Count();
                     dto.TotalAmount = g.Sum(o =>
