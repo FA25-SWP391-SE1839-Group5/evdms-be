@@ -28,7 +28,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(q => q.Customer)
                 .WithMany(c => c.Quotations)
                 .HasForeignKey(q => q.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasData(QuotationSeed.Quotations);
         }
     }

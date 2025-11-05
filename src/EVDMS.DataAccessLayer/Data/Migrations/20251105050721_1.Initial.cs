@@ -158,7 +158,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_feedbacks_dealers_dealer_id",
@@ -464,7 +464,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_quotations_dealers_dealer_id",
@@ -600,7 +600,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_sales_orders_dealers_dealer_id",
@@ -614,7 +614,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.quotation_id,
                         principalTable: "quotations",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_sales_orders_users_user_id",
@@ -665,7 +665,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.customer_id,
                         principalTable: "customers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_test_drives_dealers_dealer_id",
@@ -715,7 +715,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.sales_order_id,
                         principalTable: "sales_orders",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );

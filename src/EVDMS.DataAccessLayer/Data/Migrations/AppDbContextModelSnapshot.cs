@@ -1901,7 +1901,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("Feedbacks")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_feedbacks_customers_customer_id");
 
@@ -1934,7 +1934,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.SalesOrder", "SalesOrder")
                         .WithMany("Payments")
                         .HasForeignKey("SalesOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_payments_sales_orders_sales_order_id");
 
@@ -1957,7 +1957,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("Quotations")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_quotations_customers_customer_id");
 
@@ -2008,7 +2008,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("SalesOrders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_customers_customer_id");
 
@@ -2022,7 +2022,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Quotation", "Quotation")
                         .WithMany("SalesOrders")
                         .HasForeignKey("QuotationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_quotations_quotation_id");
 
@@ -2056,7 +2056,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("TestDrives")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_test_drives_customers_customer_id");
 

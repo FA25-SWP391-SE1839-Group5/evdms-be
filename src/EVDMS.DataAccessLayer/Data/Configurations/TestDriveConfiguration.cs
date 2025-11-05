@@ -15,7 +15,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(td => td.Customer)
                 .WithMany(c => c.TestDrives)
                 .HasForeignKey(td => td.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(td => td.Dealer)
                 .WithMany(d => d.TestDrives)
