@@ -70,16 +70,10 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         Exterior =
                         [
                             FeatureType.AlloyWheels,
-                            FeatureType.LedHeadlights,
                             FeatureType.RoofRails,
                             FeatureType.Sunroof,
                         ],
-                        Seating =
-                        [
-                            FeatureType.HeatedSeats,
-                            FeatureType.VentilatedSeats,
-                            FeatureType.ThirdRowSeating,
-                        ],
+                        Seating = [FeatureType.VentilatedSeats, FeatureType.ThirdRowSeating],
                     },
                 },
                 new VehicleVariant
@@ -142,11 +136,10 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         Exterior =
                         [
                             FeatureType.AlloyWheels,
-                            FeatureType.LedHeadlights,
                             FeatureType.RoofRails,
                             FeatureType.Sunroof,
                         ],
-                        Seating = [FeatureType.HeatedSeats, FeatureType.ThirdRowSeating],
+                        Seating = [FeatureType.VentilatedSeats, FeatureType.ThirdRowSeating],
                     },
                 },
                 // Tesla Model 3
@@ -188,13 +181,30 @@ namespace EVDMS.DataAccessLayer.Data.Seeds
                         Safety =
                         [
                             FeatureType.AutomaticEmergencyBraking,
+                            FeatureType.BlindSpotMonitor,
                             FeatureType.LaneDepartureWarning,
                             FeatureType.BackupCamera,
                         ],
-                        Convenience = [FeatureType.KeylessEntry, FeatureType.PowerLiftgate],
-                        Entertainment = [FeatureType.PremiumSoundSystem],
-                        Exterior = [FeatureType.LedHeadlights, FeatureType.AlloyWheels],
-                        Seating = [FeatureType.HeatedSeats],
+                        Convenience =
+                        [
+                            FeatureType.KeylessEntry,
+                            FeatureType.PowerLiftgate,
+                            FeatureType.AdaptiveCruiseControl,
+                        ],
+                        Entertainment =
+                        [
+                            FeatureType.AppleCarPlay,
+                            FeatureType.AndroidAuto,
+                            FeatureType.PremiumSoundSystem,
+                            FeatureType.WifiHotspot,
+                        ],
+                        Exterior =
+                        [
+                            FeatureType.AlloyWheels,
+                            FeatureType.RoofRails,
+                            FeatureType.Sunroof,
+                        ],
+                        Seating = [FeatureType.VentilatedSeats, FeatureType.ThirdRowSeating],
                     },
                 },
             ];
