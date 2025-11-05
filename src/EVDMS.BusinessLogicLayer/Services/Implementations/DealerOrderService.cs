@@ -89,8 +89,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 await _dealerOrderRepository.GetByIdAsync(orderId)
                 ?? throw new KeyNotFoundException($"Order {orderId} not found.");
 
-            if (order.Status != DealerOrderStatus.Confirmed)
-                throw new InvalidOperationException("Order must be confirmed before delivery.");
+            if (order.Status != DealerOrderStatus.Paid)
+                throw new InvalidOperationException("Order must be paid before delivery.");
 
             var variant =
                 await _vehicleVariantRepository.GetByIdAsync(order.VariantId)

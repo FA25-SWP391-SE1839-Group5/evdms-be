@@ -131,6 +131,11 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 ?? throw new KeyNotFoundException(
                     $"DealerOrder with ID {payment.DealerOrderId} does not exist."
                 );
+            // Set dealer order status to Paid
+            dealerOrder.Status = DealerOrderStatus.Paid;
+            _dealerOrderRepository.Update(dealerOrder);
+            await _dealerOrderRepository.SaveChangesAsync();
+
             var contract =
                 (
                     await _dealerContractRepository.FindAsync(c =>
