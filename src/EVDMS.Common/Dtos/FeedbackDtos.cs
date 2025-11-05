@@ -7,7 +7,9 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
+        public string CustomerFullName { get; set; } = string.Empty;
         public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public FeedbackStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }

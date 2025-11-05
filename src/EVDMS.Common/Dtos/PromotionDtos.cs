@@ -7,6 +7,7 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid? DealerId { get; set; }
+        public string? DealerName { get; set; }
         public PromotionType Type { get; set; }
         public string Description { get; set; } = string.Empty;
         public decimal DiscountPercent { get; set; }

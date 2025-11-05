@@ -17,12 +17,12 @@ namespace EVDMS.DataAccessLayer.Entities
         public static readonly string[] SearchableColumns =
         [
             "DealerId",
+            "DealerName",
             "VariantId",
+            "VariantName",
             "Quantity",
             "Color",
             "Status",
-            "DealerName",
-            "VariantName",
         ];
     }
 }

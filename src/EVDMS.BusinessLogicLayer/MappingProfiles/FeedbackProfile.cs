@@ -8,7 +8,12 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public FeedbackProfile()
         {
-            CreateMap<Feedback, FeedbackDto>();
+            CreateMap<Feedback, FeedbackDto>()
+                .ForMember(
+                    dest => dest.CustomerFullName,
+                    opt => opt.MapFrom(src => src.Customer.FullName)
+                )
+                .ForMember(dest => dest.DealerName, opt => opt.MapFrom(src => src.Dealer.Name));
             CreateMap<CreateFeedbackDto, Feedback>(MemberList.Source);
             CreateMap<UpdateFeedbackDto, Feedback>(MemberList.Source);
             CreateMap<PatchFeedbackDto, Feedback>(MemberList.Source)
