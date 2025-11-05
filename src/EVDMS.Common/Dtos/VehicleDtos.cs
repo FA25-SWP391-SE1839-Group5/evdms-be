@@ -7,6 +7,7 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid VariantId { get; set; }
+        public string VariantName { get; set; } = string.Empty;
         public Guid DealerId { get; set; }
         public string Vin { get; set; } = string.Empty;
         public VehicleColor Color { get; set; }

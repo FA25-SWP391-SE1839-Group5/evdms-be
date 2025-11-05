@@ -8,7 +8,11 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public VehicleProfile()
         {
-            CreateMap<Vehicle, VehicleDto>();
+            CreateMap<Vehicle, VehicleDto>()
+                .ForMember(
+                    dest => dest.VariantName,
+                    opt => opt.MapFrom(src => src.VehicleVariant.Name)
+                );
             CreateMap<CreateVehicleDto, Vehicle>(MemberList.Source);
             CreateMap<UpdateVehicleDto, Vehicle>(MemberList.Source);
             CreateMap<PatchVehicleDto, Vehicle>(MemberList.Source)
