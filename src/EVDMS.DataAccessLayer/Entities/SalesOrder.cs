@@ -23,9 +23,13 @@ namespace EVDMS.DataAccessLayer.Entities
         [
             "QuotationId",
             "DealerId",
+            "DealerName",
             "UserId",
+            "UserFullName",
             "CustomerId",
+            "CustomerFullName",
             "VehicleId",
+            "VehicleVin",
             "Date",
             "Status",
         ];
