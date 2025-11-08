@@ -4,33 +4,7 @@ setlocal
 echo Running Entity Framework Core commands...
 echo.
 
-REM --- Pre-migration Cleanup ---
-REM Delete the existing Migrations folder to ensure a clean start for new migrations.
-echo Deleting old migrations folder: .\src\EVDMS.DataAccessLayer\Data\Migrations...
-if exist ".\src\EVDMS.DataAccessLayer\Data\Migrations" (
-    rmdir /s /q ".\src\EVDMS.DataAccessLayer\Data\Migrations"
-    if %errorlevel% neq 0 (
-        echo Error deleting migrations folder. Please check permissions or if it's in use.
-        goto :eof
-    ) else (
-        echo Old migrations folder deleted successfully.
-    )
-) else (
-    echo Migrations folder not found, skipping deletion.
-)
-echo.
-
-REM --- 1. Run Migrations ---
-echo Adding new migration "1.Initial"...
-dotnet ef migrations add 1.Initial --project src\EVDMS.DataAccessLayer --startup-project src\EVDMS.API --output-dir Data/Migrations
-if %errorlevel% neq 0 (
-    echo Error adding migration. Exiting.
-    goto :eof
-)
-echo Migration "1.Initial" added successfully.
-echo.
-
-REM --- 2. Drop Database ---
+REM --- 1. Drop Database ---
 REM This command drops the database based on your DbContext's connection string.
 REM !!! WARNING: This will delete all data in your database. Use with caution. !!!
 echo Dropping existing database...
@@ -43,7 +17,7 @@ if %errorlevel% neq 0 (
 )
 echo.
 
-REM --- 3. Update Database ---
+REM --- 2. Update Database ---
 echo Updating database with latest migrations...
 dotnet ef database update --project src\EVDMS.DataAccessLayer --startup-project src\EVDMS.API
 if %errorlevel% neq 0 (
