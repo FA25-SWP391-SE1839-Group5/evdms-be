@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
@@ -39,37 +40,6 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 .Include(so => so.Vehicle)
                 .AsQueryable();
 
-            // Custom search for DealerName, UserFullName, CustomerFullName, VehicleVin
-            bool searchedDealerName = false,
-                searchedUserFullName = false,
-                searchedCustomerFullName = false,
-                searchedVehicleVin = false;
-            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
-            {
-                var searchLower = search.ToLower();
-                searchedDealerName = allowedColumns.Contains("DealerName");
-                searchedUserFullName = allowedColumns.Contains("UserFullName");
-                searchedCustomerFullName = allowedColumns.Contains("CustomerFullName");
-                searchedVehicleVin = allowedColumns.Contains("VehicleVin");
-                if (
-                    searchedDealerName
-                    || searchedUserFullName
-                    || searchedCustomerFullName
-                    || searchedVehicleVin
-                )
-                {
-                    query = query.Where(e =>
-                        (searchedDealerName && e.Dealer.Name.ToLower().Contains(searchLower))
-                        || (searchedUserFullName && e.User.FullName.ToLower().Contains(searchLower))
-                        || (
-                            searchedCustomerFullName
-                            && e.Customer.FullName.ToLower().Contains(searchLower)
-                        )
-                        || (searchedVehicleVin && e.Vehicle.Vin.ToLower().Contains(searchLower))
-                    );
-                }
-            }
-
             // Custom sort for DealerName, UserFullName, CustomerFullName, VehicleVin
             if (!string.IsNullOrEmpty(sortBy))
             {
@@ -109,55 +79,6 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 query = ApplySorting(query, sortBy, sortOrder);
             }
 
-            // Custom filter for DealerName, UserFullName, CustomerFullName, VehicleVin (case-insensitive)
-            if (filters != null && allowedColumns != null)
-            {
-                var filtersCI = filters.ToDictionary(
-                    kv => kv.Key.ToLowerInvariant(),
-                    kv => kv.Value
-                );
-                if (
-                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
-                    && allowedColumns.Any(c =>
-                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
-                    )
-                )
-                {
-                    var filterLower = dealerNameFilter.ToLower();
-                    query = query.Where(e => e.Dealer.Name.ToLower().Contains(filterLower));
-                }
-                if (
-                    filtersCI.TryGetValue("userfullname", out var userFullNameFilter)
-                    && allowedColumns.Any(c =>
-                        c.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)
-                    )
-                )
-                {
-                    var filterLower = userFullNameFilter.ToLower();
-                    query = query.Where(e => e.User.FullName.ToLower().Contains(filterLower));
-                }
-                if (
-                    filtersCI.TryGetValue("customerfullname", out var customerFullNameFilter)
-                    && allowedColumns.Any(c =>
-                        c.Equals("CustomerFullName", StringComparison.OrdinalIgnoreCase)
-                    )
-                )
-                {
-                    var filterLower = customerFullNameFilter.ToLower();
-                    query = query.Where(e => e.Customer.FullName.ToLower().Contains(filterLower));
-                }
-                if (
-                    filtersCI.TryGetValue("vehiclevin", out var vehicleVinFilter)
-                    && allowedColumns.Any(c =>
-                        c.Equals("VehicleVin", StringComparison.OrdinalIgnoreCase)
-                    )
-                )
-                {
-                    var filterLower = vehicleVinFilter.ToLower();
-                    query = query.Where(e => e.Vehicle.Vin.ToLower().Contains(filterLower));
-                }
-            }
-
             // Use base repository's filtering and searching for other columns (excluding custom ones)
             query = ApplyFilters(
                 query,
@@ -170,10 +91,14 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 )
             );
             if (
-                !searchedDealerName
-                && !searchedUserFullName
-                && !searchedCustomerFullName
-                && !searchedVehicleVin
+                string.IsNullOrWhiteSpace(search)
+                || allowedColumns == null
+                || (
+                    !allowedColumns.Contains("DealerName")
+                    && !allowedColumns.Contains("UserFullName")
+                    && !allowedColumns.Contains("CustomerFullName")
+                    && !allowedColumns.Contains("VehicleVin")
+                )
             )
             {
                 query = ApplySearch(
@@ -188,8 +113,135 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 );
             }
 
-            var totalCount = await query.CountAsync();
-            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            // Materialize the query ONCE
+            var queryList = await query.ToListAsync();
+
+            // In-memory diacritic-insensitive search for DealerName, UserFullName, CustomerFullName, VehicleVin
+            if (
+                !string.IsNullOrWhiteSpace(search)
+                && allowedColumns != null
+                && (
+                    allowedColumns.Contains("DealerName")
+                    || allowedColumns.Contains("UserFullName")
+                    || allowedColumns.Contains("CustomerFullName")
+                    || allowedColumns.Contains("VehicleVin")
+                )
+            )
+            {
+                var searchNoDiacritics = DiacriticUtils.RemoveDiacritics(search.ToLower());
+                queryList = queryList
+                    .Where(e =>
+                        (
+                            allowedColumns.Contains("DealerName")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Dealer.Name.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                        || (
+                            allowedColumns.Contains("UserFullName")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.User.FullName.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                        || (
+                            allowedColumns.Contains("CustomerFullName")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Customer.FullName.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                        || (
+                            allowedColumns.Contains("VehicleVin")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Vehicle.Vin.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                    )
+                    .ToList();
+            }
+
+            // In-memory diacritic-insensitive filter for DealerName, UserFullName, CustomerFullName, VehicleVin
+            if (filters != null && allowedColumns != null)
+            {
+                var filtersCI = filters.ToDictionary(
+                    kv => kv.Key.ToLowerInvariant(),
+                    kv => kv.Value
+                );
+                if (
+                    filtersCI.TryGetValue("dealername", out var dealerNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("DealerName", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        dealerNameFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Dealer.Name.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
+                }
+                if (
+                    filtersCI.TryGetValue("userfullname", out var userFullNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("UserFullName", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        userFullNameFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.User.FullName.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
+                }
+                if (
+                    filtersCI.TryGetValue("customerfullname", out var customerFullNameFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("CustomerFullName", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        customerFullNameFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Customer.FullName.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
+                }
+                if (
+                    filtersCI.TryGetValue("vehiclevin", out var vehicleVinFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("VehicleVin", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        vehicleVinFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Vehicle.Vin.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
+                }
+            }
+
+            var totalCount = queryList.Count;
+            var items = queryList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return (items, totalCount);
         }
     }
