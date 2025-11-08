@@ -28,6 +28,7 @@ namespace EVDMS.DataAccessLayer.Entities
             "CustomerFullName",
             "VariantId",
             "VariantName",
+            "Color",
             "TotalAmount",
             "Status",
         ];

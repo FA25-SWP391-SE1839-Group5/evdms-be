@@ -1,4 +1,6 @@
 using System.Linq.Expressions;
+using EVDMS.Common.Helpers;
+using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
@@ -36,6 +38,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
             {
                 var searchLower = search.ToLower();
+                var searchNoDiacritics = DiacriticUtils.RemoveDiacritics(searchLower);
                 searchedDealerName = allowedColumns.Contains("DealerName");
                 searchedUserFullName = allowedColumns.Contains("UserFullName");
                 searchedCustomerFullName = allowedColumns.Contains("CustomerFullName");
@@ -47,15 +50,22 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     || searchedVariantName
                 )
                 {
-                    query = query.Where(e =>
-                        (searchedDealerName && e.Dealer.Name.ToLower().Contains(searchLower))
-                        || (searchedUserFullName && e.User.FullName.ToLower().Contains(searchLower))
-                        || (
-                            searchedCustomerFullName
-                            && e.Customer.FullName.ToLower().Contains(searchLower)
-                        )
-                        || (searchedVariantName && e.Variant.Name.ToLower().Contains(searchLower))
-                    );
+                    // If searching CustomerFullName, do not restrict SQL query by other columns
+                    if (!searchedCustomerFullName)
+                    {
+                        query = query.Where(e =>
+                            (searchedDealerName && e.Dealer.Name.ToLower().Contains(searchLower))
+                            || (
+                                searchedUserFullName
+                                && e.User.FullName.ToLower().Contains(searchLower)
+                            )
+                            || (
+                                searchedVariantName
+                                && e.Variant.Name.ToLower().Contains(searchLower)
+                            )
+                        );
+                    }
+                    // Otherwise, fetch all and filter in memory
                 }
             }
 
@@ -126,16 +136,6 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     query = query.Where(e => e.User.FullName.ToLower().Contains(filterLower));
                 }
                 if (
-                    filtersCI.TryGetValue("customerfullname", out var customerFullNameFilter)
-                    && allowedColumns.Any(c =>
-                        c.Equals("CustomerFullName", StringComparison.OrdinalIgnoreCase)
-                    )
-                )
-                {
-                    var filterLower = customerFullNameFilter.ToLower();
-                    query = query.Where(e => e.Customer.FullName.ToLower().Contains(filterLower));
-                }
-                if (
                     filtersCI.TryGetValue("variantname", out var variantNameFilter)
                     && allowedColumns.Any(c =>
                         c.Equals("VariantName", StringComparison.OrdinalIgnoreCase)
@@ -177,8 +177,60 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 );
             }
 
-            var totalCount = await query.CountAsync();
-            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            // Materialize the query
+            var queryList = await query.ToListAsync();
+
+            // In-memory filter for diacritic-insensitive CustomerFullName search
+            if (
+                !string.IsNullOrWhiteSpace(search)
+                && allowedColumns != null
+                && searchedCustomerFullName
+            )
+            {
+                var searchNoDiacritics = DiacriticUtils.RemoveDiacritics(search.ToLower());
+                queryList = queryList
+                    .Where(e =>
+                        DiacriticUtils
+                            .RemoveDiacritics(e.Customer.FullName.ToLower())
+                            .Contains(searchNoDiacritics)
+                        || (
+                            searchedDealerName && e.Dealer.Name.ToLower().Contains(search.ToLower())
+                        )
+                        || (
+                            searchedUserFullName
+                            && e.User.FullName.ToLower().Contains(search.ToLower())
+                        )
+                        || (
+                            searchedVariantName
+                            && e.Variant.Name.ToLower().Contains(search.ToLower())
+                        )
+                    )
+                    .ToList();
+            }
+            // In-memory filter for diacritic-insensitive CustomerFullName filter
+            if (
+                filters != null
+                && allowedColumns != null
+                && filters.TryGetValue("customerfullname", out var customerFullNameFilter)
+                && allowedColumns.Any(c =>
+                    c.Equals("CustomerFullName", StringComparison.OrdinalIgnoreCase)
+                )
+            )
+            {
+                var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                    customerFullNameFilter.ToLower()
+                );
+                queryList = queryList
+                    .Where(e =>
+                        DiacriticUtils
+                            .RemoveDiacritics(e.Customer.FullName.ToLower())
+                            .Contains(filterNoDiacritics)
+                    )
+                    .ToList();
+            }
+
+            var totalCount = queryList.Count;
+            var items = queryList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return (items, totalCount);
         }
     }
