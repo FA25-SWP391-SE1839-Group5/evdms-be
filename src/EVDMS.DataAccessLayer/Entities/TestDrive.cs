@@ -17,7 +17,7 @@ namespace EVDMS.DataAccessLayer.Entities
         public static readonly string[] SearchableColumns =
         [
             "CustomerId",
-            "CustomerFullname",
+            "CustomerFullName",
             "DealerId",
             "DealerName",
             "VehicleId",
