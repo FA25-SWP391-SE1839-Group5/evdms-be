@@ -165,5 +165,14 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             var itemsDb = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
             return (itemsDb, totalCountDb);
         }
+
+        public override async Task<TestDrive?> GetByIdAsync(Guid id)
+        {
+            return await _dbSet
+                .Include(td => td.Customer)
+                .Include(td => td.Dealer)
+                .Include(td => td.Vehicle)
+                .FirstOrDefaultAsync(td => td.Id == id);
+        }
     }
 }
