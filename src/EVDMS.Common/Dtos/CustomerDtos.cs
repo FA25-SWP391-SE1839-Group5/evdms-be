@@ -21,6 +21,11 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         [Phone]
+        [StringLength(
+            12,
+            MinimumLength = 9,
+            ErrorMessage = "Phone number must be between 9 and 12 digits."
+        )]
         public required string Phone { get; set; }
 
         [Required]
@@ -40,6 +45,11 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         [Phone]
+        [StringLength(
+            12,
+            MinimumLength = 9,
+            ErrorMessage = "Phone number must be between 9 and 12 digits."
+        )]
         public required string Phone { get; set; }
 
         [Required]
@@ -56,6 +66,11 @@ namespace EVDMS.Common.Dtos
         public string? FullName { get; set; }
 
         [Phone]
+        [StringLength(
+            12,
+            MinimumLength = 9,
+            ErrorMessage = "Phone number must be between 9 and 12 digits."
+        )]
         public string? Phone { get; set; }
 
         [EmailAddress]
