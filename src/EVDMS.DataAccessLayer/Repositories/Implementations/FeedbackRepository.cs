@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Data;
 using EVDMS.DataAccessLayer.Entities;
 using EVDMS.DataAccessLayer.Repositories.Interfaces;
@@ -22,25 +23,6 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
         )
         {
             var query = _dbSet.Include(f => f.Customer).Include(f => f.Dealer).AsQueryable();
-
-            // Custom search for CustomerFullName, DealerName
-            bool searchedCustomerFullName = false,
-                searchedDealerName = false;
-            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
-            {
-                var searchLower = search.ToLower();
-                searchedCustomerFullName = allowedColumns.Contains("CustomerFullName");
-                searchedDealerName = allowedColumns.Contains("DealerName");
-                if (searchedCustomerFullName || searchedDealerName)
-                {
-                    query = query.Where(e =>
-                        (
-                            searchedCustomerFullName
-                            && e.Customer.FullName.ToLower().Contains(searchLower)
-                        ) || (searchedDealerName && e.Dealer.Name.ToLower().Contains(searchLower))
-                    );
-                }
-            }
 
             // Custom sort for CustomerFullName, DealerName
             if (!string.IsNullOrEmpty(sortBy))
@@ -67,7 +49,77 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 query = ApplySorting(query, sortBy, sortOrder);
             }
 
-            // Custom filter for CustomerFullName, DealerName (case-insensitive)
+            // Use base repository's filtering and searching for other columns (excluding custom ones)
+            query = ApplyFilters(
+                query,
+                filters,
+                allowedColumns?.Where(c =>
+                    !string.Equals(c, "CustomerFullName", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                    && !string.Equals(c, "Content", StringComparison.OrdinalIgnoreCase)
+                )
+            );
+            if (
+                string.IsNullOrWhiteSpace(search)
+                || allowedColumns == null
+                || (
+                    !allowedColumns.Contains("CustomerFullName")
+                    && !allowedColumns.Contains("DealerName")
+                    && !allowedColumns.Contains("Content")
+                )
+            )
+            {
+                query = ApplySearch(
+                    query,
+                    search,
+                    allowedColumns?.Where(c =>
+                        !string.Equals(c, "CustomerFullName", StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                        && !string.Equals(c, "Content", StringComparison.OrdinalIgnoreCase)
+                    )
+                );
+            }
+
+            // Materialize the query ONCE
+            var queryList = await query.ToListAsync();
+
+            // In-memory diacritic-insensitive search for CustomerFullName, DealerName, and Content
+            if (
+                !string.IsNullOrWhiteSpace(search)
+                && allowedColumns != null
+                && (
+                    allowedColumns.Contains("CustomerFullName")
+                    || allowedColumns.Contains("DealerName")
+                    || allowedColumns.Contains("Content")
+                )
+            )
+            {
+                var searchNoDiacritics = DiacriticUtils.RemoveDiacritics(search.ToLower());
+                queryList = queryList
+                    .Where(e =>
+                        (
+                            allowedColumns.Contains("CustomerFullName")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Customer.FullName.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                        || (
+                            allowedColumns.Contains("DealerName")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Dealer.Name.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                        || (
+                            allowedColumns.Contains("Content")
+                            && DiacriticUtils
+                                .RemoveDiacritics(e.Content.ToLower())
+                                .Contains(searchNoDiacritics)
+                        )
+                    )
+                    .ToList();
+            }
+
+            // In-memory diacritic-insensitive filter for CustomerFullName, DealerName, and Content
             if (filters != null && allowedColumns != null)
             {
                 var filtersCI = filters.ToDictionary(
@@ -81,8 +133,16 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     )
                 )
                 {
-                    var filterLower = customerFullNameFilter.ToLower();
-                    query = query.Where(e => e.Customer.FullName.ToLower().Contains(filterLower));
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        customerFullNameFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Customer.FullName.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
                 }
                 if (
                     filtersCI.TryGetValue("dealername", out var dealerNameFilter)
@@ -91,34 +151,39 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     )
                 )
                 {
-                    var filterLower = dealerNameFilter.ToLower();
-                    query = query.Where(e => e.Dealer.Name.ToLower().Contains(filterLower));
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        dealerNameFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Dealer.Name.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
+                }
+                if (
+                    filtersCI.TryGetValue("content", out var contentFilter)
+                    && allowedColumns.Any(c =>
+                        c.Equals("Content", StringComparison.OrdinalIgnoreCase)
+                    )
+                )
+                {
+                    var filterNoDiacritics = DiacriticUtils.RemoveDiacritics(
+                        contentFilter.ToLower()
+                    );
+                    queryList = queryList
+                        .Where(e =>
+                            DiacriticUtils
+                                .RemoveDiacritics(e.Content.ToLower())
+                                .Contains(filterNoDiacritics)
+                        )
+                        .ToList();
                 }
             }
 
-            // Use base repository's filtering and searching for other columns (excluding custom ones)
-            query = ApplyFilters(
-                query,
-                filters,
-                allowedColumns?.Where(c =>
-                    !string.Equals(c, "CustomerFullName", StringComparison.OrdinalIgnoreCase)
-                    && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
-                )
-            );
-            if (!searchedCustomerFullName && !searchedDealerName)
-            {
-                query = ApplySearch(
-                    query,
-                    search,
-                    allowedColumns?.Where(c =>
-                        !string.Equals(c, "CustomerFullName", StringComparison.OrdinalIgnoreCase)
-                        && !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
-                    )
-                );
-            }
-
-            var totalCount = await query.CountAsync();
-            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var totalCount = queryList.Count;
+            var items = queryList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             return (items, totalCount);
         }
     }
