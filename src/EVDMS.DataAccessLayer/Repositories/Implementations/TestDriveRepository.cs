@@ -34,7 +34,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
             {
                 var searchLower = search.ToLower();
-                searchedCustomerFullName = allowedColumns.Contains("CustomerFullName");
+                searchedCustomerFullName = allowedColumns.Contains("CustomerFullname");
                 searchedDealerName = allowedColumns.Contains("DealerName");
                 searchedVehicleVin = allowedColumns.Contains("VehicleVin");
                 if (searchedCustomerFullName || searchedDealerName || searchedVehicleVin)
