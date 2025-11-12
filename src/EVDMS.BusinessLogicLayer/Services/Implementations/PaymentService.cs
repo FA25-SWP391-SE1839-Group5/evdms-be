@@ -59,9 +59,9 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             }
             else if (dto.Method == PaymentMethod.Installment)
             {
-                var previousPayments = (await _repository.FindAsync(p =>
-                    p.SalesOrderId == dto.SalesOrderId
-                )).ToList();
+                var previousPayments = (
+                    await _repository.FindAsync(p => p.SalesOrderId == dto.SalesOrderId)
+                    ).ToList();
 
                 decimal previousSum = previousPayments.Sum(p => p.Amount);
                 decimal totalPaid = previousSum + dto.Amount;
