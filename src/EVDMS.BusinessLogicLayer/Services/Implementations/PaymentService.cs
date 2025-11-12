@@ -51,6 +51,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
             if (dto.Method == PaymentMethod.Upfront)
             {
+                // Upfront payment covers full amount
                 payment.Amount = fullAmount;
                 salesOrder.Status = SalesOrderStatus.Confirmed;
                 _salesOrderRepository.Update(salesOrder);
@@ -58,10 +59,22 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             }
             else if (dto.Method == PaymentMethod.Installment)
             {
-                var previousPayments = await _repository.FindAsync(p =>
+                var previousPayments = (await _repository.FindAsync(p =>
                     p.SalesOrderId == dto.SalesOrderId
-                );
-                decimal totalPaid = previousPayments.Sum(p => p.Amount) + dto.Amount;
+                )).ToList();
+
+                decimal previousSum = previousPayments.Sum(p => p.Amount);
+                decimal totalPaid = previousSum + dto.Amount;
+
+                
+                decimal minInstallment = 0.1m * fullAmount;
+                if (dto.Amount < minInstallment)
+                {
+                    throw new InvalidOperationException(
+                        $"Installment amount must be at least {minInstallment} (10% of total amount)."
+                    );
+                }
+
                 if (totalPaid >= fullAmount)
                 {
                     salesOrder.Status = SalesOrderStatus.Confirmed;
