@@ -259,7 +259,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task<CsvExportResult> ExportDealerStaffSalesReportToCsvAsync(
             DateTime? startDate = null,
-            DateTime? endDate = null
+            DateTime? endDate = null,
+            Guid? dealerId = null
         )
         {
             var result = await GetDealerStaffSalesReportAsync(
@@ -268,7 +269,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
                 null,
                 null,
                 startDate,
-                endDate
+                endDate,
+                dealerId
             );
             var csv =
                 "StaffId,StaffName,TotalOrders,TotalAmount (USD)\n"

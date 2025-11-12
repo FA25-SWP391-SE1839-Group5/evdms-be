@@ -87,12 +87,14 @@ namespace EVDMS.API.Controllers
         [HttpGet("dealer-staff-sales/export")]
         public async Task<IActionResult> ExportDealerStaffSalesReport(
             [FromQuery] DateTime? startDate = null,
-            [FromQuery] DateTime? endDate = null
+            [FromQuery] DateTime? endDate = null,
+            [FromQuery] Guid? dealerId = null
         )
         {
             var result = await _salesOrderService.ExportDealerStaffSalesReportToCsvAsync(
                 startDate,
-                endDate
+                endDate,
+                dealerId
             );
             var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
             var bom = Encoding.UTF8.GetPreamble();
