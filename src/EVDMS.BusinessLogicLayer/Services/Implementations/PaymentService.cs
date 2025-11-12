@@ -61,14 +61,14 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             {
                 var previousPayments = (
                     await _repository.FindAsync(p => p.SalesOrderId == dto.SalesOrderId)
-                    ).ToList();
+                ).ToList();
 
                 decimal previousSum = previousPayments.Sum(p => p.Amount);
                 decimal totalPaid = previousSum + dto.Amount;
-
-                
+                decimal remaining = fullAmount - previousSum;
                 decimal minInstallment = 0.1m * fullAmount;
-                if (dto.Amount < minInstallment)
+
+                if (dto.Amount < minInstallment && remaining > minInstallment)
                 {
                     throw new InvalidOperationException(
                         $"Installment amount must be at least {minInstallment} (10% of total amount)."
