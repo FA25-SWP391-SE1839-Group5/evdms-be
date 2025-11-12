@@ -479,5 +479,28 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             );
             return new CsvExportResult { FileName = fileName, CsvContent = csv };
         }
+
+        public override async Task<bool> PatchAsync(Guid id, PatchSalesOrderDto dto)
+        {
+            // Patch the sales order as usual
+            var patched = await base.PatchAsync(id, dto);
+
+            if (patched && dto.Status.HasValue && dto.Status.Value == SalesOrderStatus.Canceled)
+            {
+                var salesOrder = await _repository.GetByIdAsync(id);
+                if (salesOrder != null)
+                {
+                    var vehicle = await _vehicleRepository.GetByIdAsync(salesOrder.VehicleId);
+                    if (vehicle != null)
+                    {
+                        vehicle.Status = VehicleStatus.Available;
+                        _vehicleRepository.Update(vehicle);
+                        await _vehicleRepository.SaveChangesAsync();
+                    }
+                }
+            }
+
+            return patched;
+        }
     }
 }
