@@ -30,6 +30,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 searchedDealerName = allowedColumns.Contains("DealerName");
                 if (searchedDealerName)
                 {
+                    // Search DealerName
                     query = query.Where(e =>
                         e.Dealer != null && e.Dealer.Name.ToLower().Contains(searchLower)
                     );
@@ -76,7 +77,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                 }
             }
 
-            // Use base repository's filtering and searching for other columns (excluding DealerName for search)
+            // Use base repository's filtering for other columns (excluding DealerName for filter)
             query = ApplyFilters(
                 query,
                 filters,
@@ -84,7 +85,35 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
                 )
             );
-            if (!searchedDealerName)
+
+            // Search both DealerName and other columns if DealerName is allowed
+            if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
+            {
+                var otherColumns = allowedColumns.Where(c =>
+                    !string.Equals(c, "DealerName", StringComparison.OrdinalIgnoreCase)
+                );
+                // If DealerName was searched, also search other columns and combine results
+                if (searchedDealerName)
+                {
+                    // Get IDs from DealerName search
+                    var dealerNameIds = query.Select(e => e.Id).ToList();
+                    // Search other columns
+                    var otherQuery = ApplySearch(
+                        _dbSet.Include(p => p.Dealer),
+                        search,
+                        otherColumns
+                    );
+                    var otherIds = otherQuery.Select(e => e.Id).ToList();
+                    // Union results
+                    var allIds = dealerNameIds.Union(otherIds).ToList();
+                    query = _dbSet.Include(p => p.Dealer).Where(e => allIds.Contains(e.Id));
+                }
+                else
+                {
+                    query = ApplySearch(query, search, otherColumns);
+                }
+            }
+            else if (!searchedDealerName)
             {
                 query = ApplySearch(
                     query,
