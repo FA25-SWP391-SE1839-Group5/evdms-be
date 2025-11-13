@@ -29,8 +29,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("Action")
-                        .HasColumnType("integer")
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("action");
 
                     b.Property<DateTime>("CreatedAt")
