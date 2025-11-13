@@ -9,10 +9,11 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
         public void Configure(EntityTypeBuilder<AuditLog> builder)
         {
             builder.ConfigureTimestamps();
+            builder.Property(al => al.Action).HasConversion<string>();
             builder
-                .HasOne(rt => rt.User)
+                .HasOne(al => al.User)
                 .WithMany(u => u.AuditLogs)
-                .HasForeignKey(rt => rt.UserId)
+                .HasForeignKey(al => al.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
