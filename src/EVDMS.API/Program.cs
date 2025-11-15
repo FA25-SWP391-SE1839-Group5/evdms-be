@@ -105,7 +105,11 @@ namespace EVDMS.API
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:5173", "http://localhost:3000")
+                            .WithOrigins(
+                                "http://localhost:5173",
+                                "http://localhost:3000",
+                                "https://evdms-fe.vercel.app"
+                            )
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials()
