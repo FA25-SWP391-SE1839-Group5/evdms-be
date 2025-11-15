@@ -17,7 +17,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(u => u.Dealer)
                 .WithMany(d => d.Users)
                 .HasForeignKey(u => u.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasData(UserSeed.GetUsers());
         }
     }

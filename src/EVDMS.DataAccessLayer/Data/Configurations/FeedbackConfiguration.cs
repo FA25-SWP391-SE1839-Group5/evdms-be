@@ -20,7 +20,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(f => f.Dealer)
                 .WithMany(d => d.Feedbacks)
                 .HasForeignKey(f => f.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasData(FeedbackSeed.Feedbacks);
         }
     }

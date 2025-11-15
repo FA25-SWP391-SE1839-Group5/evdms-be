@@ -20,12 +20,12 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(so => so.Dealer)
                 .WithMany(d => d.SalesOrders)
                 .HasForeignKey(so => so.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(so => so.User)
                 .WithMany(u => u.SalesOrders)
                 .HasForeignKey(so => so.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(so => so.Customer)
                 .WithMany(c => c.SalesOrders)
@@ -35,7 +35,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(so => so.Vehicle)
                 .WithMany(v => v.SalesOrders)
                 .HasForeignKey(so => so.VehicleId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasData(SalesOrderSeed.SalesOrders);
         }
     }

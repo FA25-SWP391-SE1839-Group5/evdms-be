@@ -15,7 +15,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(p => p.Dealer)
                 .WithMany(d => d.Promotions)
                 .HasForeignKey(p => p.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasData(PromotionSeed.Promotions);
         }
     }

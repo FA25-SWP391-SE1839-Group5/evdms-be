@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251113132616_1.Initial")]
+    [Migration("20251115070752_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -1860,7 +1860,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("DealerContracts")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_dealer_contracts_dealers_dealer_id");
 
@@ -1912,7 +1912,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Feedbacks")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_feedbacks_dealers_dealer_id");
 
@@ -1926,7 +1926,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
                         .WithMany("OemInventories")
                         .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_oem_inventories_vehicle_variants_variant_id");
 
@@ -1950,7 +1950,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Promotions")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_promotions_dealers_dealer_id");
 
                     b.Navigation("Dealer");
@@ -1968,14 +1968,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Quotations")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_quotations_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
                         .WithMany("Quotations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_quotations_users_user_id");
 
@@ -2019,7 +2019,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("SalesOrders")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_dealers_dealer_id");
 
@@ -2033,14 +2033,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.User", "User")
                         .WithMany("SalesOrders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_users_user_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
                         .WithMany("SalesOrders")
                         .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_vehicles_vehicle_id");
 
@@ -2067,14 +2067,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("TestDrives")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_test_drives_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Vehicle", "Vehicle")
                         .WithMany("TestDrives")
                         .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_test_drives_vehicles_vehicle_id");
 
@@ -2090,7 +2090,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Users")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("fk_users_dealers_dealer_id");
 
                     b.Navigation("Dealer");
@@ -2101,14 +2101,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
                         .WithMany("Vehicles")
                         .HasForeignKey("DealerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_vehicles_dealers_dealer_id");
 
                     b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
                         .WithMany("Vehicles")
                         .HasForeignKey("VariantId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_vehicles_vehicle_variants_variant_id");
 
@@ -2122,7 +2122,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleModel", "VehicleModel")
                         .WithMany("VehicleVariants")
                         .HasForeignKey("ModelId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_vehicle_variants_vehicle_models_model_id");
 

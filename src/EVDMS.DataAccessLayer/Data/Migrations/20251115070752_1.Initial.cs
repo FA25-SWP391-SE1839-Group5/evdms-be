@@ -125,7 +125,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -165,7 +165,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -206,7 +206,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -254,7 +254,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -288,7 +288,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.model_id,
                         principalTable: "vehicle_models",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -428,7 +428,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.variant_id,
                         principalTable: "vehicle_variants",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -471,14 +471,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_quotations_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_quotations_vehicle_variants_variant_id",
@@ -520,14 +520,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_vehicles_vehicle_variants_variant_id",
                         column: x => x.variant_id,
                         principalTable: "vehicle_variants",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -607,7 +607,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_sales_orders_quotations_quotation_id",
@@ -621,14 +621,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_sales_orders_vehicles_vehicle_id",
                         column: x => x.vehicle_id,
                         principalTable: "vehicles",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );
@@ -672,14 +672,14 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         column: x => x.dealer_id,
                         principalTable: "dealers",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                     table.ForeignKey(
                         name: "fk_test_drives_vehicles_vehicle_id",
                         column: x => x.vehicle_id,
                         principalTable: "vehicles",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict
+                        onDelete: ReferentialAction.Cascade
                     );
                 }
             );

@@ -17,12 +17,12 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(v => v.VehicleVariant)
                 .WithMany(vv => vv.Vehicles)
                 .HasForeignKey(v => v.VariantId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(v => v.Dealer)
                 .WithMany(d => d.Vehicles)
                 .HasForeignKey(v => v.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasIndex(v => v.Vin).IsUnique();
             builder.HasData(VehicleSeed.Vehicles);
         }

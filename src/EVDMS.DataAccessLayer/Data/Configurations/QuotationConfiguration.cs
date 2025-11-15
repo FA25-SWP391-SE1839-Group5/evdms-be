@@ -18,12 +18,12 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(q => q.Dealer)
                 .WithMany(d => d.Quotations)
                 .HasForeignKey(q => q.DealerId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(q => q.User)
                 .WithMany(u => u.Quotations)
                 .HasForeignKey(q => q.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder
                 .HasOne(q => q.Customer)
                 .WithMany(c => c.Quotations)
