@@ -38,7 +38,7 @@ namespace EVDMS.API.Tests.Integration.Controllers
             var createDto = new CreateCustomerDto
             {
                 FullName = "Integration Test",
-                Phone = "555-0000",
+                Phone = "0905868388",
                 Email = "integration@evdms.com",
                 Address = "123 Integration Lane",
             };
@@ -80,7 +80,7 @@ namespace EVDMS.API.Tests.Integration.Controllers
             var createDto = new CreateCustomerDto
             {
                 FullName = "Before Update",
-                Phone = "555-1111",
+                Phone = "0905868388",
                 Email = "before@evdms.com",
                 Address = "111 Before St",
             };
@@ -98,7 +98,7 @@ namespace EVDMS.API.Tests.Integration.Controllers
             var updateDto = new UpdateCustomerDto
             {
                 FullName = "After Update",
-                Phone = "555-2222",
+                Phone = "0905868389",
                 Email = "after@evdms.com",
                 Address = "222 After St",
             };
@@ -119,7 +119,7 @@ namespace EVDMS.API.Tests.Integration.Controllers
             );
             var found = getApiResponse!.Data;
             Assert.Equal("After Update", found!.FullName);
-            Assert.Equal("555-2222", found.Phone);
+            Assert.Equal("0905868389", found.Phone);
         }
 
         [Trait("Category", "Integration")]
@@ -129,7 +129,7 @@ namespace EVDMS.API.Tests.Integration.Controllers
             var createDto = new CreateCustomerDto
             {
                 FullName = "To Delete",
-                Phone = "555-3333",
+                Phone = "0905868388",
                 Email = "delete@evdms.com",
                 Address = "333 Delete St",
             };
