@@ -8,9 +8,13 @@ namespace EVDMS.Common.Dtos
         public Guid Id { get; set; }
         public Guid QuotationId { get; set; }
         public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public Guid UserId { get; set; }
+        public string UserFullName { get; set; } = string.Empty;
         public Guid CustomerId { get; set; }
+        public string CustomerFullName { get; set; } = string.Empty;
         public Guid VehicleId { get; set; }
+        public string VehicleVin { get; set; } = string.Empty;
         public DateTime Date { get; set; }
         public SalesOrderStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,24 +25,6 @@ namespace EVDMS.Common.Dtos
     {
         [Required]
         public required Guid QuotationId { get; set; }
-
-        [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
-        public required Guid UserId { get; set; }
-
-        [Required]
-        public required Guid CustomerId { get; set; }
-
-        [Required]
-        public required Guid VehicleId { get; set; }
-
-        [Required]
-        public required DateTime Date { get; set; }
-
-        [Required]
-        public required SalesOrderStatus Status { get; set; }
     }
 
     public class UpdateSalesOrderDto
@@ -80,5 +66,40 @@ namespace EVDMS.Common.Dtos
         public DateTime? Date { get; set; }
 
         public SalesOrderStatus? Status { get; set; }
+    }
+
+    public class SalesOrderSummaryDto
+    {
+        public Guid SalesOrderId { get; set; }
+        public decimal TotalAmount { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal OutstandingBalance { get; set; }
+        public bool IsFullyPaid { get; set; }
+    }
+
+    public class DealerStaffSalesReportDto
+    {
+        public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
+        public Guid StaffId { get; set; }
+        public string StaffName { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
+
+    public class DealerTotalSalesReportDto
+    {
+        public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
+        public string Region { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
+    }
+
+    public class RegionSalesReportDto
+    {
+        public string Region { get; set; } = string.Empty;
+        public int TotalOrders { get; set; }
+        public decimal TotalAmount { get; set; }
     }
 }

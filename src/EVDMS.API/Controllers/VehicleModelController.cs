@@ -75,7 +75,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleModelService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleModel not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleModel updated successfully"));
+            var updated = await _vehicleModelService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleModelDto>(updated!, "VehicleModel updated successfully")
+            );
         }
 
         [HttpPatch("{id}")]
@@ -84,7 +87,10 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleModelService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("VehicleModel not found"));
-            return Ok(new ApiResponse<string>(null, "VehicleModel patched successfully"));
+            var updated = await _vehicleModelService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<VehicleModelDto>(updated!, "VehicleModel patched successfully")
+            );
         }
 
         [HttpDelete("{id}")]
@@ -118,10 +124,35 @@ namespace EVDMS.API.Controllers
                     )
                 );
 
-            var imageUrl = await _cloudinaryService.UploadVehicleModelImageAsync(image);
-            if (string.IsNullOrEmpty(imageUrl))
+            var uploadResult = await _cloudinaryService.UploadVehicleModelImageAsync(image);
+            if (uploadResult == null || string.IsNullOrEmpty(uploadResult.ImageUrl))
                 return StatusCode(500, new ApiResponse<string>("Image upload failed."));
-            return Ok(new ApiResponse<string>(null, imageUrl));
+            return Ok(
+                new ApiResponse<UploadVehicleModelImageResponseDto>(
+                    uploadResult,
+                    "Image uploaded successfully"
+                )
+            );
+        }
+
+        [HttpDelete("delete-image")]
+        public async Task<IActionResult> DeleteImage([FromQuery] Guid id)
+        {
+            if (id == Guid.Empty)
+                return BadRequest(new ApiResponse<string>("No vehicle model id provided."));
+            try
+            {
+                var success = await _cloudinaryService.DeleteVehicleModelImageAsync(id);
+                if (!success)
+                    return NotFound(
+                        new ApiResponse<string>("No image to delete for this vehicle model.")
+                    );
+                return Ok(new ApiResponse<string>(null, "Image deleted successfully"));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
         }
     }
 }

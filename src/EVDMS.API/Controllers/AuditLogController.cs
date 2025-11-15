@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -70,7 +71,8 @@ namespace EVDMS.API.Controllers
             var success = await _auditLogService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
-            return Ok(new ApiResponse<string>(null, "AuditLog updated successfully"));
+            var updated = await _auditLogService.GetByIdAsync(id);
+            return Ok(new ApiResponse<AuditLogDto>(updated!, "AuditLog updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +81,8 @@ namespace EVDMS.API.Controllers
             var success = await _auditLogService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
-            return Ok(new ApiResponse<string>(null, "AuditLog patched successfully"));
+            var updated = await _auditLogService.GetByIdAsync(id);
+            return Ok(new ApiResponse<AuditLogDto>(updated!, "AuditLog patched successfully"));
         }
 
         [HttpDelete("{id}")]
@@ -89,6 +92,21 @@ namespace EVDMS.API.Controllers
             if (!success)
                 return NotFound(new ApiResponse<string>("AuditLog not found"));
             return Ok(new ApiResponse<string>(null, "AuditLog deleted successfully"));
+        }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportToCsv(
+            [FromQuery] DateTime? startDate = null,
+            [FromQuery] DateTime? endDate = null
+        )
+        {
+            var result = await _auditLogService.ExportToCsvAsync(startDate, endDate);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
     }
 }

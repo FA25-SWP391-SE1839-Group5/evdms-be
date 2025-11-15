@@ -56,12 +56,19 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateVehicleDto dto)
         {
-            var created = await _vehicleService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<VehicleDto>(created)
-            );
+            try
+            {
+                var created = await _vehicleService.CreateAsync(dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<VehicleDto>(created)
+                );
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
@@ -70,7 +77,8 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
-            return Ok(new ApiResponse<string>(null, "Vehicle updated successfully"));
+            var updated = await _vehicleService.GetByIdAsync(id);
+            return Ok(new ApiResponse<VehicleDto>(updated!, "Vehicle updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +87,8 @@ namespace EVDMS.API.Controllers
             var success = await _vehicleService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Vehicle not found"));
-            return Ok(new ApiResponse<string>(null, "Vehicle patched successfully"));
+            var updated = await _vehicleService.GetByIdAsync(id);
+            return Ok(new ApiResponse<VehicleDto>(updated!, "Vehicle patched successfully"));
         }
 
         [HttpDelete("{id}")]

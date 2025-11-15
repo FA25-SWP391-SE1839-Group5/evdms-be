@@ -15,7 +15,9 @@ namespace EVDMS.DataAccessLayer.Entities
 
         public VehicleModel VehicleModel { get; set; } = null!;
         public ICollection<Vehicle> Vehicles { get; set; } = [];
+        public ICollection<DealerOrder> DealerOrders { get; set; } = [];
         public ICollection<OemInventory> OemInventories { get; set; } = [];
+        public ICollection<Quotation> Quotations { get; set; } = [];
 
         private static readonly JsonSerializerOptions IgnoreNullOptions = new()
         {
@@ -44,13 +46,6 @@ namespace EVDMS.DataAccessLayer.Entities
             set => Features = JsonSerializer.Serialize(value, IgnoreNullOptions);
         }
 
-        public static readonly string[] SearchableColumns =
-        [
-            "ModelId",
-            "Name",
-            "BasePrice",
-            "Specs",
-            "Features",
-        ];
+        public static readonly string[] SearchableColumns = ["ModelId", "Name", "BasePrice"];
     }
 }

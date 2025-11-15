@@ -1,8 +1,9 @@
-using System.Net;
-using System.Net.Mail;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Settings;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Options;
+using MimeKit;
 
 namespace EVDMS.BusinessLogicLayer.Services.Implementations
 {
@@ -17,25 +18,26 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
 
         public async Task SendEmailAsync(string to, string subject, string body)
         {
-            using var client = new SmtpClient(_emailSettings.SmtpServer, _emailSettings.Port)
-            {
-                Credentials = new NetworkCredential(
-                    _emailSettings.SenderEmail,
-                    _emailSettings.SenderPassword
-                ),
-                EnableSsl = true,
-            };
+            var message = new MimeMessage();
+            message.From.Add(
+                new MailboxAddress(_emailSettings.SenderName, _emailSettings.SenderEmail)
+            );
+            message.To.Add(MailboxAddress.Parse(to));
+            message.Subject = subject;
+            message.Body = new TextPart("html") { Text = body };
 
-            var mailMessage = new MailMessage()
-            {
-                From = new MailAddress(_emailSettings.SenderEmail, _emailSettings.SenderName),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true,
-            };
-            mailMessage.To.Add(to);
-
-            await client.SendMailAsync(mailMessage);
+            using var client = new SmtpClient();
+            await client.ConnectAsync(
+                _emailSettings.SmtpServer,
+                _emailSettings.Port,
+                SecureSocketOptions.StartTls
+            );
+            await client.AuthenticateAsync(
+                _emailSettings.SenderEmail,
+                _emailSettings.SenderPassword
+            );
+            await client.SendAsync(message);
+            await client.DisconnectAsync(true);
         }
     }
 }

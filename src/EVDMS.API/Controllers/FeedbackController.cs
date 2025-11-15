@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _feedbackService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
-            return Ok(new ApiResponse<string>(null, "Feedback updated successfully"));
+            var updated = await _feedbackService.GetByIdAsync(id);
+            return Ok(new ApiResponse<FeedbackDto>(updated!, "Feedback updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _feedbackService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Feedback not found"));
-            return Ok(new ApiResponse<string>(null, "Feedback patched successfully"));
+            var updated = await _feedbackService.GetByIdAsync(id);
+            return Ok(new ApiResponse<FeedbackDto>(updated!, "Feedback patched successfully"));
         }
 
         [HttpDelete("{id}")]

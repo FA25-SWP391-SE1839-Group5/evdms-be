@@ -44,5 +44,13 @@ namespace EVDMS.Common.Utils
                 return userId;
             return null;
         }
+
+        public static Guid? GetDealerIdFromClaims(ClaimsPrincipal user)
+        {
+            var dealerIdClaim = user.FindFirst("dealerId")?.Value;
+            if (Guid.TryParse(dealerIdClaim, out var dealerId))
+                return dealerId;
+            return null;
+        }
     }
 }

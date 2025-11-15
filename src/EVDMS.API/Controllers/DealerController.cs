@@ -70,7 +70,8 @@ namespace EVDMS.API.Controllers
             var success = await _dealerService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Dealer not found"));
-            return Ok(new ApiResponse<string>(null, "Dealer updated successfully"));
+            var updated = await _dealerService.GetByIdAsync(id);
+            return Ok(new ApiResponse<DealerDto>(updated!, "Dealer updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +80,8 @@ namespace EVDMS.API.Controllers
             var success = await _dealerService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Dealer not found"));
-            return Ok(new ApiResponse<string>(null, "Dealer patched successfully"));
+            var updated = await _dealerService.GetByIdAsync(id);
+            return Ok(new ApiResponse<DealerDto>(updated!, "Dealer patched successfully"));
         }
 
         [HttpDelete("{id}")]

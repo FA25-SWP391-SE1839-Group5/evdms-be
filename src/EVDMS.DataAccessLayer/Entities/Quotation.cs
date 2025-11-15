@@ -7,19 +7,28 @@ namespace EVDMS.DataAccessLayer.Entities
         public Guid DealerId { get; set; }
         public Guid UserId { get; set; }
         public Guid CustomerId { get; set; }
+        public Guid VariantId { get; set; }
+        public VehicleColor Color { get; set; }
         public decimal TotalAmount { get; set; }
         public QuotationStatus Status { get; set; }
 
         public Dealer Dealer { get; set; } = null!;
         public User User { get; set; } = null!;
         public Customer Customer { get; set; } = null!;
+        public VehicleVariant Variant { get; set; } = null!;
         public ICollection<SalesOrder> SalesOrders { get; set; } = [];
 
         public static readonly string[] SearchableColumns =
         [
             "DealerId",
+            "DealerName",
             "UserId",
+            "UserFullName",
             "CustomerId",
+            "CustomerFullName",
+            "VariantId",
+            "VariantName",
+            "Color",
             "TotalAmount",
             "Status",
         ];

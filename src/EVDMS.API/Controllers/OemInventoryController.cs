@@ -56,12 +56,19 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateOemInventoryDto dto)
         {
-            var created = await _oemInventoryService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<OemInventoryDto>(created)
-            );
+            try
+            {
+                var created = await _oemInventoryService.CreateAsync(dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<OemInventoryDto>(created)
+                );
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
@@ -70,7 +77,10 @@ namespace EVDMS.API.Controllers
             var success = await _oemInventoryService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("OemInventory not found"));
-            return Ok(new ApiResponse<string>(null, "OemInventory updated successfully"));
+            var updated = await _oemInventoryService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<OemInventoryDto>(updated!, "OemInventory updated successfully")
+            );
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +89,10 @@ namespace EVDMS.API.Controllers
             var success = await _oemInventoryService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("OemInventory not found"));
-            return Ok(new ApiResponse<string>(null, "OemInventory patched successfully"));
+            var updated = await _oemInventoryService.GetByIdAsync(id);
+            return Ok(
+                new ApiResponse<OemInventoryDto>(updated!, "OemInventory patched successfully")
+            );
         }
 
         [HttpDelete("{id}")]

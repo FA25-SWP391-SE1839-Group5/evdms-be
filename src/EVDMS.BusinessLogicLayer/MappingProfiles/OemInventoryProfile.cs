@@ -8,11 +8,22 @@ namespace EVDMS.BusinessLogicLayer.MappingProfiles
     {
         public OemInventoryProfile()
         {
-            CreateMap<OemInventory, OemInventoryDto>();
+            CreateMap<OemInventory, OemInventoryDto>()
+                .ForMember(
+                    dest => dest.VariantName,
+                    opt => opt.MapFrom(src => src.VehicleVariant.Name)
+                );
             CreateMap<CreateOemInventoryDto, OemInventory>(MemberList.Source);
             CreateMap<UpdateOemInventoryDto, OemInventory>(MemberList.Source);
             CreateMap<PatchOemInventoryDto, OemInventory>(MemberList.Source)
-                .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
+                .ForAllMembers(opts =>
+                    opts.Condition(
+                        (src, dest, srcMember, context) =>
+                            srcMember != null
+                            && !(srcMember is Guid guid && guid == Guid.Empty)
+                            && !(srcMember is DateTime dt && dt == default)
+                    )
+                );
         }
     }
 }

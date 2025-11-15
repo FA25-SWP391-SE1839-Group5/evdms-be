@@ -34,7 +34,21 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
         {
             var query = _dbSet.AsQueryable();
 
-            // Apply filters
+            query = ApplyFilters(query, filters, allowedColumns);
+            query = ApplySearch(query, search, allowedColumns);
+            query = ApplySorting(query, sortBy, sortOrder);
+
+            var totalCount = await query.CountAsync();
+            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            return (items, totalCount);
+        }
+
+        protected IQueryable<T> ApplyFilters(
+            IQueryable<T> query,
+            Dictionary<string, string>? filters,
+            IEnumerable<string>? allowedColumns
+        )
+        {
             if (filters != null && allowedColumns != null)
             {
                 foreach (var filter in filters)
@@ -76,6 +90,18 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                                 var filterValue = Expression.Constant(enumValue);
                                 equals = Expression.Equal(propertyAccess, filterValue);
                             }
+                            else if (
+                                property.PropertyType == typeof(Guid)
+                                || property.PropertyType == typeof(Guid?)
+                            )
+                            {
+                                var guidValue = Guid.Parse(filter.Value);
+                                var filterValue = Expression.Constant(
+                                    guidValue,
+                                    property.PropertyType
+                                );
+                                equals = Expression.Equal(propertyAccess, filterValue);
+                            }
                             else
                             {
                                 var filterValue = Expression.Constant(
@@ -89,8 +115,15 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     }
                 }
             }
+            return query;
+        }
 
-            // Apply search
+        protected IQueryable<T> ApplySearch(
+            IQueryable<T> query,
+            string? search,
+            IEnumerable<string>? allowedColumns
+        )
+        {
             if (!string.IsNullOrWhiteSpace(search) && allowedColumns != null)
             {
                 Expression? searchExpression = null;
@@ -122,8 +155,11 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
                     query = query.Where(lambda);
                 }
             }
+            return query;
+        }
 
-            // Sorting
+        protected IQueryable<T> ApplySorting(IQueryable<T> query, string? sortBy, string? sortOrder)
+        {
             if (!string.IsNullOrEmpty(sortBy))
             {
                 var prop = typeof(T)
@@ -144,9 +180,7 @@ namespace EVDMS.DataAccessLayer.Repositories.Implementations
             {
                 query = query.OrderBy(e => EF.Property<object>(e, "Id"));
             }
-            var totalCount = await query.CountAsync();
-            var items = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-            return (items, totalCount);
+            return query;
         }
 
         public virtual async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate)

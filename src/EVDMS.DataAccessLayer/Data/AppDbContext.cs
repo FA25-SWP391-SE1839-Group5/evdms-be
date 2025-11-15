@@ -11,6 +11,8 @@ namespace EVDMS.DataAccessLayer.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Dealer> Dealers { get; set; }
         public DbSet<DealerContract> DealerContracts { get; set; }
+        public DbSet<DealerOrder> DealerOrders { get; set; }
+        public DbSet<DealerPayment> DealerPayments { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<OemInventory> OemInventories { get; set; }
         public DbSet<Payment> Payments { get; set; }
@@ -30,6 +32,8 @@ namespace EVDMS.DataAccessLayer.Data
             modelBuilder.ApplyConfiguration(new CustomerConfiguration());
             modelBuilder.ApplyConfiguration(new DealerConfiguration());
             modelBuilder.ApplyConfiguration(new DealerContractConfiguration());
+            modelBuilder.ApplyConfiguration(new DealerOrderConfiguration());
+            modelBuilder.ApplyConfiguration(new DealerPaymentConfiguration());
             modelBuilder.ApplyConfiguration(new FeedbackConfiguration());
             modelBuilder.ApplyConfiguration(new OemInventoryConfiguration());
             modelBuilder.ApplyConfiguration(new PaymentConfiguration());
@@ -81,7 +85,8 @@ namespace EVDMS.DataAccessLayer.Data
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedAt = now;
+                    if (entry.Entity.CreatedAt == default)
+                        entry.Entity.CreatedAt = now;
                     entry.Entity.UpdatedAt = now;
                 }
                 else if (entry.State == EntityState.Modified)
@@ -102,7 +107,8 @@ namespace EVDMS.DataAccessLayer.Data
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedAt = now;
+                    if (entry.Entity.CreatedAt == default)
+                        entry.Entity.CreatedAt = now;
                     entry.Entity.UpdatedAt = now;
                 }
                 else if (entry.State == EntityState.Modified)

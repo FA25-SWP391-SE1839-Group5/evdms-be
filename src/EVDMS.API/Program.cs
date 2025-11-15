@@ -1,9 +1,10 @@
 using System.Text;
 using System.Text.Json.Serialization;
 using EVDMS.API.Middlewares;
-using EVDMS.BusinessLogicLayer;
+using EVDMS.BusinessLogicLayer.DependencyInjection;
 using EVDMS.Common.Settings;
 using EVDMS.DataAccessLayer.Data;
+using EVDMS.DataAccessLayer.Data.Seeds;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,7 @@ namespace EVDMS.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -68,12 +69,6 @@ namespace EVDMS.API
                 ;
             });
 
-            builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-            builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Email"));
-            builder.Services.Configure<CloudinarySettings>(
-                builder.Configuration.GetSection("Cloudinary")
-            );
-
             builder
                 .Services.AddAuthentication(options =>
                 {
@@ -82,13 +77,11 @@ namespace EVDMS.API
                 })
                 .AddJwtBearer(options =>
                 {
-                    var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
-                    if (jwtSettings == null)
-                    {
-                        throw new InvalidOperationException(
+                    var jwtSettings =
+                        builder.Configuration.GetSection("Jwt").Get<JwtSettings>()
+                        ?? throw new InvalidOperationException(
                             "JWT settings are not configured properly."
                         );
-                    }
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -103,7 +96,7 @@ namespace EVDMS.API
                     };
                 });
 
-            builder.Services.AddServices();
+            builder.Services.AddDependencies(builder.Configuration);
 
             builder.Services.AddCors(options =>
             {
@@ -112,10 +105,11 @@ namespace EVDMS.API
                     builder =>
                     {
                         builder
-                            .WithOrigins("http://localhost:5173")
+                            .WithOrigins("http://localhost:5173", "http://localhost:3000")
                             .AllowAnyHeader()
                             .AllowAnyMethod()
-                            .AllowCredentials();
+                            .AllowCredentials()
+                            .WithExposedHeaders("Content-Disposition", "content-disposition");
                     }
                 );
             });
@@ -134,6 +128,12 @@ namespace EVDMS.API
             });
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                await DbSeeder.SeedAsync(db);
+            }
 
             app.UseMiddleware<ApiExceptionMiddleware>();
 

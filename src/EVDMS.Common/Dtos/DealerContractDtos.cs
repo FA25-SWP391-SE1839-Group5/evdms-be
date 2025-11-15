@@ -6,6 +6,7 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public decimal SalesTarget { get; set; }
@@ -27,9 +28,6 @@ namespace EVDMS.Common.Dtos
 
         [Required]
         public required decimal SalesTarget { get; set; }
-
-        [Required]
-        public required decimal OutstandingDebt { get; set; }
     }
 
     public class UpdateDealerContractDto

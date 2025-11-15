@@ -1,6 +1,7 @@
 using AutoMapper;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Enums;
 using EVDMS.Common.Settings;
 using EVDMS.Common.Utils;
 using EVDMS.DataAccessLayer.Entities;
@@ -19,6 +20,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IEmailService _emailService;
         private readonly IConfiguration _configuration;
+        private readonly IAuditLogService _auditLogService;
 
         public AuthService(
             IUserRepository userRepository,
@@ -27,7 +29,8 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             IOptions<JwtSettings> jwtOptions,
             IRefreshTokenRepository refreshTokenRepository,
             IEmailService emailService,
-            IConfiguration configuration
+            IConfiguration configuration,
+            IAuditLogService auditLogService
         )
         {
             _userRepository = userRepository;
@@ -37,6 +40,7 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             _refreshTokenRepository = refreshTokenRepository;
             _emailService = emailService;
             _configuration = configuration;
+            _auditLogService = auditLogService;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto dto)
@@ -68,6 +72,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _refreshTokenRepository.AddAsync(refreshTokenEntity);
             await _refreshTokenRepository.SaveChangesAsync();
             response.RefreshToken = refreshToken;
+
+            // Log the login event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.Login,
+                    Description = $"User {user.Email} logged in.",
+                }
+            );
+
             return response;
         }
 
@@ -114,6 +129,20 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (storedToken == null || storedToken.IsRevoked)
                 return false;
             await _refreshTokenRepository.RevokeAsync(refreshTokenHash);
+
+            // Log the logout event
+            if (storedToken.User != null)
+            {
+                await _auditLogService.CreateAsync(
+                    new CreateAuditLogDto
+                    {
+                        UserId = storedToken.User.Id,
+                        Action = AuditLogAction.Logout,
+                        Description = $"User {storedToken.User.Email} logged out.",
+                    }
+                );
+            }
+
             return true;
         }
 
@@ -132,47 +161,27 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             var baseUrl = _configuration["App:BaseUrl"] ?? "http://localhost:3000";
             var resetLink = $"{baseUrl}/reset-password?token={token}";
             var subject = "Password Reset Request";
-            var body =
-                $@"
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Password Reset</title>
-    <style>
-        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb; margin: 0; padding: 0; }}
-        .container {{ max-width: 480px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px 24px; }}
-        .logo {{ text-align: center; margin-bottom: 24px; }}
-        .logo img {{ width: 64px; height: 64px; }}
-        h2 {{ color: #2d3a4b; margin-bottom: 8px; }}
-        p {{ color: #4a5568; line-height: 1.6; }}
-        .button {{ display: block; width: 100%; text-align: center; margin: 24px 0; }}
-        a.reset-btn {{ background: #2d3a4b; color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 1.1em; font-weight: bold; display: inline-block; }}
-        .footer {{ text-align: center; color: #a0aec0; font-size: 0.95em; margin-top: 24px; }}
-    </style>
-</head>
-<body>
-    <div class='container'>
-        <div class='logo'>
-            <img src='https://cdn-icons-png.flaticon.com/512/561/561127.png' alt='Logo'>
-        </div>
-        <h2>Password Reset Request</h2>
-        <p>Hello {user.FullName},</p>
-        <p>We received a request to reset your password. Click the button below to reset your password. This link will expire in 1 hour.</p>
-        <div class='button'>
-            <a class='reset-btn' href='{resetLink}'>Reset Password</a>
-        </div>
-        <p>If you did not request a password reset, you can safely ignore this email.</p>
-        <div class='footer'>
-            &copy; {DateTime.UtcNow.Year} EVDMS. All rights reserved.
-        </div>
-    </div>
-</body>
-</html>
-";
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+            var templatePath = Path.Combine(
+                AppContext.BaseDirectory,
+                "EmailTemplates",
+                "PasswordReset.html"
+            );
 
+            string body;
+            if (File.Exists(templatePath))
+            {
+                body = await File.ReadAllTextAsync(templatePath);
+                body = body.Replace("{FullName}", user.FullName)
+                    .Replace("{ResetLink}", resetLink)
+                    .Replace("{Year}", DateTime.UtcNow.Year.ToString());
+            }
+            else
+            {
+                body =
+                    $"Hello {user.FullName}, please use this link to reset your password: {resetLink}";
+            }
+
+            await _emailService.SendEmailAsync(user.Email, subject, body);
             return true;
         }
 
@@ -202,6 +211,17 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             user.PasswordResetTokenExpiresAt = null;
             _userRepository.Update(user);
             await _userRepository.SaveChangesAsync();
+
+            // Log the password reset event
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.PasswordReset,
+                    Description = $"User {user.Email} reset their password.",
+                }
+            );
+
             return true;
         }
     }

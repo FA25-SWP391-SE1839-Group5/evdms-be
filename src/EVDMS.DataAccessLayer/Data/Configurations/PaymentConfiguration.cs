@@ -15,7 +15,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .HasOne(p => p.SalesOrder)
                 .WithMany(so => so.Payments)
                 .HasForeignKey(p => p.SalesOrderId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasData(PaymentSeed.Payments);
         }

@@ -11,13 +11,11 @@ namespace EVDMS.API.Tests
         )
         {
             response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadFromJsonAsync<PaginatedResult<T>>();
-            if (result == null)
-            {
-                throw new InvalidOperationException(
+            var result =
+                await response.Content.ReadFromJsonAsync<PaginatedResult<T>>()
+                ?? throw new InvalidOperationException(
                     "Response body could not be deserialized into PaginatedResult."
                 );
-            }
             return result;
         }
 
@@ -26,15 +24,11 @@ namespace EVDMS.API.Tests
         )
         {
             response.EnsureSuccessStatusCode();
-            var result = await response.Content.ReadFromJsonAsync<
-                ApiResponse<PaginatedResult<T>>
-            >();
-            if (result == null)
-            {
-                throw new InvalidOperationException(
+            var result =
+                await response.Content.ReadFromJsonAsync<ApiResponse<PaginatedResult<T>>>()
+                ?? throw new InvalidOperationException(
                     "Response body could not be deserialized into ApiResponse<PaginatedResult>."
                 );
-            }
             return result;
         }
     }

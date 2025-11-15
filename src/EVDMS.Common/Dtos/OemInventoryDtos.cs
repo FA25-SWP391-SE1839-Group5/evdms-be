@@ -6,6 +6,7 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid VariantId { get; set; }
+        public string VariantName { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }

@@ -56,12 +56,27 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePaymentDto dto)
         {
-            var created = await _paymentService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<PaymentDto>(created)
-            );
+            try
+            {
+                var created = await _paymentService.CreateAsync(dto);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<PaymentDto>(created)
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
@@ -70,7 +85,8 @@ namespace EVDMS.API.Controllers
             var success = await _paymentService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Payment not found"));
-            return Ok(new ApiResponse<string>(null, "Payment updated successfully"));
+            var updated = await _paymentService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PaymentDto>(updated!, "Payment updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +95,8 @@ namespace EVDMS.API.Controllers
             var success = await _paymentService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Payment not found"));
-            return Ok(new ApiResponse<string>(null, "Payment patched successfully"));
+            var updated = await _paymentService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PaymentDto>(updated!, "Payment patched successfully"));
         }
 
         [HttpDelete("{id}")]

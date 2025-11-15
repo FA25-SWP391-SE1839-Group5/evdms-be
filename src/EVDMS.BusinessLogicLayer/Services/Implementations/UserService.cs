@@ -17,18 +17,21 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IDealerRepository _dealerRepository;
         private readonly IEmailService _emailService;
+        private readonly IAuditLogService _auditLogService;
 
         public UserService(
             IUserRepository userRepository,
             IDealerRepository dealerRepository,
             IMapper mapper,
-            IEmailService emailService
+            IEmailService emailService,
+            IAuditLogService auditLogService
         )
             : base(userRepository, mapper)
         {
             _userRepository = userRepository;
             _dealerRepository = dealerRepository;
             _emailService = emailService;
+            _auditLogService = auditLogService;
         }
 
         public async Task<UserDto> CreateAsync(CreateUserDto dto, UserRole currentUserRole)
@@ -37,31 +40,52 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             else if (currentUserRole == UserRole.DealerManager)
             {
                 if (dto.Role != UserRole.DealerStaff)
-                    throw new Exception("Dealer managers can only create Dealer Staff users.");
+                    throw new UnauthorizedAccessException(
+                        "Dealer managers can only create Dealer Staff users."
+                    );
             }
             else
             {
-                throw new Exception("You are not allowed to create users.");
+                throw new UnauthorizedAccessException("You are not allowed to create users.");
             }
 
             if (dto.DealerId != null)
             {
-                var dealer =
-                    await _dealerRepository.GetByIdAsync(dto.DealerId.Value)
-                    ?? throw new Exception("Dealer not found.");
+                var dealer = await _dealerRepository.GetByIdAsync(dto.DealerId.Value);
+                if (dealer == null)
+                    throw new KeyNotFoundException("Dealer not found.");
                 if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
-                    throw new Exception(
+                    throw new InvalidOperationException(
                         "If DealerId is provided, role must be DealerStaff or DealerManager."
                     );
             }
             else
             {
                 if (dto.Role != UserRole.EvmStaff && dto.Role != UserRole.Admin)
-                    throw new Exception("If DealerId is null, role must be EvmStaff or Admin.");
+                    throw new InvalidOperationException(
+                        "If DealerId is null, role must be EvmStaff or Admin."
+                    );
             }
 
+            // Basic syntax check and MX/A record verification to reduce fake emails
+            if (!EmailVerifier.IsValidFormat(dto.Email))
+                throw new ArgumentException("The provided email address has an invalid format.");
+
+            var domainIsValid = await EmailVerifier.DomainHasMailServerAsync(dto.Email);
+            if (!domainIsValid)
+                throw new ArgumentException(
+                    "The email domain does not appear to accept mail (no MX/A records)."
+                );
+
+            if (EmailVerifier.IsDisposableDomain(dto.Email))
+                throw new ArgumentException(
+                    "Disposable or temporary email addresses are not allowed."
+                );
+
             if (await _userRepository.ExistsByEmailAsync(dto.Email))
-                throw new Exception($"A user with email '{dto.Email}' already exists.");
+                throw new InvalidOperationException(
+                    $"A user with email '{dto.Email}' already exists."
+                );
 
             var tempPassword = GenerateTemporaryPassword();
             var passwordHash = PasswordHasher.HashPassword(tempPassword);
@@ -72,45 +96,38 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             await _userRepository.AddAsync(user);
             await _userRepository.SaveChangesAsync();
 
-            var subject = "Your Account Has Been Created";
-            var body =
-                $@"
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Account Created</title>
-    <style>
-        body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f4f6fb; margin: 0; padding: 0; }}
-        .container {{ max-width: 480px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 32px 24px; }}
-        .logo {{ text-align: center; margin-bottom: 24px; }}
-        .logo img {{ width: 64px; height: 64px; }}
-        h2 {{ color: #2d3a4b; margin-bottom: 8px; }}
-        p {{ color: #4a5568; line-height: 1.6; }}
-        .password {{ background: #f4f6fb; padding: 12px; border-radius: 8px; font-size: 1.1em; text-align: center; margin: 16px 0; font-weight: bold; letter-spacing: 1px; }}
-        .footer {{ text-align: center; color: #a0aec0; font-size: 0.95em; margin-top: 24px; }}
-    </style>
-</head>
-<body>
-    <div class='container'>
-        <div class='logo'>
-            <img src='https://cdn-icons-png.flaticon.com/512/561/561127.png' alt='Logo'>
-        </div>
-        <h2>Welcome to EVDMS!</h2>
-        <p>Hello {user.FullName},</p>
-        <p>Your account has been created. Your temporary password is:</p>
-        <div class='password'>{tempPassword}</div>
-        <p>Please change your password after logging in.</p>
-        <div class='footer'>
-            &copy; {DateTime.UtcNow.Year} EVDMS. All rights reserved.
-        </div>
-    </div>
-</body>
-</html>
-";
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+            // Log account creation
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.AccountCreation,
+                    Description = $"User {user.Email} account created.",
+                }
+            );
 
+            var subject = "Your Account Has Been Created";
+            var templatePath = Path.Combine(
+                AppContext.BaseDirectory,
+                "EmailTemplates",
+                "AccountCreated.html"
+            );
+
+            string body;
+            if (File.Exists(templatePath))
+            {
+                body = await File.ReadAllTextAsync(templatePath);
+                body = body.Replace("{FullName}", user.FullName)
+                    .Replace("{TempPassword}", tempPassword)
+                    .Replace("{Year}", DateTime.UtcNow.Year.ToString());
+            }
+            else
+            {
+                body =
+                    $"Hello {user.FullName}, your account has been created. Your temporary password is: {tempPassword}";
+            }
+
+            await _emailService.SendEmailAsync(user.Email, subject, body);
             return _mapper.Map<UserDto>(user);
         }
 
@@ -138,6 +155,189 @@ namespace EVDMS.BusinessLogicLayer.Services.Implementations
             if (user == null)
                 return null;
             return _mapper.Map<UserDto>(user);
+        }
+
+        public override async Task<bool> DeleteAsync(Guid id)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return false;
+
+            // Log account deletion
+            await _auditLogService.CreateAsync(
+                new CreateAuditLogDto
+                {
+                    UserId = user.Id,
+                    Action = AuditLogAction.AccountDeletion,
+                    Description = $"User {user.Email} account deleted.",
+                }
+            );
+
+            await base.DeleteAsync(id);
+            return true;
+        }
+
+        public override async Task<PaginatedResult<UserDto>> GetAllAsync(
+            int page,
+            int pageSize,
+            string? sortBy = null,
+            string? sortOrder = null,
+            string? search = null,
+            Dictionary<string, string>? filters = null,
+            IEnumerable<string>? allowedColumns = null
+        )
+        {
+            var (entities, totalCount) = await _userRepository.GetAllAsync(
+                page,
+                pageSize,
+                sortBy,
+                sortOrder,
+                search,
+                filters,
+                allowedColumns
+            );
+            var userDtos = _mapper.Map<List<UserDto>>(entities);
+
+            return new PaginatedResult<UserDto>
+            {
+                Items = userDtos,
+                TotalResults = totalCount,
+                Page = page,
+                PageSize = pageSize,
+            };
+        }
+
+        public override async Task<UserDto?> GetByIdAsync(Guid id)
+        {
+            var entity = await _userRepository.GetByIdAsync(id);
+            if (entity == null)
+                return null;
+            var dto = _mapper.Map<UserDto>(entity);
+            return dto;
+        }
+
+        public async Task<CsvExportResult> ExportToCsvAsync()
+        {
+            var allUsers = await _userRepository.FindAsync(_ => true);
+
+            var dealerIds = allUsers
+                .Where(u => u.DealerId != null)
+                .Select(u => u.DealerId!.Value)
+                .Distinct()
+                .ToList();
+
+            var dealerNames = new Dictionary<Guid, string>();
+
+            foreach (var dealerId in dealerIds)
+            {
+                var dealer = await _dealerRepository.GetByIdAsync(dealerId);
+
+                dealerNames[dealerId] = dealer?.Name ?? "N/A";
+            }
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,DealerName,FullName,Email,Role,LastLoginAt,IsActive");
+            foreach (var u in allUsers)
+            {
+                string dealerName = "N/A";
+
+                if (u.DealerId != null && dealerNames.TryGetValue(u.DealerId.Value, out var name))
+                    dealerName = name;
+
+                sb.AppendLine(
+                    $"{u.Id},{CsvUtils.EscapeCsv(dealerName)},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
+                );
+            }
+            var fileName = CsvUtils.BuildCsvFileName("evdms_users", null, null);
+            return new CsvExportResult { FileName = fileName, CsvContent = sb.ToString() };
+        }
+
+        public async Task<CsvExportResult> ExportByDealerToCsvAsync(Guid dealerId)
+        {
+            var dealer = await _dealerRepository.GetByIdAsync(dealerId);
+            var dealerName = dealer?.Name ?? "N/A";
+            var safeDealerName = string.Concat(dealerName.Split(Path.GetInvalidFileNameChars()));
+            var users = await _userRepository.FindAsync(u => u.DealerId == dealerId);
+            var sb = new StringBuilder();
+            sb.AppendLine("Id,FullName,Email,Role,LastLoginAt,IsActive");
+            foreach (var u in users)
+            {
+                sb.AppendLine(
+                    $"{u.Id},{CsvUtils.EscapeCsv(u.FullName)},{CsvUtils.EscapeCsv(u.Email)},{u.Role},{u.LastLoginAt:O},{u.IsActive}"
+                );
+            }
+            var fileName =
+                $"evdms_users_dealer_{safeDealerName}_{DateTime.UtcNow:yyyyMMddHHmmss}.csv";
+            return new CsvExportResult { FileName = fileName, CsvContent = sb.ToString() };
+        }
+
+        public override async Task<bool> UpdateAsync(Guid id, UpdateUserDto dto)
+        {
+            // Validation logic for DealerId and Role
+            if (dto.DealerId != null)
+            {
+                var dealer = await _dealerRepository.GetByIdAsync(dto.DealerId.Value);
+                if (dealer == null)
+                    throw new KeyNotFoundException("Dealer not found.");
+                if (dto.Role != UserRole.DealerStaff && dto.Role != UserRole.DealerManager)
+                    throw new InvalidOperationException(
+                        "If DealerId is provided, role must be DealerStaff or DealerManager."
+                    );
+            }
+            else
+            {
+                if (dto.Role != UserRole.EvmStaff && dto.Role != UserRole.Admin)
+                    throw new InvalidOperationException(
+                        "If DealerId is null, role must be EvmStaff or Admin."
+                    );
+            }
+
+            return await base.UpdateAsync(id, dto);
+        }
+
+        public override async Task<bool> PatchAsync(Guid id, PatchUserDto dto)
+        {
+            // Fetch the current user entity
+            var user = await _userRepository.GetByIdAsync(id);
+            if (user == null)
+                return false;
+
+            // Map only provided fields
+            _mapper.Map(dto, user);
+
+            // If role is being set to Admin or EvmStaff, clear DealerId BEFORE validation
+            if (dto.Role == UserRole.Admin || dto.Role == UserRole.EvmStaff)
+            {
+                user.DealerId = null;
+            }
+
+            // Now validate the new state
+            var newRole = dto.Role ?? user.Role;
+            var newDealerId = user.DealerId;
+
+            if (dto.Role != null || dto.DealerId != null)
+            {
+                if (newDealerId != null)
+                {
+                    var dealer = await _dealerRepository.GetByIdAsync(newDealerId.Value);
+                    if (dealer == null)
+                        throw new KeyNotFoundException("Dealer not found.");
+                    if (newRole != UserRole.DealerStaff && newRole != UserRole.DealerManager)
+                        throw new InvalidOperationException(
+                            "If DealerId is provided, role must be DealerStaff or DealerManager."
+                        );
+                }
+                else
+                {
+                    if (newRole != UserRole.EvmStaff && newRole != UserRole.Admin)
+                        throw new InvalidOperationException(
+                            "If DealerId is null, role must be EvmStaff or Admin."
+                        );
+                }
+            }
+
+            _userRepository.Update(user);
+            await _userRepository.SaveChangesAsync();
+            return true;
         }
     }
 }

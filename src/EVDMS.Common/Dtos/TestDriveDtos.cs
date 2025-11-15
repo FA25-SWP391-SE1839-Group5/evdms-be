@@ -7,8 +7,11 @@ namespace EVDMS.Common.Dtos
     {
         public Guid Id { get; set; }
         public Guid CustomerId { get; set; }
+        public string CustomerFullName { get; set; } = string.Empty;
         public Guid DealerId { get; set; }
+        public string DealerName { get; set; } = string.Empty;
         public Guid VehicleId { get; set; }
+        public string VehicleVin { get; set; } = string.Empty;
         public DateTime ScheduledAt { get; set; }
         public TestDriveStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,16 +24,10 @@ namespace EVDMS.Common.Dtos
         public required Guid CustomerId { get; set; }
 
         [Required]
-        public required Guid DealerId { get; set; }
-
-        [Required]
         public required Guid VehicleId { get; set; }
 
         [Required]
         public required DateTime ScheduledAt { get; set; }
-
-        [Required]
-        public required TestDriveStatus Status { get; set; }
     }
 
     public class UpdateTestDriveDto

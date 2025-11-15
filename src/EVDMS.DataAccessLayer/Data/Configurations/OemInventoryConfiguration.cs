@@ -15,7 +15,7 @@ namespace EVDMS.DataAccessLayer.Data.Configurations
                 .WithMany(vv => vv.OemInventories)
                 .HasForeignKey(oi => oi.VariantId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            builder.HasIndex(oi => oi.VariantId).IsUnique();
             builder.HasData(OemInventorySeed.OemInventories);
         }
     }

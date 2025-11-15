@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
@@ -73,6 +74,22 @@ namespace EVDMS.API.Controllers
                     new ApiResponse<UserDto>(created)
                 );
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
             catch (Exception ex)
             {
                 return BadRequest(new ApiResponse<string>(ex.Message));
@@ -82,19 +99,67 @@ namespace EVDMS.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
         {
-            var success = await _userService.UpdateAsync(id, dto);
-            if (!success)
-                return NotFound(new ApiResponse<string>("User not found"));
-            return Ok(new ApiResponse<string>(null, "User updated successfully"));
+            try
+            {
+                var success = await _userService.UpdateAsync(id, dto);
+                if (!success)
+                    return NotFound(new ApiResponse<string>("User not found"));
+                var updated = await _userService.GetByIdAsync(id);
+                return Ok(new ApiResponse<UserDto>(updated!, "User updated successfully"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPatch("{id}")]
         public async Task<IActionResult> Patch(Guid id, [FromBody] PatchUserDto dto)
         {
-            var success = await _userService.PatchAsync(id, dto);
-            if (!success)
-                return NotFound(new ApiResponse<string>("User not found"));
-            return Ok(new ApiResponse<string>(null, "User patched successfully"));
+            try
+            {
+                var success = await _userService.PatchAsync(id, dto);
+                if (!success)
+                    return NotFound(new ApiResponse<string>("User not found"));
+                var updated = await _userService.GetByIdAsync(id);
+                return Ok(new ApiResponse<UserDto>(updated!, "User patched successfully"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new ApiResponse<string>(ex.Message));
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpDelete("{id}")]
@@ -119,6 +184,33 @@ namespace EVDMS.API.Controllers
             if (user == null)
                 return NotFound(new ApiResponse<string>("User not found"));
             return Ok(new ApiResponse<UserDto>(user));
+        }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportToCsv()
+        {
+            var result = await _userService.ExportToCsvAsync();
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
+        }
+
+        [HttpGet("export-by-dealer")]
+        public async Task<IActionResult> ExportByDealerToCsv()
+        {
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+            if (dealerId == null)
+                return Unauthorized(new ApiResponse<string>("DealerId not found in token."));
+            var result = await _userService.ExportByDealerToCsvAsync(dealerId.Value);
+            var csvBytes = Encoding.UTF8.GetBytes(result.CsvContent);
+            var bom = Encoding.UTF8.GetPreamble();
+            var bytesWithBom = new byte[bom.Length + csvBytes.Length];
+            Buffer.BlockCopy(bom, 0, bytesWithBom, 0, bom.Length);
+            Buffer.BlockCopy(csvBytes, 0, bytesWithBom, bom.Length, csvBytes.Length);
+            return File(bytesWithBom, "application/octet-stream", result.FileName);
         }
     }
 }

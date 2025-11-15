@@ -2,6 +2,7 @@ using System.Text.Json;
 using EVDMS.API.Middlewares;
 using EVDMS.BusinessLogicLayer.Services.Interfaces;
 using EVDMS.Common.Dtos;
+using EVDMS.Common.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EVDMS.API.Controllers
@@ -56,12 +57,36 @@ namespace EVDMS.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePromotionDto dto)
         {
-            var created = await _promotionService.CreateAsync(dto);
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = created.Id },
-                new ApiResponse<PromotionDto>(created)
-            );
+            var userRole = JwtUtils.GetUserRoleFromClaims(User);
+            if (userRole == null)
+                return StatusCode(
+                    403,
+                    new ApiResponse<string>("You are not allowed to create promotions.")
+                );
+
+            var dealerId = JwtUtils.GetDealerIdFromClaims(User);
+
+            try
+            {
+                var created = await _promotionService.CreateAsync(dto, userRole.Value, dealerId);
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new { id = created.Id },
+                    new ApiResponse<PromotionDto>(created)
+                );
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return StatusCode(403, new ApiResponse<string>(ex.Message));
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new ApiResponse<string>(ex.Message));
+            }
         }
 
         [HttpPut("{id}")]
@@ -70,7 +95,8 @@ namespace EVDMS.API.Controllers
             var success = await _promotionService.UpdateAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
-            return Ok(new ApiResponse<string>(null, "Promotion updated successfully"));
+            var updated = await _promotionService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PromotionDto>(updated!, "Promotion updated successfully"));
         }
 
         [HttpPatch("{id}")]
@@ -79,7 +105,8 @@ namespace EVDMS.API.Controllers
             var success = await _promotionService.PatchAsync(id, dto);
             if (!success)
                 return NotFound(new ApiResponse<string>("Promotion not found"));
-            return Ok(new ApiResponse<string>(null, "Promotion patched successfully"));
+            var updated = await _promotionService.GetByIdAsync(id);
+            return Ok(new ApiResponse<PromotionDto>(updated!, "Promotion patched successfully"));
         }
 
         [HttpDelete("{id}")]

@@ -108,11 +108,21 @@ namespace EVDMS.API.Tests.Unit.Controllers
                 Email = "test@example.com",
                 Address = "123 Test St",
             };
+            var updatedDto = new CustomerDto
+            {
+                Id = id,
+                FullName = dto.FullName,
+                Phone = dto.Phone,
+                Email = dto.Email,
+                Address = dto.Address,
+            };
             _serviceMock.Setup(s => s.UpdateAsync(id, dto)).ReturnsAsync(true);
+            _serviceMock.Setup(s => s.GetByIdAsync(id)).ReturnsAsync(updatedDto);
             var result = await _controller.Update(id, dto);
             var ok = Assert.IsType<OkObjectResult>(result);
-            var apiResponse = Assert.IsType<ApiResponse<string>>(ok.Value);
+            var apiResponse = Assert.IsType<ApiResponse<CustomerDto>>(ok.Value);
             Assert.True(apiResponse.Success);
+            Assert.Equal(updatedDto, apiResponse.Data);
         }
 
         [Trait("Category", "Unit")]
@@ -139,12 +149,15 @@ namespace EVDMS.API.Tests.Unit.Controllers
         public async Task Patch_ReturnsOk_WhenSuccess()
         {
             var id = Guid.NewGuid();
-            var dto = new PatchCustomerDto();
+            var dto = new PatchCustomerDto { FullName = "Patched Name" };
+            var updatedDto = new CustomerDto { Id = id, FullName = dto.FullName ?? "Patched Name" };
             _serviceMock.Setup(s => s.PatchAsync(id, dto)).ReturnsAsync(true);
+            _serviceMock.Setup(s => s.GetByIdAsync(id)).ReturnsAsync(updatedDto);
             var result = await _controller.Patch(id, dto);
             var ok = Assert.IsType<OkObjectResult>(result);
-            var apiResponse = Assert.IsType<ApiResponse<string>>(ok.Value);
+            var apiResponse = Assert.IsType<ApiResponse<CustomerDto>>(ok.Value);
             Assert.True(apiResponse.Success);
+            Assert.Equal(updatedDto, apiResponse.Data);
         }
 
         [Trait("Category", "Unit")]

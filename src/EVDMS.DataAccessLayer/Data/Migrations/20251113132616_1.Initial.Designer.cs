@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EVDMS.DataAccessLayer.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251001053054_1.Initial")]
+    [Migration("20251113132616_1.Initial")]
     partial class _1Initial
     {
         /// <inheritdoc />
@@ -32,8 +32,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<int>("Action")
-                        .HasColumnType("integer")
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("text")
                         .HasColumnName("action");
 
                     b.Property<DateTime>("CreatedAt")
@@ -211,6 +212,33 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Name = "EV Motors Saigon",
                             Region = "Ho Chi Minh City",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Address = "200 Le Lai, District 1, Ho Chi Minh City",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Saigon Auto Hub",
+                            Region = "Ho Chi Minh City",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Address = "50 Tran Hung Dao, Hoan Kiem, Hanoi",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Hanoi EV Center",
+                            Region = "Hanoi",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Address = "10 Bach Dang, Hai Chau, Da Nang",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Name = "Da Nang Green Motors",
+                            Region = "Da Nang",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -283,7 +311,175 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             SalesTarget = 750000m,
                             StartDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            EndDate = new DateTime(2023, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 10000m,
+                            SalesTarget = 800000m,
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000004"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 20000m,
+                            SalesTarget = 900000m,
+                            StartDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000005"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            EndDate = new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 5000m,
+                            SalesTarget = 700000m,
+                            StartDate = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000006"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            EndDate = new DateTime(2025, 12, 28, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 15000m,
+                            SalesTarget = 950000m,
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000007"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            EndDate = new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 3000m,
+                            SalesTarget = 600000m,
+                            StartDate = new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("10000000-0000-0000-0000-000000000008"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            EndDate = new DateTime(2028, 4, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            OutstandingDebt = 12000m,
+                            SalesTarget = 850000m,
+                            StartDate = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("color");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("DealerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_id");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_dealer_orders");
+
+                    b.HasIndex("DealerId")
+                        .HasDatabaseName("ix_dealer_orders_dealer_id");
+
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_dealer_orders_variant_id");
+
+                    b.ToTable("dealer_orders", (string)null);
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerPayment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("DealerOrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("dealer_order_id");
+
+                    b.Property<string>("DocumentPublicId")
+                        .HasColumnType("text")
+                        .HasColumnName("document_public_id");
+
+                    b.Property<string>("DocumentUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("document_url");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("status");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.HasKey("Id")
+                        .HasName("pk_dealer_payments");
+
+                    b.HasIndex("DealerOrderId")
+                        .HasDatabaseName("ix_dealer_payments_dealer_order_id");
+
+                    b.ToTable("dealer_payments", (string)null);
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
@@ -364,6 +560,66 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Resolved",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000004"),
+                            Content = "Very professional and quick delivery.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000004"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Status = "New",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000005"),
+                            Content = "Helpful staff and good after-sales support.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000005"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Status = "Reviewed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000006"),
+                            Content = "Smooth transaction and friendly staff.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "New",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000007"),
+                            Content = "Showroom was clean and well organized.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "Reviewed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000008"),
+                            Content = "Fast service and knowledgeable staff.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000003"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Status = "New",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("40000000-0000-0000-0000-000000000009"),
+                            Content = "Good experience overall, will recommend.",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000004"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Status = "Reviewed",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
 
@@ -398,6 +654,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasName("pk_oem_inventories");
 
                     b.HasIndex("VariantId")
+                        .IsUnique()
                         .HasDatabaseName("ix_oem_inventories_variant_id");
 
                     b.ToTable("oem_inventories", (string)null);
@@ -407,7 +664,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("50000000-0000-0000-0000-000000000001"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Quantity = 10,
+                            Quantity = 20,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111101")
                         },
@@ -415,7 +672,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("50000000-0000-0000-0000-000000000002"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Quantity = 5,
+                            Quantity = 10,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111102")
                         },
@@ -423,7 +680,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         {
                             Id = new Guid("50000000-0000-0000-0000-000000000003"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Quantity = 8,
+                            Quantity = 16,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("22222222-2222-2222-2222-222222222201")
                         });
@@ -477,21 +734,21 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         new
                         {
                             Id = new Guid("a0000000-0000-0000-0000-000000000001"),
-                            Amount = 500000m,
+                            Amount = 51300m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Date = new DateTime(2024, 4, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Method = "BankTransfer",
-                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000001"),
+                            Method = "Upfront",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000002"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
                         {
                             Id = new Guid("a0000000-0000-0000-0000-000000000002"),
-                            Amount = 750000m,
+                            Amount = 10000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Date = new DateTime(2024, 5, 2, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Method = "Cash",
-                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000002"),
+                            Method = "Installment",
+                            SalesOrderId = new Guid("90000000-0000-0000-0000-000000000001"),
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -552,11 +809,22 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Id = new Guid("60000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Description = "Winter Sale: 5% off all vehicles!",
+                            DiscountPercent = 5m,
+                            EndDate = new DateTime(2022, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Oem",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
                             Id = new Guid("60000000-0000-0000-0000-000000000001"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "Spring Sale: 10% off all vehicles!",
                             DiscountPercent = 10m,
-                            EndDate = new DateTime(2024, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EndDate = new DateTime(2026, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Oem",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
@@ -568,8 +836,92 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Description = "Year-end Clearance: 15% off selected models!",
                             DiscountPercent = 15m,
-                            EndDate = new DateTime(2024, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            EndDate = new DateTime(2026, 12, 31, 0, 0, 0, 0, DateTimeKind.Utc),
                             StartDate = new DateTime(2024, 12, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000004"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Description = "Tet Special: 8% off",
+                            DiscountPercent = 8m,
+                            EndDate = new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000005"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Description = "Anniversary Sale: 7% off",
+                            DiscountPercent = 7m,
+                            EndDate = new DateTime(2023, 5, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2023, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000006"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Description = "Summer Bonanza: 12% off!",
+                            DiscountPercent = 12m,
+                            EndDate = new DateTime(2025, 12, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2025, 6, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000007"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Description = "Grand Opening: 9% off",
+                            DiscountPercent = 9m,
+                            EndDate = new DateTime(2022, 9, 30, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2022, 9, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000008"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Description = "Hanoi Summer: 11% off!",
+                            DiscountPercent = 11m,
+                            EndDate = new DateTime(2026, 5, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2025, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000009"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Description = "Da Nang Launch: 6% off",
+                            DiscountPercent = 6m,
+                            EndDate = new DateTime(2023, 3, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2023, 3, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            Type = "Dealer",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("60000000-0000-0000-0000-000000000010"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Description = "Da Nang Summer: 13% off!",
+                            DiscountPercent = 13m,
+                            EndDate = new DateTime(2027, 7, 31, 0, 0, 0, 0, DateTimeKind.Utc),
+                            StartDate = new DateTime(2024, 7, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Type = "Dealer",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
@@ -581,6 +933,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("color");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -615,6 +972,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<Guid>("VariantId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("variant_id");
+
                     b.HasKey("Id")
                         .HasName("pk_quotations");
 
@@ -627,30 +988,50 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasIndex("UserId")
                         .HasDatabaseName("ix_quotations_user_id");
 
+                    b.HasIndex("VariantId")
+                        .HasDatabaseName("ix_quotations_variant_id");
+
                     b.ToTable("quotations", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000001"),
+                            Color = "White",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000001"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Sent",
-                            TotalAmount = 0m,
+                            TotalAmount = 46630m,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = new Guid("20000000-0000-0000-0000-000000000002")
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101")
                         },
                         new
                         {
                             Id = new Guid("70000000-0000-0000-0000-000000000002"),
+                            Color = "Black",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             CustomerId = new Guid("10000000-0000-0000-0000-000000000002"),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Approved",
-                            TotalAmount = 0m,
+                            TotalAmount = 51300m,
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = new Guid("20000000-0000-0000-0000-000000000003")
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
+                        },
+                        new
+                        {
+                            Id = new Guid("70000000-0000-0000-0000-000000000003"),
+                            Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000003"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "Rejected",
+                            TotalAmount = 50730m,
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000010"),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102")
                         });
                 });
 
@@ -776,9 +1157,9 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Date = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             QuotationId = new Guid("70000000-0000-0000-0000-000000000001"),
-                            Status = "Pending",
+                            Status = "Confirmed",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            UserId = new Guid("20000000-0000-0000-0000-000000000002"),
+                            UserId = new Guid("20000000-0000-0000-0000-000000000003"),
                             VehicleId = new Guid("80000000-0000-0000-0000-000000000001")
                         },
                         new
@@ -789,7 +1170,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Date = new DateTime(2024, 5, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             QuotationId = new Guid("70000000-0000-0000-0000-000000000002"),
-                            Status = "Confirmed",
+                            Status = "Delivered",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             UserId = new Guid("20000000-0000-0000-0000-000000000003"),
                             VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
@@ -872,6 +1253,39 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Status = "Completed",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VehicleId = new Guid("80000000-0000-0000-0000-000000000002")
+                        },
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000003"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            ScheduledAt = new DateTime(2024, 6, 10, 10, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Canceled",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000004")
+                        },
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000004"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000004"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            ScheduledAt = new DateTime(2026, 7, 12, 11, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "Scheduled",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000007")
+                        },
+                        new
+                        {
+                            Id = new Guid("b0000000-0000-0000-0000-000000000005"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            CustomerId = new Guid("10000000-0000-0000-0000-000000000005"),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            ScheduledAt = new DateTime(2024, 8, 15, 15, 0, 0, 0, DateTimeKind.Utc),
+                            Status = "NoShow",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VehicleId = new Guid("80000000-0000-0000-0000-000000000012")
                         });
                 });
 
@@ -951,6 +1365,78 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Id = new Guid("20000000-0000-0000-0000-000000000007"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Email = "sgh.manager@example.com",
+                            FullName = "Saigon Auto Hub Manager",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
+                            Role = "DealerManager",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000008"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Email = "sgh.staff@example.com",
+                            FullName = "Saigon Auto Hub Staff",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000009"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Email = "hanoi.manager@example.com",
+                            FullName = "Hanoi EV Center Manager",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
+                            Role = "DealerManager",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000010"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Email = "hanoi.staff@example.com",
+                            FullName = "Hanoi EV Center Staff",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000011"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Email = "danang.manager@example.com",
+                            FullName = "Da Nang Green Motors Manager",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$DdO35yfXHIifSg.NNvGoEuTw04wZosGk4nSZuuQDYI73T.YbRM56K",
+                            Role = "DealerManager",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000012"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Email = "danang.staff@example.com",
+                            FullName = "Da Nang Green Motors Staff",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
                             Id = new Guid("20000000-0000-0000-0000-000000000001"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Email = "admin@example.com",
@@ -979,6 +1465,30 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Email = "dealerstaff@example.com",
                             FullName = "Dealer Staff User",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000005"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Email = "dealerstaff2@example.com",
+                            FullName = "Dealer Staff User 2",
+                            IsActive = false,
+                            PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
+                            Role = "DealerStaff",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
+                        },
+                        new
+                        {
+                            Id = new Guid("20000000-0000-0000-0000-000000000006"),
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
+                            Email = "dealerstaff3@example.com",
+                            FullName = "Dealer Staff User 3",
                             IsActive = false,
                             PasswordHash = "$2a$11$BIDX9UfH9hf91sM8KXg87upxxbcYLXYC/mKIeen0hkNvFY94h15Sq",
                             Role = "DealerStaff",
@@ -1066,11 +1576,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Color = "White",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
-                            Status = "Available",
+                            Status = "Reserved",
                             Type = "Sale",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
-                            Vin = "5YJYGDEE8LF000001"
+                            Vin = "5YJDC63CXSA000001"
                         },
                         new
                         {
@@ -1078,23 +1588,107 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Color = "Black",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
-                            Status = "Reserved",
-                            Type = "Display",
+                            Status = "Sold",
+                            Type = "Sale",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
-                            Vin = "5YJYGDEE8LF000002"
+                            Vin = "5YJDC5AEXSA000001"
                         },
                         new
                         {
                             Id = new Guid("80000000-0000-0000-0000-000000000003"),
-                            Color = "Blue",
+                            Color = "Red",
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             DealerId = new Guid("30000000-0000-0000-0000-000000000001"),
                             Status = "Reserved",
                             Type = "Demo",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
-                            Vin = "5YJ3E1EA7LF000003"
+                            Vin = "5YJDCDA0XSA000001"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000004"),
+                            Color = "Silver",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Status = "Available",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
+                            Vin = "5YJDC63CXSA000002"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000005"),
+                            Color = "Silver",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Status = "Reserved",
+                            Type = "Display",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111101"),
+                            Vin = "5YJDC63CXSA000003"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000006"),
+                            Color = "Yellow",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000002"),
+                            Status = "Reserved",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
+                            Vin = "5YJDCDA0XSA000002"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000007"),
+                            Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "Reserved",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
+                            Vin = "5YJDC5AEXSA000002"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000008"),
+                            Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "Available",
+                            Type = "Sale",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
+                            Vin = "5YJDC5AEXSA000003"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000009"),
+                            Color = "Gray",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000003"),
+                            Status = "Reserved",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("11111111-1111-1111-1111-111111111102"),
+                            Vin = "5YJDC5AEXSA000004"
+                        },
+                        new
+                        {
+                            Id = new Guid("80000000-0000-0000-0000-000000000012"),
+                            Color = "Green",
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            DealerId = new Guid("30000000-0000-0000-0000-000000000004"),
+                            Status = "Available",
+                            Type = "Demo",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
+                            VariantId = new Guid("22222222-2222-2222-2222-222222222201"),
+                            Vin = "5YJDCDA0XSA000004"
                         });
                 });
 
@@ -1115,6 +1709,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("description");
+
+                    b.Property<string>("ImagePublicId")
+                        .HasColumnType("text")
+                        .HasColumnName("image_public_id");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text")
@@ -1142,7 +1740,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A battery-electric compact crossover SUV that shares many components with the Model 3, offering more utility, a higher seating position, and optional three-row seating.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450497/Tesla_Model_Y_m9txrs.jpg",
+                            ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118880/EVDMS/VehicleModelImages/Tesla_Model_Y_mbohes.jpg",
                             Name = "Tesla Model Y",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
@@ -1151,7 +1750,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("22222222-2222-2222-2222-222222222222"),
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
                             Description = "A battery-electric mid-size sedan with a fastback body style, marketed as a more affordable electric vehicle than Tesla's previous models.",
-                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1758450495/Tesla_Model_3_evqd0p.jpg",
+                            ImagePublicId = "EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z",
+                            ImageUrl = "https://res.cloudinary.com/dchtww9gf/image/upload/v1761118847/EVDMS/VehicleModelImages/Tesla_Model_3_bblf8z.jpg",
                             Name = "Tesla Model 3",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
@@ -1213,10 +1813,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111101"),
                             BasePrice = 46630m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"LedHeadlights\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"HeatedSeats\",\"VentilatedSeats\",\"ThirdRowSeating\"]}",
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"VentilatedSeats\",\"ThirdRowSeating\"]}",
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Name = "Tesla Model Y Long Range All-Wheel Drive",
-                            Specs = "{\"Horsepower\":{\"Value\":514,\"Unit\":\"hp\"},\"Torque\":{\"Value\":493,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":4.8,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":201,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1994,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":75,\"Unit\":\"kWh\"},\"Range\":{\"Value\":533,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":165,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCM)\"},\"BatteryVoltageArchitecture\":{\"Value\":345,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":27,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1600,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":117,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":854,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Standard\"},\"V2lCapability\":{\"Value\":3.6,\"Unit\":\"kW\"}}",
+                            Specs = "{\"Horsepower\":{\"Value\":514,\"Unit\":\"hp\"},\"Torque\":{\"Value\":493,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":4.8,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Single PMSM\"},\"TopSpeed\":{\"Value\":201,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1994,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":75,\"Unit\":\"kWh\"},\"Range\":{\"Value\":533,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":165,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"NCA\"},\"BatteryVoltageArchitecture\":{\"Value\":345,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":27,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"CCS\"},\"TowingCapacity\":{\"Value\":1600,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":117,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":854,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Optional\"},\"V2lCapability\":{\"Value\":3.6,\"Unit\":\"kW\"}}",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
@@ -1224,10 +1824,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111102"),
                             BasePrice = 57000m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"LedHeadlights\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"HeatedSeats\",\"ThirdRowSeating\"]}",
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"VentilatedSeats\",\"ThirdRowSeating\"]}",
                             ModelId = new Guid("11111111-1111-1111-1111-111111111111"),
                             Name = "Tesla Model Y Performance",
-                            Specs = "{\"Horsepower\":{\"Value\":534,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.7,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM Performance\"},\"TopSpeed\":{\"Value\":250,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":2003,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":78,\"Unit\":\"kWh\"},\"Range\":{\"Value\":488,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":175,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Enhanced (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":25,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":7.5,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1500,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":110,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":860,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Standard\"},\"V2lCapability\":{\"Value\":3.6,\"Unit\":\"kW\"}}",
+                            Specs = "{\"Horsepower\":{\"Value\":534,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.7,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Induction Motor\"},\"TopSpeed\":{\"Value\":250,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":2003,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":78,\"Unit\":\"kWh\"},\"Range\":{\"Value\":488,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":175,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"NMC\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Enhanced (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":25,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":7.5,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"NACS\"},\"TowingCapacity\":{\"Value\":1500,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":110,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":860,\"Unit\":\"L\"},\"HeatPump\":{\"Value\":\"Standard\"},\"V2lCapability\":{\"Value\":1.5,\"Unit\":\"kW\"}}",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         },
                         new
@@ -1235,10 +1835,10 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                             Id = new Guid("22222222-2222-2222-2222-222222222201"),
                             BasePrice = 54990m,
                             CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc),
-                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\"],\"Entertainment\":[\"PremiumSoundSystem\"],\"Exterior\":[\"LedHeadlights\",\"AlloyWheels\"],\"Seating\":[\"HeatedSeats\"]}",
+                            Features = "{\"Safety\":[\"AutomaticEmergencyBraking\",\"BlindSpotMonitor\",\"LaneDepartureWarning\",\"BackupCamera\"],\"Convenience\":[\"KeylessEntry\",\"PowerLiftgate\",\"AdaptiveCruiseControl\"],\"Entertainment\":[\"AppleCarPlay\",\"AndroidAuto\",\"PremiumSoundSystem\",\"WifiHotspot\"],\"Exterior\":[\"AlloyWheels\",\"RoofRails\",\"Sunroof\"],\"Seating\":[\"VentilatedSeats\",\"ThirdRowSeating\"]}",
                             ModelId = new Guid("22222222-2222-2222-2222-222222222222"),
                             Name = "Tesla Model 3 Performance",
-                            Specs = "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"AWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"Li\\u2011ion (NCA)\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"Tesla NACS (NA) / CCS (EU)\"},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"}}",
+                            Specs = "{\"Horsepower\":{\"Value\":510,\"Unit\":\"hp\"},\"Torque\":{\"Value\":660,\"Unit\":\"Nm\"},\"Acceleration\":{\"Value\":3.1,\"Unit\":\"s\"},\"DriveType\":{\"Value\":\"RWD\"},\"MotorType\":{\"Value\":\"Dual PMSM\"},\"TopSpeed\":{\"Value\":261,\"Unit\":\"km/h\"},\"CurbWeight\":{\"Value\":1844,\"Unit\":\"kg\"},\"BatteryCapacity\":{\"Value\":82,\"Unit\":\"kWh\"},\"Range\":{\"Value\":547,\"Unit\":\"km\"},\"Efficiency\":{\"Value\":153,\"Unit\":\"Wh/km\"},\"BatteryChemistry\":{\"Value\":\"LFP\"},\"BatteryVoltageArchitecture\":{\"Value\":355,\"Unit\":\"V\"},\"RegenerativeBrakingCapacity\":{\"Value\":\"Standard (1\\u2011pedal)\"},\"MaxAcChargingRate\":{\"Value\":11,\"Unit\":\"kW\"},\"MaxDcFastChargingRate\":{\"Value\":250,\"Unit\":\"kW\"},\"DcFastChargingTime\":{\"Value\":30,\"Unit\":\"min\"},\"AcChargingTime\":{\"Value\":8,\"Unit\":\"h\"},\"ChargingPortTypes\":{\"Value\":\"NACS\"},\"TowingCapacity\":{\"Value\":1000,\"Unit\":\"kg\"},\"FrunkVolume\":{\"Value\":88,\"Unit\":\"L\"},\"CargoVolume\":{\"Value\":542,\"Unit\":\"L\"}}",
                             UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)
                         });
                 });
@@ -1267,12 +1867,45 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Dealer");
                 });
 
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.Dealer", "Dealer")
+                        .WithMany("DealerOrders")
+                        .HasForeignKey("DealerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_orders_dealers_dealer_id");
+
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "VehicleVariant")
+                        .WithMany("DealerOrders")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_orders_vehicle_variants_variant_id");
+
+                    b.Navigation("Dealer");
+
+                    b.Navigation("VehicleVariant");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerPayment", b =>
+                {
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.DealerOrder", "DealerOrder")
+                        .WithMany("DealerPayments")
+                        .HasForeignKey("DealerOrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_dealer_payments_dealer_orders_dealer_order_id");
+
+                    b.Navigation("DealerOrder");
+                });
+
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Feedback", b =>
                 {
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("Feedbacks")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_feedbacks_customers_customer_id");
 
@@ -1305,7 +1938,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.SalesOrder", "SalesOrder")
                         .WithMany("Payments")
                         .HasForeignKey("SalesOrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_payments_sales_orders_sales_order_id");
 
@@ -1328,7 +1961,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("Quotations")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_quotations_customers_customer_id");
 
@@ -1346,11 +1979,20 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_quotations_users_user_id");
 
+                    b.HasOne("EVDMS.DataAccessLayer.Entities.VehicleVariant", "Variant")
+                        .WithMany("Quotations")
+                        .HasForeignKey("VariantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_quotations_vehicle_variants_variant_id");
+
                     b.Navigation("Customer");
 
                     b.Navigation("Dealer");
 
                     b.Navigation("User");
+
+                    b.Navigation("Variant");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.RefreshToken", b =>
@@ -1370,7 +2012,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("SalesOrders")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_customers_customer_id");
 
@@ -1384,7 +2026,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Quotation", "Quotation")
                         .WithMany("SalesOrders")
                         .HasForeignKey("QuotationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_sales_orders_quotations_quotation_id");
 
@@ -1418,7 +2060,7 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.HasOne("EVDMS.DataAccessLayer.Entities.Customer", "Customer")
                         .WithMany("TestDrives")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_test_drives_customers_customer_id");
 
@@ -1502,6 +2144,8 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                 {
                     b.Navigation("DealerContracts");
 
+                    b.Navigation("DealerOrders");
+
                     b.Navigation("Feedbacks");
 
                     b.Navigation("Promotions");
@@ -1515,6 +2159,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
                     b.Navigation("Users");
 
                     b.Navigation("Vehicles");
+                });
+
+            modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.DealerOrder", b =>
+                {
+                    b.Navigation("DealerPayments");
                 });
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.Quotation", b =>
@@ -1552,7 +2201,11 @@ namespace EVDMS.DataAccessLayer.Data.Migrations
 
             modelBuilder.Entity("EVDMS.DataAccessLayer.Entities.VehicleVariant", b =>
                 {
+                    b.Navigation("DealerOrders");
+
                     b.Navigation("OemInventories");
+
+                    b.Navigation("Quotations");
 
                     b.Navigation("Vehicles");
                 });
